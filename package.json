@@ -1,6 +1,13 @@
 {
-  "name": "learn-starter",
-  "version": "0.1.0",
+  "name": "expense-tracker",
+  "version": "0.0.0",
+  "author": {
+    "name": "Cristiano Piemontese",
+    "email": "cristiano.piemontese@gmail.com"
+  },
+  "repository": {
+    "url": "https://github.com/cpiemontese/expense-tracker"
+  },
   "private": true,
   "scripts": {
     "dev": "next dev",

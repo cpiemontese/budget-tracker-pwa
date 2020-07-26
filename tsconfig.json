@@ -25,6 +25,8 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "lib/posts.test.js"
+    "lib/posts.test.js",
+    "middleware/database.js",
+    "pages/api/hello.js"
   ]
 }

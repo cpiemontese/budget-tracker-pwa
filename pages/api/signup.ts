@@ -1,3 +1,4 @@
+import nodemailer from "nodemailer";
 import nextConnect from "next-connect";
 import { NextApiResponse } from "next";
 
@@ -31,12 +32,19 @@ handler.post(
     };
 
     try {
-      await req.transporter.sendMail({
+      const info = await req.transporter.sendMail({
         from: `"${process.env.MAILER_NAME}" <${process.env.SMTP_USER}>`,
         to: email,
         subject: `${process.env.APP_NAME} Signup!`,
         text: `Hi ${username}, your password is ${password}`,
       });
+
+      if (process.env.NODE_ENV === "development") {
+        req.logger.debug({
+          messageId: info.messageId,
+          previewURL: nodemailer.getTestMessageUrl(info),
+        });
+      }
     } catch (error) {
       req.logger.error(
         {

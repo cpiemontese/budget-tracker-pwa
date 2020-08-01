@@ -1,3 +1,4 @@
+import get from "lodash.get";
 import nodemailer from "nodemailer";
 import nextConnect from "next-connect";
 import { NextApiResponse } from "next";
@@ -25,11 +26,9 @@ handler.post(
       NextApiRequestWithLogger,
     res: NextApiResponse
   ) => {
-    const { email, username, password } = req.body as {
-      email: string;
-      username: string;
-      password: string;
-    };
+    const email = get(req.body, ["email"], null) as string;
+    const username = get(req.body, ["username"], null) as string;
+    const password = get(req.body, ["password"], null) as string;
 
     try {
       const info = await req.transporter.sendMail({

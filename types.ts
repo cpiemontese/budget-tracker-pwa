@@ -1,9 +1,9 @@
 import { Logger } from "pino";
 import { Transporter } from "nodemailer";
-import { Db, MongoClient } from "mongodb";
+import { Collection } from "mongodb";
 import { NextApiRequest, NextApiResponse } from "next";
 
-type NextApiRequestWithDB = NextApiRequest & { db: Db; dbClient: MongoClient };
+type NextApiRequestWithDB = NextApiRequest & { usersCollection: Collection };
 type NextApiRequestWithTransporter = NextApiRequest & {
   transporter: Transporter;
 };

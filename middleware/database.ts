@@ -14,8 +14,8 @@ async function database(
   next: NextHandler
 ) {
   if (!client.isConnected()) await client.connect();
-  req.dbClient = client;
-  req.db = client.db(process.env.DB_NAME);
+  const db = client.db(process.env.DB_NAME);
+  req.usersCollection = db.collection(process.env.USERS_COLLECTION);
   return next();
 }
 

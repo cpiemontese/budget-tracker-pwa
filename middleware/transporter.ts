@@ -18,22 +18,25 @@ async function transporter(
   _res: NextApiResponse,
   next: NextHandler
 ) {
-  if (process.env.NODE_ENV === "development") {
-    const testAccount = await nodemailer.createTestAccount();
-    req.transporter = nodemailer.createTransport({
-      host: "smtp.ethereal.email",
-      port: 587,
-      secure: false,
-      auth: {
-        user: testAccount.user,
-        pass: testAccount.pass,
-      },
-    });
-    return next();
-  }
+  req.transporter =
+    process.env.NODE_ENV === "development"
+      ? await getTestTransporter()
+      : mailTransporter;
 
-  req.transporter = mailTransporter;
   next();
+}
+
+async function getTestTransporter() {
+  const testAccount = await nodemailer.createTestAccount();
+  return nodemailer.createTransport({
+    host: "smtp.ethereal.email",
+    port: 587,
+    secure: false,
+    auth: {
+      user: testAccount.user,
+      pass: testAccount.pass,
+    },
+  });
 }
 
 const middleware = nextConnect();

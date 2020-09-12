@@ -13,8 +13,10 @@ import {
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
 import transporter from "../../middleware/transporter";
+import { randomBytes } from "crypto";
 
 const SALT_ROUNDS = 12;
+const VERIFICATION_SECRET_LENGTH = 16;
 
 const handler = nextConnect();
 
@@ -58,12 +60,17 @@ async function signup(
     return res;
   }
 
+  const verificationSecret = randomBytes(VERIFICATION_SECRET_LENGTH).toString(
+    "hex"
+  );
+
   try {
     req.usersCollection.insertOne({
       email,
       username,
       password: await hash(password, SALT_ROUNDS),
-      authenticated: false,
+      verified: false,
+      verificationSecret,
     });
   } catch (error) {
     req.logger.error(
@@ -81,7 +88,7 @@ async function signup(
       from: `"${process.env.MAILER_NAME}" <${process.env.SMTP_USER}>`,
       to: email,
       subject: `${process.env.APP_NAME} Signup!`,
-      text: `Hi ${username}, your password is ${password}`,
+      text: `Hi ${username}, thank you for signing up to ${process.env.APP_NAME}.\n\nPlease verify your account by clicking this link: https://${process.env.APP_HOST}/verify/${verificationSecret}`,
     });
 
     if (process.env.NODE_ENV === "development") {

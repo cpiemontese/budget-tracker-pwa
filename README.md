@@ -1,1 +1,3 @@
-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
+# Budget Tracker
+
+This is a budget tracker app that runs in your browser, saves data on MongoDB and is made with NextJS.

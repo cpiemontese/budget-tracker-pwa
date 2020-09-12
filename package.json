@@ -16,6 +16,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "@types/bcrypt": "^3.0.0",
     "bcrypt": "^5.0.0",
     "core-util-is": "^1.0.2",
     "date-fns": "^2.15.0",

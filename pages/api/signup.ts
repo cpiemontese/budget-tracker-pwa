@@ -2,6 +2,7 @@ import get from "lodash.get";
 import nodemailer from "nodemailer";
 import nextConnect from "next-connect";
 import { NextApiResponse } from "next";
+import { hash } from "bcrypt";
 
 import {
   NextApiRequestWithDB,
@@ -12,6 +13,8 @@ import {
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
 import transporter from "../../middleware/transporter";
+
+const SALT_ROUNDS = 12;
 
 const handler = nextConnect();
 
@@ -51,6 +54,24 @@ async function signup(
   }
 
   if (user !== null && user !== undefined) {
+    res.status(500).send({});
+    return res;
+  }
+
+  try {
+    req.usersCollection.insertOne({
+      email,
+      username,
+      password: await hash(password, SALT_ROUNDS),
+      authenticated: false,
+    });
+  } catch (error) {
+    req.logger.error(
+      {
+        error: error.message,
+      },
+      "/api/signup - user insert error"
+    );
     res.status(500).send({});
     return res;
   }

@@ -36,6 +36,25 @@ async function signup(
     return res;
   }
 
+  let user = null;
+  try {
+    user = await req.usersCollection.findOne({ email });
+  } catch (error) {
+    req.logger.error(
+      {
+        error: error.message,
+      },
+      "/api/signup - user fetch error"
+    );
+    res.status(500).send({});
+    return res;
+  }
+
+  if (user !== null && user !== undefined) {
+    res.status(500).send({});
+    return res;
+  }
+
   try {
     const info = await req.transporter.sendMail({
       from: `"${process.env.MAILER_NAME}" <${process.env.SMTP_USER}>`,
@@ -58,6 +77,7 @@ async function signup(
       "/api/signup - sendMail error"
     );
     res.status(500).send({});
+    return res;
   }
 
   res.status(204).send({});

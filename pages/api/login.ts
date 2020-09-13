@@ -12,7 +12,7 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
-import { getCookie } from "../../lib/cookies";
+import { createCookie } from "../../lib/cookies";
 import { randomBytes } from "crypto";
 
 const handler = nextConnect().use(db).use(logger).post(login);
@@ -63,7 +63,7 @@ async function login(
 
   const loginToken = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
   const loginTokenMaxAge = req.localEnv.loginCookie.maxAge;
-  const cookie = getCookie(
+  const cookie = createCookie(
     req.localEnv.loginCookie.name,
     JSON.stringify({
       email,

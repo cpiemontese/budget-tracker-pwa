@@ -24,6 +24,8 @@ handler.post(login);
 export default handler;
 export { login };
 
+const LOGIN_TOKEN_LENGTH = 16;
+
 async function login(
   req: NextApiRequestWithDB & NextApiRequestWithLogger,
   res: NextApiResponse
@@ -63,18 +65,16 @@ async function login(
     return res;
   }
 
-  const loginToken = randomBytes(16).toString("hex");
+  const loginToken = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
+  const loginTokenMaxAge = parseInt(process.env.LOGIN_TOKEN_MAX_AGE);
   const cookie = getCookie(
     process.env.LOGIN_TOKEN_NAME,
     loginToken,
-    process.env.LOGIN_TOKEN_MAX_AGE
+    loginTokenMaxAge
   );
 
   try {
-    req.usersCollection.updateOne(
-      { email },
-      { loginToken, loginTokenMaxAge: process.env.LOGIN_TOKEN_MAX_AGE }
-    );
+    req.usersCollection.updateOne({ email }, { loginToken, loginTokenMaxAge });
   } catch (error) {
     req.logger.error(
       {

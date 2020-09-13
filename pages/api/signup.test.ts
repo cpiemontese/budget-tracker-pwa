@@ -158,15 +158,15 @@ test("returns 204 and sends mail if user is correctly created", async () => {
 
   expect(response.statusCode).toEqual(204);
 
-  expect(actualMail.from).toMatch(process.env.MAILER_NAME);
-  expect(actualMail.from).toMatch(process.env.SMTP_USER);
+  expect(actualMail.from).toMatch(LOCAL_ENV.mailerName);
+  expect(actualMail.from).toMatch(LOCAL_ENV.smtp.user);
 
   expect(actualMail.to).toMatch(email);
 
-  expect(actualMail.subject).toMatch(process.env.APP_NAME);
+  expect(actualMail.subject).toMatch(LOCAL_ENV.app.name);
 
   expect(actualMail.text).toMatch(username);
-  expect(actualMail.text).toMatch(process.env.APP_HOST);
+  expect(actualMail.text).toMatch(LOCAL_ENV.app.host);
   expect(actualMail.text).toMatch(email);
   expect(actualMail.text).toMatch(interceptedauthenticationToken);
 });

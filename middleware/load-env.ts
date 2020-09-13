@@ -13,10 +13,6 @@ async function loadEnv(
       host: process.env.APP_HOST,
     },
     logLevel: process.env.LOG_LEVEL,
-    db: {
-      name: process.env.DB_NAME,
-      url: process.env.MONGODB_URL,
-    },
     smtp: {
       host: process.env.SMTP_HOST,
       user: process.env.SMTP_USER,

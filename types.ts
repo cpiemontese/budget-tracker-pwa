@@ -11,7 +11,6 @@ type NextApiRequestWithLogger = NextApiRequest & { logger: Logger };
 type NextApiRequestWithEnv = NextApiRequest & {
   localEnv: {
     app: { name: string; host: string };
-    db: { name: string; url: string };
     loginCookie: { name: string; maxAge: number };
     logLevel: string;
     mailerName: string;

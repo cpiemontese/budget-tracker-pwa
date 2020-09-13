@@ -1,15 +1,9 @@
 import { createMocks } from "node-mocks-http";
-import { signup } from "./signup";
 import { compare } from "bcrypt";
 import Mail from "nodemailer/lib/mailer";
 
-type UserDoc = {
-  email: string;
-  username: string;
-  password: string;
-  verified: boolean;
-  verificationSecret: string;
-};
+import { signup } from "./signup";
+import { User } from "../../types";
 
 test("returns 400 if body is not as expected", async () => {
   const { req, res } = createMocks({
@@ -78,12 +72,12 @@ test("returns 204 if user is correctly created", async () => {
     },
   });
 
-  let actualUserDoc: UserDoc = null;
+  let actualUserDoc: User = null;
   req.usersCollection = {
     async findOne() {
       return null;
     },
-    async insertOne(userDoc: UserDoc) {
+    async insertOne(userDoc: User) {
       actualUserDoc = userDoc;
       return "mongodb_id";
     },
@@ -124,13 +118,13 @@ test("returns 204 and sends mail if user is correctly created", async () => {
     },
   });
 
-  let interceptedVerificationSecret: string = null;
+  let interceptedverificationToken: string = null;
   req.usersCollection = {
     async findOne() {
       return null;
     },
-    async insertOne(userDoc: UserDoc) {
-      interceptedVerificationSecret = userDoc.verificationSecret;
+    async insertOne(userDoc: User) {
+      interceptedverificationToken = userDoc.verificationToken;
       return "mongodb_id";
     },
   };
@@ -161,5 +155,6 @@ test("returns 204 and sends mail if user is correctly created", async () => {
 
   expect(actualMail.text).toMatch(username);
   expect(actualMail.text).toMatch(process.env.APP_HOST);
-  expect(actualMail.text).toMatch(interceptedVerificationSecret);
+  expect(actualMail.text).toMatch(email);
+  expect(actualMail.text).toMatch(interceptedverificationToken);
 });

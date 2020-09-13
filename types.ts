@@ -9,7 +9,16 @@ type NextApiRequestWithTransporter = NextApiRequest & {
 };
 type NextApiRequestWithLogger = NextApiRequest & { logger: Logger };
 
+type User = {
+  email: string;
+  username: string;
+  password: string;
+  verified: boolean;
+  verificationToken: string;
+};
+
 export type {
+  User,
   NextApiRequestWithDB,
   NextApiRequestWithTransporter,
   NextApiRequestWithLogger,

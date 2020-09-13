@@ -56,7 +56,7 @@ test("returns 500 if user is not found", async () => {
   expect(actualFilter).toEqual({ email: "test@google.com" });
 });
 
-test("returns 500 if password does not match", async () => {
+test("returns 500 if password does not match (verified user)", async () => {
   const email = "test@google.com";
   const plaintextPassword = "pwd";
 
@@ -70,7 +70,43 @@ test("returns 500 if password does not match", async () => {
 
   req.usersCollection = {
     async findOne() {
-      return { email, password: "another pwd" };
+      return { email, password: "another pwd", verified: true };
+    },
+  };
+
+  req.transporter = {
+    async sendMail() {},
+  };
+
+  req.logger = {
+    debug() {},
+    error() {},
+  };
+
+  const response = await login(req, res);
+
+  expect(response.statusCode).toEqual(500);
+});
+
+test("returns 500 if password matches but user is not verified", async () => {
+  const email = "test@google.com";
+  const plaintextPassword = "pwd";
+
+  const { req, res } = createMocks({
+    method: "POST",
+    body: {
+      email,
+      password: plaintextPassword,
+    },
+  });
+
+  req.usersCollection = {
+    async findOne() {
+      return {
+        email,
+        password: await hash(plaintextPassword, 12),
+        verified: false,
+      };
     },
   };
 
@@ -104,7 +140,11 @@ test("returns 204 if password matches, user is updated and cookie is set", async
   let interceptedUpdate: Update = null;
   req.usersCollection = {
     async findOne() {
-      return { email, password: await hash(plaintextPassword, 12) };
+      return {
+        email,
+        password: await hash(plaintextPassword, 12),
+        verified: true,
+      };
     },
     async updateOne(_, update: Update) {
       interceptedUpdate = update;

@@ -17,7 +17,9 @@
   },
   "dependencies": {
     "@types/bcrypt": "^3.0.0",
+    "@types/cookie": "^0.4.0",
     "bcrypt": "^5.0.0",
+    "cookie": "^0.4.1",
     "core-util-is": "^1.0.2",
     "date-fns": "^2.15.0",
     "gray-matter": "^4.0.2",

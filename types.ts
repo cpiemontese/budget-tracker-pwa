@@ -24,6 +24,8 @@ type User = {
   password: string;
   authenticated: boolean;
   authenticationToken: string;
+  loginToken: string;
+  loginTokenExpiration: string;
 };
 
 export type {

@@ -148,7 +148,7 @@ test("returns 204 if password matches, user is updated and cookie is set", async
     },
   });
 
-  type Update = { loginToken: string; loginTokenMaxAge: number };
+  type Update = { loginToken: string; loginTokenExpiration: number };
   let interceptedUpdate: Update = null;
   req.usersCollection = {
     async findOne() {
@@ -175,7 +175,7 @@ test("returns 204 if password matches, user is updated and cookie is set", async
 
   expect(response.statusCode).toEqual(204);
 
-  const { [LOCAL_ENV.loginCookie.name]: cookie, "Max-Age": maxAge } = parse(
+  const { [LOCAL_ENV.loginCookie.name]: cookie } = parse(
     response.getHeader("Set-Cookie") as string
   );
 
@@ -183,5 +183,4 @@ test("returns 204 if password matches, user is updated and cookie is set", async
     loginToken: interceptedUpdate.loginToken,
     email,
   });
-  expect(parseInt(maxAge)).toBe(interceptedUpdate.loginTokenMaxAge);
 });

@@ -8,13 +8,16 @@ import {
   NextApiRequestWithTransporter,
   NextApiRequestWithLogger,
   User,
+  NextApiRequestWithEnv,
 } from "../../types";
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
+import loadEnv from "../../middleware/load-env";
 import transporter from "../../middleware/transporter";
 
 const handler = nextConnect()
+  .use(loadEnv)
   .use(db)
   .use(logger)
   .use(transporter)
@@ -22,6 +25,7 @@ const handler = nextConnect()
 
 async function authenticate(
   req: NextApiRequestWithDB &
+    NextApiRequestWithEnv &
     NextApiRequestWithLogger &
     NextApiRequestWithTransporter,
   res: NextApiResponse
@@ -77,10 +81,10 @@ async function authenticate(
     return res;
   }
 
-  const loginUrl = `https://${process.env.APP_HOST}/login?email=${email}`;
+  const loginUrl = `https://${req.localEnv.app.host}/login?email=${email}`;
   try {
     const info = await req.transporter.sendMail({
-      from: `"${process.env.MAILER_NAME}" <${process.env.SMTP_USER}>`,
+      from: `"${req.localEnv.mailerName}" <${req.localEnv.smtp.user}>`,
       to: email,
       subject: `Successful verification!`,
       text: `Hi ${user.username}, thank you for verifying your account.\n\nLog in by clicking this link: ${loginUrl}`,

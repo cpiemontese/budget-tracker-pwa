@@ -1,9 +1,11 @@
 import { createMocks } from "node-mocks-http";
-import { compare } from "bcrypt";
 import Mail from "nodemailer/lib/mailer";
 
 import { authenticate } from "./authenticate";
-import { User } from "../../types";
+
+import getEnv from "../../lib/test-env";
+
+const LOCAL_ENV = getEnv();
 
 test("returns 400 if body is not as expected", async () => {
   const { req, res } = createMocks({
@@ -19,6 +21,8 @@ test("returns 400 if body is not as expected", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await authenticate(req, res);
 
@@ -50,6 +54,8 @@ test("returns 500 if user is not found", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await authenticate(req, res);
 
@@ -83,6 +89,8 @@ test("returns 500 if verification token does not match", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await authenticate(req, res);
 
@@ -125,6 +133,8 @@ test("returns 204 if token matches, user is updated and mail is sent", async () 
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await authenticate(req, res);
 

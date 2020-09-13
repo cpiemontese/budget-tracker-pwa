@@ -2,7 +2,11 @@ import nextConnect, { NextHandler } from "next-connect";
 import { NextApiRequestWithEnv } from "../types";
 import { NextApiResponse } from "next";
 
-async function loadEnv(
+const middleware = nextConnect();
+middleware.use(loadEnv);
+export default middleware;
+
+function loadEnv(
   req: NextApiRequestWithEnv,
   _res: NextApiResponse,
   next: NextHandler
@@ -26,9 +30,3 @@ async function loadEnv(
   };
   return next();
 }
-
-const middleware = nextConnect();
-
-middleware.use(loadEnv);
-
-export default middleware;

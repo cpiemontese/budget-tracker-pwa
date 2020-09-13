@@ -2,7 +2,7 @@ import { createMocks } from "node-mocks-http";
 import { compare } from "bcrypt";
 import Mail from "nodemailer/lib/mailer";
 
-import { verify } from "./verify";
+import { authenticate } from "./authenticate";
 import { User } from "../../types";
 
 test("returns 400 if body is not as expected", async () => {
@@ -20,7 +20,7 @@ test("returns 400 if body is not as expected", async () => {
     error() {},
   };
 
-  const response = await verify(req, res);
+  const response = await authenticate(req, res);
 
   expect(response.statusCode).toEqual(400);
 });
@@ -30,7 +30,7 @@ test("returns 500 if user is not found", async () => {
     method: "POST",
     body: {
       email: "test@google.com",
-      verificationToken: "token",
+      authenticationToken: "token",
     },
   });
 
@@ -51,7 +51,7 @@ test("returns 500 if user is not found", async () => {
     error() {},
   };
 
-  const response = await verify(req, res);
+  const response = await authenticate(req, res);
 
   expect(response.statusCode).toEqual(500);
   expect(actualFilter).toEqual({ email: "test@google.com" });
@@ -59,19 +59,19 @@ test("returns 500 if user is not found", async () => {
 
 test("returns 500 if verification token does not match", async () => {
   const email = "test@google.com";
-  const verificationToken = "token";
+  const authenticationToken = "token";
 
   const { req, res } = createMocks({
     method: "POST",
     body: {
       email,
-      verificationToken,
+      authenticationToken,
     },
   });
 
   req.usersCollection = {
     async findOne() {
-      return { email, verificationToken: "token that does not match" };
+      return { email, authenticationToken: "token that does not match" };
     },
   };
 
@@ -84,7 +84,7 @@ test("returns 500 if verification token does not match", async () => {
     error() {},
   };
 
-  const response = await verify(req, res);
+  const response = await authenticate(req, res);
 
   expect(response.statusCode).toEqual(500);
 });
@@ -92,23 +92,23 @@ test("returns 500 if verification token does not match", async () => {
 test("returns 204 if token matches, user is updated and mail is sent", async () => {
   const email = "test@google.com";
   const username = "Tester";
-  const verificationToken = "token";
+  const authenticationToken = "token";
 
   const { req, res } = createMocks({
     method: "POST",
     body: {
       email,
-      verificationToken,
+      authenticationToken,
     },
   });
 
-  let verifiedUpdate = null;
+  let authenticatedUpdate = null;
   req.usersCollection = {
     async findOne() {
-      return { email, username, verificationToken };
+      return { email, username, authenticationToken };
     },
-    async updateOne(_, update: { verified: boolean }) {
-      verifiedUpdate = update.verified;
+    async updateOne(_, update: { authenticated: boolean }) {
+      authenticatedUpdate = update.authenticated;
       return "mongodb_id";
     },
   };
@@ -126,11 +126,11 @@ test("returns 204 if token matches, user is updated and mail is sent", async () 
     error() {},
   };
 
-  const response = await verify(req, res);
+  const response = await authenticate(req, res);
 
   expect(response.statusCode).toEqual(204);
 
-  expect(verifiedUpdate).toBe(true);
+  expect(authenticatedUpdate).toBe(true);
 
   expect(actualMail.from).toMatch(process.env.MAILER_NAME);
   expect(actualMail.from).toMatch(process.env.SMTP_USER);

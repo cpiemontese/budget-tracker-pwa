@@ -13,8 +13,8 @@ type User = {
   email: string;
   username: string;
   password: string;
-  verified: boolean;
-  verificationToken: string;
+  authenticated: boolean;
+  authenticationToken: string;
 };
 
 export type {

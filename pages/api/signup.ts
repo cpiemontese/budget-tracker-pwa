@@ -54,7 +54,7 @@ async function signup(
     return res;
   }
 
-  const verificationToken = randomBytes(VERIFICATION_SECRET_LENGTH).toString(
+  const authenticationToken = randomBytes(VERIFICATION_SECRET_LENGTH).toString(
     "hex"
   );
 
@@ -63,8 +63,8 @@ async function signup(
       email,
       username,
       password: await hash(password, SALT_ROUNDS),
-      verified: false,
-      verificationToken,
+      authenticated: false,
+      authenticationToken,
     });
   } catch (error) {
     req.logger.error(
@@ -77,13 +77,13 @@ async function signup(
     return res;
   }
 
-  const verificationUrl = `https://${process.env.APP_HOST}/verify?email=${email}&token=${verificationToken}`;
+  const authenticationUrl = `https://${process.env.APP_HOST}/authenticate?email=${email}&token=${authenticationToken}`;
   try {
     const info = await req.transporter.sendMail({
       from: `"${process.env.MAILER_NAME}" <${process.env.SMTP_USER}>`,
       to: email,
       subject: `${process.env.APP_NAME} Signup!`,
-      text: `Hi ${username}, thank you for signing up to ${process.env.APP_NAME}.\n\nPlease verify your account by clicking this link: ${verificationUrl}`,
+      text: `Hi ${username}, thank you for signing up to ${process.env.APP_NAME}.\n\nPlease verify your account by clicking this link: ${authenticationUrl}`,
     });
 
     if (process.env.NODE_ENV === "development") {

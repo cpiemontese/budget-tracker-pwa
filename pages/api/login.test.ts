@@ -56,7 +56,7 @@ test("returns 500 if user is not found", async () => {
   expect(actualFilter).toEqual({ email: "test@google.com" });
 });
 
-test("returns 500 if password does not match (verified user)", async () => {
+test("returns 500 if password does not match (authenticated user)", async () => {
   const email = "test@google.com";
   const plaintextPassword = "pwd";
 
@@ -70,7 +70,7 @@ test("returns 500 if password does not match (verified user)", async () => {
 
   req.usersCollection = {
     async findOne() {
-      return { email, password: "another pwd", verified: true };
+      return { email, password: "another pwd", authenticated: true };
     },
   };
 
@@ -88,7 +88,7 @@ test("returns 500 if password does not match (verified user)", async () => {
   expect(response.statusCode).toEqual(500);
 });
 
-test("returns 500 if password matches but user is not verified", async () => {
+test("returns 500 if password matches but user is not authenticated", async () => {
   const email = "test@google.com";
   const plaintextPassword = "pwd";
 
@@ -105,7 +105,7 @@ test("returns 500 if password matches but user is not verified", async () => {
       return {
         email,
         password: await hash(plaintextPassword, 12),
-        verified: false,
+        authenticated: false,
       };
     },
   };
@@ -143,7 +143,7 @@ test("returns 204 if password matches, user is updated and cookie is set", async
       return {
         email,
         password: await hash(plaintextPassword, 12),
-        verified: true,
+        authenticated: true,
       };
     },
     async updateOne(_, update: Update) {

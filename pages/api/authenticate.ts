@@ -14,22 +14,26 @@ import db from "../../middleware/database";
 import logger from "../../middleware/logger";
 import transporter from "../../middleware/transporter";
 
-const handler = nextConnect().use(db).use(logger).use(transporter).post(verify);
+const handler = nextConnect()
+  .use(db)
+  .use(logger)
+  .use(transporter)
+  .post(authenticate);
 
-async function verify(
+async function authenticate(
   req: NextApiRequestWithDB &
     NextApiRequestWithLogger &
     NextApiRequestWithTransporter,
   res: NextApiResponse
 ) {
   const email = get(req.body, ["email"], null) as string;
-  const verificationToken = get(
+  const authenticationToken = get(
     req.body,
-    ["verificationToken"],
+    ["authenticationToken"],
     null
   ) as string;
 
-  if ([email, verificationToken].some((value) => value === null)) {
+  if ([email, authenticationToken].some((value) => value === null)) {
     res.status(400).send({});
     return res;
   }
@@ -42,7 +46,7 @@ async function verify(
       {
         error: error.message,
       },
-      "/api/verify - user fetch error"
+      "/api/authenticate - user fetch error"
     );
     res.status(500).send({});
     return res;
@@ -53,21 +57,21 @@ async function verify(
     return res;
   }
 
-  const { verificationToken: userVerificationToken } = user;
+  const { authenticationToken: userauthenticationToken } = user;
 
-  if (userVerificationToken !== verificationToken) {
+  if (userauthenticationToken !== authenticationToken) {
     res.status(500).send({});
     return res;
   }
 
   try {
-    req.usersCollection.updateOne({ email }, { verified: true });
+    req.usersCollection.updateOne({ email }, { authenticated: true });
   } catch (error) {
     req.logger.error(
       {
         error: error.message,
       },
-      "/api/verify - user update error"
+      "/api/authenticate - user update error"
     );
     res.status(500).send({});
     return res;
@@ -93,7 +97,7 @@ async function verify(
       {
         error: error.message,
       },
-      "/api/verify - sendMail error"
+      "/api/authenticate - sendMail error"
     );
     res.status(500).send({});
     return res;
@@ -104,4 +108,4 @@ async function verify(
 }
 
 export default handler;
-export { verify };
+export { authenticate };

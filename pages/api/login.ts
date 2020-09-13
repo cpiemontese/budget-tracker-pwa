@@ -52,10 +52,10 @@ async function login(
     return res;
   }
 
-  const { password, verified } = user;
+  const { password, authenticated } = user;
 
   const passwordMatches = await compare(plainTextPassword, password);
-  if (!passwordMatches || !verified) {
+  if (!passwordMatches || !authenticated) {
     res.status(500).send({});
     return res;
   }

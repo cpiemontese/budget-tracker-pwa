@@ -98,7 +98,7 @@ test("returns 204 if user is correctly created", async () => {
   expect(actualUserDoc).toMatchObject({
     email,
     username,
-    verified: false,
+    authenticated: false,
   });
 
   expect(await compare(plaintextPassword, actualUserDoc.password)).toBe(true);
@@ -118,13 +118,13 @@ test("returns 204 and sends mail if user is correctly created", async () => {
     },
   });
 
-  let interceptedverificationToken: string = null;
+  let interceptedauthenticationToken: string = null;
   req.usersCollection = {
     async findOne() {
       return null;
     },
     async insertOne(userDoc: User) {
-      interceptedverificationToken = userDoc.verificationToken;
+      interceptedauthenticationToken = userDoc.authenticationToken;
       return "mongodb_id";
     },
   };
@@ -156,5 +156,5 @@ test("returns 204 and sends mail if user is correctly created", async () => {
   expect(actualMail.text).toMatch(username);
   expect(actualMail.text).toMatch(process.env.APP_HOST);
   expect(actualMail.text).toMatch(email);
-  expect(actualMail.text).toMatch(interceptedverificationToken);
+  expect(actualMail.text).toMatch(interceptedauthenticationToken);
 });

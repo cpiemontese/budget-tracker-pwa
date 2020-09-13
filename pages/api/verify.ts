@@ -48,7 +48,7 @@ async function verify(
       {
         error: error.message,
       },
-      "/api/verify/:email - user fetch error"
+      "/api/verify - user fetch error"
     );
     res.status(500).send({});
     return res;
@@ -73,7 +73,7 @@ async function verify(
       {
         error: error.message,
       },
-      "/api/verify/:email - user update error"
+      "/api/verify - user update error"
     );
     res.status(500).send({});
     return res;
@@ -99,7 +99,7 @@ async function verify(
       {
         error: error.message,
       },
-      "/api/signup - sendMail error"
+      "/api/verify - sendMail error"
     );
     res.status(500).send({});
     return res;

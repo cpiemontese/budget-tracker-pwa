@@ -7,6 +7,7 @@ import {
   NextApiRequestWithDB,
   NextApiRequestWithLogger,
   User,
+  NextApiRequestWithEnv,
 } from "../../types";
 
 import db from "../../middleware/database";
@@ -22,7 +23,7 @@ export { login };
 const LOGIN_TOKEN_LENGTH = 16;
 
 async function login(
-  req: NextApiRequestWithDB & NextApiRequestWithLogger,
+  req: NextApiRequestWithDB & NextApiRequestWithLogger & NextApiRequestWithEnv,
   res: NextApiResponse
 ) {
   const email = get(req.body, ["email"], null) as string;
@@ -61,9 +62,9 @@ async function login(
   }
 
   const loginToken = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
-  const loginTokenMaxAge = parseInt(process.env.LOGIN_COOKIE_MAX_AGE);
+  const loginTokenMaxAge = req.localEnv.loginCookie.maxAge;
   const cookie = getCookie(
-    process.env.LOGIN_COOKIE_NAME,
+    req.localEnv.loginCookie.name,
     JSON.stringify({
       email,
       loginToken,

@@ -4,6 +4,10 @@ import { parse } from "cookie";
 
 import { login } from "./login";
 
+import getEnv from "../../lib/test-env";
+
+const LOCAL_ENV = getEnv();
+
 test("returns 400 if body is not as expected", async () => {
   const { req, res } = createMocks({
     method: "POST",
@@ -18,6 +22,8 @@ test("returns 400 if body is not as expected", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await login(req, res);
 
@@ -49,6 +55,8 @@ test("returns 500 if user is not found", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await login(req, res);
 
@@ -82,6 +90,8 @@ test("returns 500 if password does not match (authenticated user)", async () => 
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await login(req, res);
 
@@ -118,6 +128,8 @@ test("returns 500 if password matches but user is not authenticated", async () =
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await login(req, res);
 
@@ -157,11 +169,13 @@ test("returns 204 if password matches, user is updated and cookie is set", async
     error() {},
   };
 
+  req.localEnv = LOCAL_ENV;
+
   const response = await login(req, res);
 
   expect(response.statusCode).toEqual(204);
 
-  const { [process.env.LOGIN_COOKIE_NAME]: cookie, "Max-Age": maxAge } = parse(
+  const { [LOCAL_ENV.loginCookie.name]: cookie, "Max-Age": maxAge } = parse(
     response.getHeader("Set-Cookie") as string
   );
 

@@ -161,10 +161,13 @@ test("returns 204 if password matches, user is updated and cookie is set", async
 
   expect(response.statusCode).toEqual(204);
 
-  const { "Login-Token": headerLoginToken, "Max-Age": headerMaxAge } = parse(
+  const { [process.env.LOGIN_COOKIE_NAME]: cookie, "Max-Age": maxAge } = parse(
     response.getHeader("Set-Cookie") as string
   );
 
-  expect(interceptedUpdate.loginToken).toBe(headerLoginToken);
-  expect(interceptedUpdate.loginTokenMaxAge).toBe(parseInt(headerMaxAge));
+  expect(JSON.parse(cookie)).toEqual({
+    loginToken: interceptedUpdate.loginToken,
+    email,
+  });
+  expect(parseInt(maxAge)).toBe(interceptedUpdate.loginTokenMaxAge);
 });

@@ -61,10 +61,13 @@ async function login(
   }
 
   const loginToken = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
-  const loginTokenMaxAge = parseInt(process.env.LOGIN_TOKEN_MAX_AGE);
+  const loginTokenMaxAge = parseInt(process.env.LOGIN_COOKIE_MAX_AGE);
   const cookie = getCookie(
-    process.env.LOGIN_TOKEN_NAME,
-    loginToken,
+    process.env.LOGIN_COOKIE_NAME,
+    JSON.stringify({
+      email,
+      loginToken,
+    }),
     loginTokenMaxAge
   );
 

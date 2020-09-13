@@ -8,6 +8,7 @@ import {
   NextApiRequestWithDB,
   NextApiRequestWithTransporter,
   NextApiRequestWithLogger,
+  NextApiRequestWithEnv,
 } from "../../types";
 
 import db from "../../middleware/database";
@@ -23,7 +24,8 @@ const handler = nextConnect().use(db).use(logger).use(transporter).post(signup);
 async function signup(
   req: NextApiRequestWithDB &
     NextApiRequestWithTransporter &
-    NextApiRequestWithLogger,
+    NextApiRequestWithLogger &
+    NextApiRequestWithEnv,
   res: NextApiResponse
 ) {
   const email = get(req.body, ["email"], null) as string;
@@ -77,13 +79,13 @@ async function signup(
     return res;
   }
 
-  const authenticationUrl = `https://${process.env.APP_HOST}/authenticate?email=${email}&token=${authenticationToken}`;
+  const authenticationUrl = `https://${req.localEnv.app.host}/authenticate?email=${email}&token=${authenticationToken}`;
   try {
     const info = await req.transporter.sendMail({
-      from: `"${process.env.MAILER_NAME}" <${process.env.SMTP_USER}>`,
+      from: `"${req.localEnv.mailerName}" <${req.localEnv.smtp.user}>`,
       to: email,
-      subject: `${process.env.APP_NAME} Signup!`,
-      text: `Hi ${username}, thank you for signing up to ${process.env.APP_NAME}.\n\nPlease verify your account by clicking this link: ${authenticationUrl}`,
+      subject: `${req.localEnv.app.name} Signup!`,
+      text: `Hi ${username}, thank you for signing up to ${req.localEnv.app.name}.\n\nPlease verify your account by clicking this link: ${authenticationUrl}`,
     });
 
     if (process.env.NODE_ENV === "development") {

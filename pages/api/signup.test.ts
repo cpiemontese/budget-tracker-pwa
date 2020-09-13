@@ -5,6 +5,10 @@ import Mail from "nodemailer/lib/mailer";
 import { signup } from "./signup";
 import { User } from "../../types";
 
+import getEnv from "../../lib/test-env";
+
+const LOCAL_ENV = getEnv();
+
 test("returns 400 if body is not as expected", async () => {
   const { req, res } = createMocks({
     method: "POST",
@@ -19,6 +23,8 @@ test("returns 400 if body is not as expected", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await signup(req, res);
 
@@ -51,6 +57,8 @@ test("returns 500 if user is already registered", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await signup(req, res);
 
@@ -91,6 +99,8 @@ test("returns 204 if user is correctly created", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await signup(req, res);
 
@@ -141,6 +151,8 @@ test("returns 204 and sends mail if user is correctly created", async () => {
     debug() {},
     error() {},
   };
+
+  req.localEnv = LOCAL_ENV;
 
   const response = await signup(req, res);
 

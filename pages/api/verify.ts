@@ -14,13 +14,7 @@ import db from "../../middleware/database";
 import logger from "../../middleware/logger";
 import transporter from "../../middleware/transporter";
 
-const handler = nextConnect();
-
-handler.use(db);
-handler.use(logger);
-handler.use(transporter);
-
-handler.post(verify);
+const handler = nextConnect().use(db).use(logger).use(transporter).post(verify);
 
 async function verify(
   req: NextApiRequestWithDB &

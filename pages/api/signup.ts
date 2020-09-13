@@ -18,13 +18,7 @@ import { randomBytes } from "crypto";
 const SALT_ROUNDS = 12;
 const VERIFICATION_SECRET_LENGTH = 16;
 
-const handler = nextConnect();
-
-handler.use(db);
-handler.use(logger);
-handler.use(transporter);
-
-handler.post(signup);
+const handler = nextConnect().use(db).use(logger).use(transporter).post(signup);
 
 async function signup(
   req: NextApiRequestWithDB &

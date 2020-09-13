@@ -14,12 +14,7 @@ import logger from "../../middleware/logger";
 import { getCookie } from "../../lib/cookies";
 import { randomBytes } from "crypto";
 
-const handler = nextConnect();
-
-handler.use(db);
-handler.use(logger);
-
-handler.post(login);
+const handler = nextConnect().use(db).use(logger).post(login);
 
 export default handler;
 export { login };

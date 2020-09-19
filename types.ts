@@ -8,15 +8,18 @@ type NextApiRequestWithTransporter = NextApiRequest & {
   transporter: Transporter;
 };
 type NextApiRequestWithLogger = NextApiRequest & { logger: Logger };
+
+type LocalEnv = {
+  app: { name: string; host: string };
+  loginCookie: { name: string; maxAge: number };
+  logLevel: string;
+  mailerName: string;
+  smtp: { host: string; user: string; password: string };
+  resetTokenMaxAge: number;
+};
+
 type NextApiRequestWithEnv = NextApiRequest & {
-  localEnv: {
-    app: { name: string; host: string };
-    loginCookie: { name: string; maxAge: number };
-    logLevel: string;
-    mailerName: string;
-    smtp: { host: string; user: string; password: string };
-    resetTokenMaxAge: number;
-  };
+  localEnv: LocalEnv;
 };
 
 type Token = {
@@ -40,4 +43,5 @@ export type {
   NextApiRequestWithTransporter,
   NextApiRequestWithLogger,
   NextApiRequestWithEnv,
+  LocalEnv,
 };

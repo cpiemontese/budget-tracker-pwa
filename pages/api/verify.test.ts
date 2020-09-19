@@ -84,8 +84,10 @@ test("returns 401 if token does not match", async () => {
     async findOne(filter) {
       actualFilter = filter;
       return {
-        loginToken: "different token",
-        loginTokenExpiration: Date.now() + 1000 * 60 * 60, // it expires in an hour
+        loginToken: {
+          value: "different token",
+          expiration: Date.now() + 1000 * 60 * 60, // it expires in an hour ago
+        },
       };
     },
   };
@@ -127,8 +129,10 @@ test("returns 401 if token is expired", async () => {
     async findOne(filter) {
       actualFilter = filter;
       return {
-        loginToken: "token",
-        loginTokenExpiration: Date.now() - 1000 * 60 * 60, // it expired an hour ago
+        loginToken: {
+          value: "token",
+          expiration: Date.now() - 1000 * 60 * 60, // it expires in an hour ago
+        },
       };
     },
   };
@@ -178,8 +182,10 @@ test("returns 204 if token is valid", async () => {
     async findOne(filter) {
       actualFilter = filter;
       return {
-        loginToken: "token",
-        loginTokenExpiration: Date.now() + 1000 * 60 * 60, // it expires in an hour ago
+        loginToken: {
+          value: "token",
+          expiration: Date.now() + 1000 * 60 * 60, // it expires in an hour ago
+        },
       };
     },
   };

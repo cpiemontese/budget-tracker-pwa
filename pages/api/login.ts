@@ -63,21 +63,21 @@ async function login(
     return res;
   }
 
-  const loginToken = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
-  const loginTokenExpiration = Date.now() + req.localEnv.loginCookie.maxAge;
+  const value = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
+  const expiration = Date.now() + req.localEnv.loginCookie.maxAge;
   const cookie = createCookie(
     req.localEnv.loginCookie.name,
     JSON.stringify({
       email,
-      loginToken,
+      loginToken: value,
     }),
-    loginTokenExpiration
+    expiration
   );
 
   try {
     req.usersCollection.updateOne(
       { email },
-      { loginToken, loginTokenExpiration }
+      { loginToken: { value, expiration } }
     );
   } catch (error) {
     req.logger.error(

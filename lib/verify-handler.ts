@@ -32,10 +32,10 @@ async function verifyHandler(
     return 500;
   }
 
-  const { loginToken, loginTokenExpiration } = user;
+  const { loginToken } = user;
 
-  const tokenIsExpired = Date.now() > loginTokenExpiration;
-  const tokenMatches = loginToken === loginTokenToVerify;
+  const tokenIsExpired = Date.now() > loginToken.expiration;
+  const tokenMatches = loginToken.value === loginTokenToVerify;
 
   return !tokenMatches || tokenIsExpired ? 401 : 204;
 }

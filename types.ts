@@ -25,8 +25,10 @@ type User = {
   password: string;
   authenticated: boolean;
   authenticationToken: string;
-  loginToken: string;
-  loginTokenExpiration: number;
+  loginToken: {
+    value: string;
+    expiration: number;
+  };
   resetToken: {
     value: string;
     expiration: number;

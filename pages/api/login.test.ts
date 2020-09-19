@@ -148,7 +148,7 @@ test("returns 204 if password matches, user is updated and cookie is set", async
     },
   });
 
-  type Update = { loginToken: string; loginTokenExpiration: number };
+  type Update = { loginToken: { value: string; expiration: number } };
   let interceptedUpdate: Update = null;
   req.usersCollection = {
     async findOne() {
@@ -180,7 +180,7 @@ test("returns 204 if password matches, user is updated and cookie is set", async
   );
 
   expect(JSON.parse(cookie)).toEqual({
-    loginToken: interceptedUpdate.loginToken,
+    loginToken: interceptedUpdate.loginToken.value,
     email,
   });
 });

@@ -1,6 +1,8 @@
 import get from "lodash.get";
 import nextConnect from "next-connect";
+
 import { compare } from "bcrypt";
+import { randomBytes } from "crypto";
 import { NextApiResponse } from "next";
 
 import {
@@ -12,10 +14,10 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
+import loadEnv from "../../middleware/load-env";
 import { createCookie } from "../../lib/cookies";
-import { randomBytes } from "crypto";
 
-const handler = nextConnect().use(db).use(logger).post(login);
+const handler = nextConnect().use(loadEnv).use(db).use(logger).post(login);
 
 export default handler;
 export { login };

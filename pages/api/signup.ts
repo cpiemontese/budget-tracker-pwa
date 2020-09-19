@@ -13,13 +13,19 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
+import loadEnv from "../../middleware/load-env";
 import transporter from "../../middleware/transporter";
 import { randomBytes } from "crypto";
 
 const SALT_ROUNDS = 12;
 const VERIFICATION_SECRET_LENGTH = 16;
 
-const handler = nextConnect().use(db).use(logger).use(transporter).post(signup);
+const handler = nextConnect()
+  .use(loadEnv)
+  .use(db)
+  .use(logger)
+  .use(transporter)
+  .post(signup);
 
 async function signup(
   req: NextApiRequestWithDB &

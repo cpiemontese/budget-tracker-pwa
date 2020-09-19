@@ -1,4 +1,8 @@
-import { serialize } from "cookie";
+import get from "lodash.get";
+import { parse, serialize } from "cookie";
+
+import { Logger } from "pino";
+import { NextApiResponse } from "next";
 
 export function createCookie(name: string, value: string, maxAge: number) {
   return serialize(name, value, {
@@ -16,4 +20,24 @@ export function createDeletionCookie(name: string) {
     maxAge: -1,
     path: "/",
   });
+}
+
+export function getLoginCookie(
+  res: NextApiResponse,
+  name: string,
+  logger: Logger
+): { email: string; loginToken: string } {
+  const cookies = parse(res.getHeader("Cookie") as string);
+
+  let loginCookie = null;
+  try {
+    loginCookie = JSON.parse(get(cookies, name, "null"));
+  } catch (error) {
+    logger.error({ error: error.message }, "Could not parse login cookie");
+  }
+
+  return {
+    email: get(loginCookie, ["email"], null),
+    loginToken: get(loginCookie, ["loginToken"], null),
+  };
 }

@@ -4,13 +4,14 @@ import { createMocks } from "node-mocks-http";
 import { verify } from "./verify";
 
 import getEnv from "../../lib/test-env";
+import { createCookie } from "../../lib/cookies";
+import { serialize } from "cookie";
 
 const LOCAL_ENV = getEnv();
 
-test("returns 400 if body is not as expected", async () => {
+test("returns 400 if there is no login Cookie", async () => {
   const { req, res } = createMocks({
     method: "POST",
-    body: null,
   });
 
   req.transporter = {
@@ -24,6 +25,8 @@ test("returns 400 if body is not as expected", async () => {
 
   req.localEnv = LOCAL_ENV;
 
+  res.setHeader("Cookie", "");
+
   const response = await verify(req, res);
 
   expect(response.statusCode).toEqual(400);
@@ -32,10 +35,6 @@ test("returns 400 if body is not as expected", async () => {
 test("returns 500 if user is not found", async () => {
   const { req, res } = createMocks({
     method: "POST",
-    body: {
-      email: "test@google.com",
-      loginToken: "token",
-    },
   });
 
   let actualFilter = null;
@@ -55,6 +54,18 @@ test("returns 500 if user is not found", async () => {
     error() {},
   };
 
+  res.setHeader(
+    "Cookie",
+    createCookie(
+      LOCAL_ENV.loginCookie.name,
+      JSON.stringify({
+        email: "test@google.com",
+        loginToken: "token",
+      }),
+      1000 * 60 * 60
+    )
+  );
+
   req.localEnv = LOCAL_ENV;
 
   const response = await verify(req, res);
@@ -66,10 +77,6 @@ test("returns 500 if user is not found", async () => {
 test("returns 401 if token does not match", async () => {
   const { req, res } = createMocks({
     method: "POST",
-    body: {
-      email: "test@google.com",
-      loginToken: "token",
-    },
   });
 
   let actualFilter = null;
@@ -82,17 +89,27 @@ test("returns 401 if token does not match", async () => {
       };
     },
   };
-
   req.transporter = {
     async sendMail() {},
   };
-
   req.logger = {
     debug() {},
     error() {},
   };
 
   req.localEnv = LOCAL_ENV;
+
+  res.setHeader(
+    "Cookie",
+    createCookie(
+      LOCAL_ENV.loginCookie.name,
+      JSON.stringify({
+        email: "test@google.com",
+        loginToken: "token",
+      }),
+      1000 * 60 * 60
+    )
+  );
 
   const response = await verify(req, res);
 
@@ -103,10 +120,6 @@ test("returns 401 if token does not match", async () => {
 test("returns 401 if token is expired", async () => {
   const { req, res } = createMocks({
     method: "POST",
-    body: {
-      email: "test@google.com",
-      loginToken: "token",
-    },
   });
 
   let actualFilter = null;
@@ -128,6 +141,18 @@ test("returns 401 if token is expired", async () => {
     debug() {},
     error() {},
   };
+
+  res.setHeader(
+    "Cookie",
+    createCookie(
+      LOCAL_ENV.loginCookie.name,
+      JSON.stringify({
+        email: "test@google.com",
+        loginToken: "token",
+      }),
+      1000 * 60 * 60
+    )
+  );
 
   req.localEnv = LOCAL_ENV;
 

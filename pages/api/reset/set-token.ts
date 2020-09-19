@@ -20,7 +20,7 @@ export async function setToken(
   const resetToken = randomBytes(RESET_TOKEN_LENGTH).toString("hex");
 
   try {
-    usersCollection.updateOne(
+    await usersCollection.updateOne(
       {
         email,
       },
@@ -43,13 +43,13 @@ export async function setToken(
 
   const { username } = user;
 
-  const resetUrl = `https://${req.localEnv.app.host}/reset?email=${email}&token=${resetToken}`;
+  const resetUrl = `https://${localEnv.app.host}/reset?email=${email}&token=${resetToken}`;
   try {
     const info = await transporter.sendMail({
       from: `"${localEnv.mailerName}" <${localEnv.smtp.user}>`,
       to: email,
-      subject: `${localEnv.app.name} Signup!`,
-      text: `Hi ${username}, thank you for signing up to ${localEnv.app.name}.\n\nPlease verify your account by clicking this link: ${resetUrl}`,
+      subject: `${localEnv.app.name} reset token`,
+      text: `Hi ${username}, if you have requested a password reset here's your link: ${resetUrl}\n\nIf you didn't request a password reset, you can just ignore this email: your account is safe.`,
     });
 
     if (process.env.NODE_ENV === "development") {

@@ -28,7 +28,7 @@ export async function setPassword(
   }
 
   try {
-    usersCollection.updateOne(
+    await usersCollection.updateOne(
       {
         email,
       },

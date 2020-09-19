@@ -1,4 +1,6 @@
-export default function getEnv() {
+import { LocalEnv } from "../types";
+
+export default function getEnv(): LocalEnv {
   return {
     app: {
       name: "Budget Tracker",
@@ -15,5 +17,6 @@ export default function getEnv() {
       name: "Login-Cookie",
       maxAge: 2592000,
     },
+    resetTokenMaxAge: 2592000,
   };
 }

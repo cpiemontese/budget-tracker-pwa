@@ -3,8 +3,6 @@ import { Collection } from "mongodb";
 
 import { User } from "../types";
 
-// import { createDeletionCookie } from "./cookies";
-
 export { verifyHandler };
 
 async function verifyHandler(
@@ -40,16 +38,4 @@ async function verifyHandler(
   const tokenMatches = loginToken === loginTokenToVerify;
 
   return !tokenMatches || tokenIsExpired ? 401 : 204;
-
-  // if (tokenIsExpired) {
-  // there should be no need to reset the cookie in the user doc
-  // it will be reset by a new login
-  // res.setHeader(
-  // "Set-Cookie",
-  // createDeletionCookie(req.localEnv.loginCookie.name)
-  // );
-  // }
-  //
-  // res.status(status).send({});
-  // return res;
 }

@@ -9,6 +9,7 @@ import {
   NextApiRequestWithTransporter,
   NextApiRequestWithLogger,
   NextApiRequestWithEnv,
+  User,
 } from "../../types";
 
 import db from "../../middleware/database";
@@ -43,7 +44,7 @@ async function signup(
     return res;
   }
 
-  let user = null;
+  let user: User = null;
   try {
     user = await req.usersCollection.findOne({ email });
   } catch (error) {
@@ -73,6 +74,8 @@ async function signup(
       password: await hash(password, SALT_ROUNDS),
       authenticated: false,
       authenticationToken,
+      funds: [],
+      budgetItems: [],
     });
   } catch (error) {
     req.logger.error(

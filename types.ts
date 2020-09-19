@@ -27,6 +27,25 @@ type Token = {
   expiration: number;
 };
 
+type Fund = {
+  id: string;
+  name: string;
+  amount: number;
+  createdAt: number;
+  updatedAt: number;
+};
+
+type BudgetItem = {
+  id: string;
+  name: string;
+  fund: string;
+  amount: number;
+  type: "expense" | "income";
+  category: string;
+  createdAt: number;
+  updatedAt: number;
+};
+
 type User = {
   email: string;
   username: string;
@@ -35,6 +54,8 @@ type User = {
   authenticationToken: string;
   loginToken: Token;
   resetToken: Token;
+  funds: Array<Fund>;
+  budgetItems: Array<BudgetItem>;
 };
 
 export type {

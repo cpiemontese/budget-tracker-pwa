@@ -1,6 +1,6 @@
 import { serialize } from "cookie";
 
-export function createCookie(name, value, maxAge) {
+export function createCookie(name: string, value: string, maxAge: number) {
   return serialize(name, value, {
     maxAge,
     expires: new Date(Date.now() + maxAge * 1000),
@@ -11,8 +11,8 @@ export function createCookie(name, value, maxAge) {
   });
 }
 
-export function createDeletionCookie(name) {
-  return serialize(name, "", {
+export function createDeletionCookie(name: string) {
+  return serialize(name, JSON.stringify(null), {
     maxAge: -1,
     path: "/",
   });

@@ -25,7 +25,7 @@ type User = {
   authenticated: boolean;
   authenticationToken: string;
   loginToken: string;
-  loginTokenExpiration: string;
+  loginTokenExpiration: number;
 };
 
 export type {

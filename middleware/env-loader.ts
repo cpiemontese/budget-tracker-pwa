@@ -3,10 +3,10 @@ import { NextApiRequestWithEnv } from "../types";
 import { NextApiResponse } from "next";
 
 const middleware = nextConnect();
-middleware.use(loadEnv);
+middleware.use(envLoader);
 export default middleware;
 
-function loadEnv(
+function envLoader(
   req: NextApiRequestWithEnv,
   _res: NextApiResponse,
   next: NextHandler
@@ -27,6 +27,7 @@ function loadEnv(
       name: process.env.LOGIN_COOKIE_NAME,
       maxAge: parseInt(process.env.LOGIN_COOKIE_MAX_AGE),
     },
+    resetTokenMaxAge: parseInt(process.env.RESET_TOKEN_MAX_AGE),
   };
   return next();
 }

@@ -13,14 +13,14 @@ import {
 
 import db from "../../../middleware/database";
 import logger from "../../../middleware/logger";
-import loadEnv from "../../../middleware/load-env";
+import envLoader from "../../../middleware/env-loader";
 import transporter from "../../../middleware/transporter";
 
 import { setToken } from "./set-token";
 import { setPassword } from "./set-password";
 
 const handler = nextConnect()
-  .use(loadEnv)
+  .use(envLoader)
   .use(db)
   .use(logger)
   .use(transporter)

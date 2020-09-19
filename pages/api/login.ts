@@ -14,10 +14,10 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
-import loadEnv from "../../middleware/load-env";
+import envLoader from "../../middleware/env-loader";
 import { createCookie } from "../../lib/cookies";
 
-const handler = nextConnect().use(loadEnv).use(db).use(logger).post(login);
+const handler = nextConnect().use(envLoader).use(db).use(logger).post(login);
 
 export default handler;
 export { login };

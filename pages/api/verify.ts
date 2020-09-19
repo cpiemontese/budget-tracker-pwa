@@ -9,12 +9,12 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
-import loadEnv from "../../middleware/load-env";
+import envLoader from "../../middleware/env-loader";
 
 import { verifyHandler } from "../../lib/verify-handler";
 import { createDeletionCookie, getLoginCookie } from "../../lib/cookies";
 
-const handler = nextConnect().use(loadEnv).use(db).use(logger).post(verify);
+const handler = nextConnect().use(envLoader).use(db).use(logger).post(verify);
 
 export default handler;
 export { verify };

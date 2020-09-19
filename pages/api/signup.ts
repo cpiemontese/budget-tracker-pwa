@@ -14,7 +14,7 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
-import loadEnv from "../../middleware/load-env";
+import envLoader from "../../middleware/env-loader";
 import transporter from "../../middleware/transporter";
 import { randomBytes } from "crypto";
 
@@ -22,7 +22,7 @@ const SALT_ROUNDS = 12;
 const VERIFICATION_SECRET_LENGTH = 16;
 
 const handler = nextConnect()
-  .use(loadEnv)
+  .use(envLoader)
   .use(db)
   .use(logger)
   .use(transporter)

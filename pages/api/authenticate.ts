@@ -13,11 +13,11 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
-import loadEnv from "../../middleware/load-env";
+import envLoader from "../../middleware/env-loader";
 import transporter from "../../middleware/transporter";
 
 const handler = nextConnect()
-  .use(loadEnv)
+  .use(envLoader)
   .use(db)
   .use(logger)
   .use(transporter)

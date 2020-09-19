@@ -15,6 +15,7 @@ type NextApiRequestWithEnv = NextApiRequest & {
     logLevel: string;
     mailerName: string;
     smtp: { host: string; user: string; password: string };
+    resetTokenMaxAge: number;
   };
 };
 
@@ -26,6 +27,10 @@ type User = {
   authenticationToken: string;
   loginToken: string;
   loginTokenExpiration: number;
+  resetToken: {
+    value: string;
+    expiration: number;
+  };
 };
 
 export type {

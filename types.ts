@@ -19,20 +19,19 @@ type NextApiRequestWithEnv = NextApiRequest & {
   };
 };
 
+type Token = {
+  value: string;
+  expiration: number;
+};
+
 type User = {
   email: string;
   username: string;
   password: string;
   authenticated: boolean;
   authenticationToken: string;
-  loginToken: {
-    value: string;
-    expiration: number;
-  };
-  resetToken: {
-    value: string;
-    expiration: number;
-  };
+  loginToken: Token;
+  resetToken: Token;
 };
 
 export type {

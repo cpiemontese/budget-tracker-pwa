@@ -61,15 +61,18 @@ async function authenticate(
     return res;
   }
 
-  const { authenticationToken: userauthenticationToken } = user;
+  const { authenticationToken: userAuthenticationToken } = user;
 
-  if (userauthenticationToken !== authenticationToken) {
+  if (userAuthenticationToken !== authenticationToken) {
     res.status(500).send({});
     return res;
   }
 
   try {
-    req.usersCollection.updateOne({ email }, { authenticated: true });
+    req.usersCollection.updateOne(
+      { email },
+      { authenticated: true, authenticationToken: null }
+    );
   } catch (error) {
     req.logger.error(
       {

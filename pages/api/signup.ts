@@ -67,7 +67,7 @@ async function signup(
   );
 
   try {
-    req.usersCollection.insertOne({
+    await req.usersCollection.insertOne({
       email,
       username,
       password: await hash(password, SALT_ROUNDS),

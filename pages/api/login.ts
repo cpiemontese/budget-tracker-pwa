@@ -75,7 +75,7 @@ async function login(
   );
 
   try {
-    req.usersCollection.updateOne(
+    await req.usersCollection.updateOne(
       { email },
       { loginToken: { value, expiration } }
     );

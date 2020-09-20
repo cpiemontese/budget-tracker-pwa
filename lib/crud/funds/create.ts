@@ -14,7 +14,7 @@ export async function create(
   req: NextApiRequestWithDB & NextApiRequestWithEnv & NextApiRequestWithLogger,
   res: NextApiResponse
 ) {
-  const email = get(req.body, ["email"], null) as string;
+  const email = get(req.query, ["email"], null) as string;
   const name = get(req.body, ["name"], null) as string;
   const amount = get(req.body, ["amount"], null) as number;
 

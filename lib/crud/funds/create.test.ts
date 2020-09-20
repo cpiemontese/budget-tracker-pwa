@@ -6,10 +6,10 @@ import getEnv from "../../test-env";
 
 const LOCAL_ENV = getEnv();
 
-test("returns 400 if properties are missing from body", async () => {
+test("returns 400 if properties are missing from query", async () => {
   const { req, res } = createMocks({
     method: "POST",
-    body: null,
+    query: null,
   });
 
   req.logger = {
@@ -31,8 +31,10 @@ test("returns 201 if fund is created", async () => {
 
   const { req, res } = createMocks({
     method: "POST",
-    body: {
+    query: {
       email,
+    },
+    body: {
       name,
       amount,
     },

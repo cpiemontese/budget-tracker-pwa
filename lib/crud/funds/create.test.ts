@@ -2,7 +2,7 @@ import { createMocks } from "node-mocks-http";
 
 import { create } from "./create";
 
-import getEnv from "../../../lib/test-env";
+import getEnv from "../../test-env";
 
 const LOCAL_ENV = getEnv();
 

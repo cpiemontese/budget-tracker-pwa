@@ -9,15 +9,15 @@ import {
   User,
   NextApiRequestWithEnv,
   NextApiRequestWithTransporter,
-} from "../../../types";
+} from "../../types";
 
-import db from "../../../middleware/database";
-import logger from "../../../middleware/logger";
-import envLoader from "../../../middleware/env-loader";
-import transporter from "../../../middleware/transporter";
+import db from "../../middleware/database";
+import logger from "../../middleware/logger";
+import envLoader from "../../middleware/env-loader";
+import transporter from "../../middleware/transporter";
 
-import { setToken } from "./set-token";
-import { setPassword } from "./set-password";
+import { setToken } from "../../lib/reset/set-token";
+import { setPassword } from "../../lib/reset/set-password";
 
 const handler = nextConnect()
   .use(envLoader)

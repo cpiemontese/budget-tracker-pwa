@@ -1,9 +1,9 @@
 import { createMocks } from "node-mocks-http";
 import Mail from "nodemailer/lib/mailer";
 
-import { reset } from "./index";
+import { reset } from "./reset";
 
-import getEnv from "../../../lib/test-env";
+import getEnv from "../../lib/test-env";
 import { compare, hash } from "bcrypt";
 
 const LOCAL_ENV = getEnv();

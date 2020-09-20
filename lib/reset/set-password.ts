@@ -5,7 +5,7 @@ import { Logger } from "pino";
 import { Collection } from "mongodb";
 import { Transporter } from "nodemailer";
 
-import { LocalEnv, User } from "../../../types";
+import { LocalEnv, User } from "../../types";
 
 const SALT_ROUNDS = 12;
 

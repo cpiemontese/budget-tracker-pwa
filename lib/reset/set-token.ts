@@ -4,7 +4,7 @@ import { Logger } from "pino";
 import { Collection } from "mongodb";
 import { randomBytes } from "crypto";
 
-import { LocalEnv, User } from "../../../types";
+import { LocalEnv, User } from "../../types";
 
 const RESET_TOKEN_LENGTH = 16;
 

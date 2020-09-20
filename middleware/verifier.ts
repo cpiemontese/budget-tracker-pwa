@@ -15,6 +15,10 @@ async function verifier(
   res: NextApiResponse,
   next: NextHandler
 ) {
+  if (process.env.NODE_ENV === "development") {
+    return next();
+  }
+
   const { email, loginToken } = getLoginCookie(
     res,
     req.localEnv.loginCookie.name,

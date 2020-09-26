@@ -1,0 +1,292 @@
+import pino from "pino";
+import { randomBytes } from "crypto";
+import { MongoClient } from "mongodb";
+import { createMocks } from "node-mocks-http";
+
+import { update } from "./update";
+
+import getEnv from "../../test-env";
+import { User } from "../../../types";
+import { notDeepEqual } from "assert";
+
+const randomString = () => randomBytes(8).toString("hex");
+
+const LOCAL_ENV = getEnv();
+
+const MONGODB_URI = "mongodb://localhost:27017";
+
+const logger = pino({ level: "debug" });
+
+test("returns 400 if properties are missing from query", async () => {
+  const { req, res } = createMocks({
+    method: "PATCH",
+    query: null,
+  });
+
+  req.logger = logger;
+
+  req.localEnv = LOCAL_ENV;
+
+  const response = await update(req, res);
+
+  expect(response.statusCode).toEqual(400);
+});
+
+describe("returns 201 if fund is updated", () => {
+  test("name update", async () => {
+    const email = "test@gmail.com";
+
+    const mongoClient = new MongoClient(MONGODB_URI);
+    await mongoClient.connect();
+    const dbName = randomString();
+    const db = mongoClient.db(dbName);
+    const collectionName = randomString();
+    const collection = db.collection(collectionName);
+
+    const id = randomString();
+    const amount = 100.0;
+    const oldName = "oldName";
+    const createdAt = Date.now();
+
+    await collection.insertOne({
+      email,
+      funds: [
+        {
+          id,
+          name: oldName,
+          amount,
+          createdAt,
+          updatedAt: createdAt,
+        },
+      ],
+    });
+
+    await collection.updateOne(
+      {
+        email,
+      },
+      {
+        $push: {
+          funds: {
+            id: randomString(),
+            name: "some other fund",
+            amount: 100.5,
+            createdAt,
+            updatedAt: createdAt,
+          },
+        },
+      }
+    );
+
+    const newName = "newName";
+    const { req, res } = createMocks({
+      method: "PATCH",
+      query: {
+        email,
+        id,
+      },
+      body: {
+        name: newName,
+      },
+    });
+
+    req.logger = logger;
+
+    req.usersCollection = collection;
+
+    req.localEnv = LOCAL_ENV;
+
+    try {
+      const response = await update(req, res);
+
+      expect(response.statusCode).toEqual(201);
+
+      const user: User = await collection.findOne({ email });
+
+      expect(user.funds.length).toBe(2);
+
+      const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
+
+      expect(updatedFund).toMatchObject({
+        name: newName,
+        amount,
+      });
+      expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
+    } finally {
+      // await db.dropDatabase();
+      await mongoClient.close();
+    }
+  });
+
+  test("amount update", async () => {
+    const email = "test@gmail.com";
+
+    const mongoClient = new MongoClient(MONGODB_URI);
+    await mongoClient.connect();
+    const dbName = randomString();
+    const db = mongoClient.db(dbName);
+    const collectionName = randomString();
+    const collection = db.collection(collectionName);
+
+    const id = randomString();
+    const oldAmount = 100.0;
+    const name = "name";
+    const createdAt = Date.now();
+
+    await collection.insertOne({
+      email,
+      funds: [
+        {
+          id,
+          name,
+          amount: oldAmount,
+          createdAt,
+          updatedAt: createdAt,
+        },
+      ],
+    });
+
+    await collection.updateOne(
+      {
+        email,
+      },
+      {
+        $push: {
+          funds: {
+            id: randomString(),
+            name: "some other fund",
+            amount: 100.5,
+            createdAt,
+            updatedAt: createdAt,
+          },
+        },
+      }
+    );
+
+    const newAmount = 127.53;
+    const { req, res } = createMocks({
+      method: "PATCH",
+      query: {
+        email,
+        id,
+      },
+      body: {
+        amount: newAmount,
+      },
+    });
+
+    req.logger = logger;
+
+    req.usersCollection = collection;
+
+    req.localEnv = LOCAL_ENV;
+
+    try {
+      const response = await update(req, res);
+
+      expect(response.statusCode).toEqual(201);
+
+      const user: User = await collection.findOne({ email });
+
+      expect(user.funds.length).toBe(2);
+
+      const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
+
+      expect(updatedFund).toMatchObject({
+        name,
+        amount: newAmount,
+      });
+      expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
+    } finally {
+      await db.dropDatabase();
+      await mongoClient.close();
+    }
+  });
+
+  test("combined update", async () => {
+    const email = "test@gmail.com";
+
+    const mongoClient = new MongoClient(MONGODB_URI);
+    await mongoClient.connect();
+    const dbName = randomString();
+    const db = mongoClient.db(dbName);
+    const collectionName = randomString();
+    const collection = db.collection(collectionName);
+
+    const id = randomString();
+    const oldAmount = 100.0;
+    const oldName = "oldName";
+    const createdAt = Date.now();
+
+    await collection.insertOne({
+      email,
+      funds: [
+        {
+          id,
+          name: oldName,
+          amount: oldAmount,
+          createdAt,
+          updatedAt: createdAt,
+        },
+      ],
+    });
+
+    await collection.updateOne(
+      {
+        email,
+      },
+      {
+        $push: {
+          funds: {
+            id: randomString(),
+            name: "some other fund",
+            amount: 100.5,
+            createdAt,
+            updatedAt: createdAt,
+          },
+        },
+      }
+    );
+
+    const newName = "newName";
+    const newAmount = 127.53;
+    const { req, res } = createMocks({
+      method: "PATCH",
+      query: {
+        email,
+        id,
+      },
+      body: {
+        name: newName,
+        amount: newAmount,
+      },
+    });
+
+    req.logger = logger;
+
+    req.usersCollection = collection;
+
+    req.localEnv = LOCAL_ENV;
+
+    try {
+      const response = await update(req, res);
+
+      expect(response.statusCode).toEqual(201);
+
+      const user: User = await collection.findOne({ email });
+
+      expect(user.funds.length).toBe(2);
+
+      const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
+
+      expect(updatedFund).toMatchObject({
+        name: newName,
+        amount: newAmount,
+      });
+      expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
+    } finally {
+      await db.dropDatabase();
+      await mongoClient.close();
+    }
+  });
+});

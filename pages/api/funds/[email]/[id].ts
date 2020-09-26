@@ -14,7 +14,6 @@ const handler = nextConnect()
   .use(db)
   .use(logger)
   .use(verifier)
-  .post(createHandler)
   .patch(updateHandler)
   .delete(deleteHandler);
 

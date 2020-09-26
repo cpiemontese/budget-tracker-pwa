@@ -33,7 +33,7 @@ export async function updateHandler(
 
   let fund = null;
   try {
-    req.usersCollection.updateOne(
+    await req.usersCollection.updateOne(
       {
         email,
         "funds.id": id,

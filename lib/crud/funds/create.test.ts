@@ -1,3 +1,4 @@
+import pino from "pino";
 import { randomBytes } from "crypto";
 import { MongoClient } from "mongodb";
 import { createMocks } from "node-mocks-http";
@@ -13,16 +14,15 @@ const LOCAL_ENV = getEnv();
 
 const MONGODB_URI = "mongodb://localhost:27017";
 
+const logger = pino({ level: "debug" });
+
 test("returns 400 if properties are missing from query", async () => {
   const { req, res } = createMocks({
     method: "POST",
     query: null,
   });
 
-  req.logger = {
-    debug() {},
-    error() {},
-  };
+  req.logger = logger;
 
   req.localEnv = LOCAL_ENV;
 
@@ -43,7 +43,7 @@ test("returns 201 if fund is created", async () => {
   const collectionName = randomString();
   const collection = db.collection(collectionName);
 
-  collection.insertOne({
+  await collection.insertOne({
     email,
     funds: [],
   });
@@ -59,30 +59,29 @@ test("returns 201 if fund is created", async () => {
     },
   });
 
-  req.logger = {
-    debug() {},
-    error() {},
-  };
+  req.logger = logger;
 
   req.usersCollection = collection;
 
   req.localEnv = LOCAL_ENV;
 
-  const response = await create(req, res);
+  try {
+    const response = await create(req, res);
 
-  expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(201);
 
-  const user: User = await collection.findOne({ email });
+    const user: User = await collection.findOne({ email });
 
-  expect(user.funds.length).toBe(1);
-  expect(user.funds[0]).toMatchObject({
-    name,
-    amount,
-  });
-  expect(user.funds[0].id).not.toBe(null);
-  expect(user.funds[0].createdAt).not.toBe(null);
-  expect(user.funds[0].updatedAt).toBe(user.funds[0].createdAt);
-
-  await db.dropDatabase();
-  await mongoClient.close();
+    expect(user.funds.length).toBe(1);
+    expect(user.funds[0]).toMatchObject({
+      name,
+      amount,
+    });
+    expect(user.funds[0].id).not.toBe(null);
+    expect(user.funds[0].createdAt).not.toBe(null);
+    expect(user.funds[0].updatedAt).toBe(user.funds[0].createdAt);
+  } finally {
+    await db.dropDatabase();
+    await mongoClient.close();
+  }
 });

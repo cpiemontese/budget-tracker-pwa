@@ -36,7 +36,10 @@ test("returns 201 if fund is created", async () => {
   const name = "fund";
   const amount = 100.0;
 
-  const mongoClient = new MongoClient(MONGODB_URI);
+  const mongoClient = new MongoClient(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   await mongoClient.connect();
   const dbName = randomString();
   const db = mongoClient.db(dbName);

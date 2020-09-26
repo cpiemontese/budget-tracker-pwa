@@ -33,7 +33,10 @@ test("returns 400 if properties are missing from query", async () => {
 });
 
 describe("returns 201 if fund is updated", () => {
-  const mongoClient = new MongoClient(MONGODB_URI);
+  const mongoClient = new MongoClient(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
   const dbName = randomString();
   const collectionName = randomString();
   const email = "test@gmail.com";

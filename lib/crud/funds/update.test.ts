@@ -33,14 +33,27 @@ test("returns 400 if properties are missing from query", async () => {
 });
 
 describe("returns 201 if fund is updated", () => {
-  test("name update", async () => {
-    const email = "test@gmail.com";
+  const mongoClient = new MongoClient(MONGODB_URI);
+  const dbName = randomString();
+  const collectionName = randomString();
+  const email = "test@gmail.com";
 
-    const mongoClient = new MongoClient(MONGODB_URI);
+  beforeAll(async (done) => {
     await mongoClient.connect();
-    const dbName = randomString();
+    await mongoClient.db(dbName).collection(collectionName).insertOne({
+      email,
+      funds: [],
+    });
+    done();
+  });
+  afterAll(async (done) => {
+    await mongoClient.db(dbName).dropDatabase();
+    await mongoClient.close();
+    done();
+  });
+
+  test("name update", async () => {
     const db = mongoClient.db(dbName);
-    const collectionName = randomString();
     const collection = db.collection(collectionName);
 
     const id = randomString();
@@ -48,23 +61,23 @@ describe("returns 201 if fund is updated", () => {
     const oldName = "oldName";
     const createdAt = Date.now();
 
-    await collection.insertOne({
-      email,
-      funds: [
-        {
-          id,
-          name: oldName,
-          amount,
-          createdAt,
-          updatedAt: createdAt,
+    await collection.updateOne(
+      { email },
+      {
+        $push: {
+          funds: {
+            id,
+            name: oldName,
+            amount,
+            createdAt,
+            updatedAt: createdAt,
+          },
         },
-      ],
-    });
+      }
+    );
 
     await collection.updateOne(
-      {
-        email,
-      },
+      { email },
       {
         $push: {
           funds: {
@@ -96,36 +109,25 @@ describe("returns 201 if fund is updated", () => {
 
     req.localEnv = LOCAL_ENV;
 
-    try {
-      const response = await update(req, res);
+    const response = await update(req, res);
 
-      expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(201);
 
-      const user: User = await collection.findOne({ email });
+    const user: User = await collection.findOne({ email });
 
-      expect(user.funds.length).toBe(2);
+    const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
 
-      const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
-
-      expect(updatedFund).toMatchObject({
-        name: newName,
-        amount,
-      });
-      expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
-    } finally {
-      // await db.dropDatabase();
-      await mongoClient.close();
-    }
+    expect(updatedFund).toMatchObject({
+      name: newName,
+      amount,
+    });
+    expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 
   test("amount update", async () => {
     const email = "test@gmail.com";
 
-    const mongoClient = new MongoClient(MONGODB_URI);
-    await mongoClient.connect();
-    const dbName = randomString();
     const db = mongoClient.db(dbName);
-    const collectionName = randomString();
     const collection = db.collection(collectionName);
 
     const id = randomString();
@@ -133,23 +135,23 @@ describe("returns 201 if fund is updated", () => {
     const name = "name";
     const createdAt = Date.now();
 
-    await collection.insertOne({
-      email,
-      funds: [
-        {
-          id,
-          name,
-          amount: oldAmount,
-          createdAt,
-          updatedAt: createdAt,
+    await collection.updateOne(
+      { email },
+      {
+        $push: {
+          funds: {
+            id,
+            name,
+            amount: oldAmount,
+            createdAt,
+            updatedAt: createdAt,
+          },
         },
-      ],
-    });
+      }
+    );
 
     await collection.updateOne(
-      {
-        email,
-      },
+      { email },
       {
         $push: {
           funds: {
@@ -181,36 +183,25 @@ describe("returns 201 if fund is updated", () => {
 
     req.localEnv = LOCAL_ENV;
 
-    try {
-      const response = await update(req, res);
+    const response = await update(req, res);
 
-      expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(201);
 
-      const user: User = await collection.findOne({ email });
+    const user: User = await collection.findOne({ email });
 
-      expect(user.funds.length).toBe(2);
+    const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
 
-      const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
-
-      expect(updatedFund).toMatchObject({
-        name,
-        amount: newAmount,
-      });
-      expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
-    } finally {
-      await db.dropDatabase();
-      await mongoClient.close();
-    }
+    expect(updatedFund).toMatchObject({
+      name,
+      amount: newAmount,
+    });
+    expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 
   test("combined update", async () => {
     const email = "test@gmail.com";
 
-    const mongoClient = new MongoClient(MONGODB_URI);
-    await mongoClient.connect();
-    const dbName = randomString();
     const db = mongoClient.db(dbName);
-    const collectionName = randomString();
     const collection = db.collection(collectionName);
 
     const id = randomString();
@@ -218,23 +209,23 @@ describe("returns 201 if fund is updated", () => {
     const oldName = "oldName";
     const createdAt = Date.now();
 
-    await collection.insertOne({
-      email,
-      funds: [
-        {
-          id,
-          name: oldName,
-          amount: oldAmount,
-          createdAt,
-          updatedAt: createdAt,
+    await collection.updateOne(
+      { email },
+      {
+        $push: {
+          funds: {
+            id,
+            name: oldName,
+            amount: oldAmount,
+            createdAt,
+            updatedAt: createdAt,
+          },
         },
-      ],
-    });
+      }
+    );
 
     await collection.updateOne(
-      {
-        email,
-      },
+      { email },
       {
         $push: {
           funds: {
@@ -268,25 +259,18 @@ describe("returns 201 if fund is updated", () => {
 
     req.localEnv = LOCAL_ENV;
 
-    try {
-      const response = await update(req, res);
+    const response = await update(req, res);
 
-      expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(201);
 
-      const user: User = await collection.findOne({ email });
+    const user: User = await collection.findOne({ email });
 
-      expect(user.funds.length).toBe(2);
+    const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
 
-      const updatedFund = user.funds.find(({ id: fundId }) => fundId === id);
-
-      expect(updatedFund).toMatchObject({
-        name: newName,
-        amount: newAmount,
-      });
-      expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
-    } finally {
-      await db.dropDatabase();
-      await mongoClient.close();
-    }
+    expect(updatedFund).toMatchObject({
+      name: newName,
+      amount: newAmount,
+    });
+    expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 });

@@ -86,6 +86,7 @@ export async function updateHandler(
   const budgetItem = user.budgetItems.find(({ id: itemId }) => itemId === id);
   const fundChanged = fund !== null && fund !== undefined;
   let previousFund = budgetItem.fund;
+  let previousAmount = budgetItem.amount;
 
   if (fundChanged) {
     try {
@@ -96,7 +97,7 @@ export async function updateHandler(
         },
         {
           $inc: {
-            "funds.$.amount": -fixedAmount,
+            "funds.$.amount": -previousAmount, // give back the previous amount to the old fund
           },
         }
       );

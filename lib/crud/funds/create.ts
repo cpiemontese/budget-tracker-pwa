@@ -10,7 +10,7 @@ import {
 import { randomBytes } from "crypto";
 
 const FUNDS_ID_LENGTH = 8;
-export async function create(
+export async function createHandler(
   req: NextApiRequestWithDB & NextApiRequestWithEnv & NextApiRequestWithLogger,
   res: NextApiResponse
 ) {
@@ -43,7 +43,7 @@ export async function create(
   } catch (error) {
     req.logger.error(
       { error: error.message },
-      "POST /funds - error on fund insertion"
+      "POST /funds - error on fund creation"
     );
     res.status(500).send({});
     return res;

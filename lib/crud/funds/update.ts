@@ -7,7 +7,7 @@ import {
   NextApiRequestWithEnv,
 } from "../../../types";
 
-export async function update(
+export async function updateHandler(
   req: NextApiRequestWithDB & NextApiRequestWithEnv & NextApiRequestWithLogger,
   res: NextApiResponse
 ) {

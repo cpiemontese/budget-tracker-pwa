@@ -3,11 +3,10 @@ import { randomBytes } from "crypto";
 import { MongoClient } from "mongodb";
 import { createMocks } from "node-mocks-http";
 
-import { update } from "./update";
+import { updateHandler } from "./update";
 
 import getEnv from "../../test-env";
 import { User } from "../../../types";
-import { notDeepEqual } from "assert";
 
 const randomString = () => randomBytes(8).toString("hex");
 
@@ -27,7 +26,7 @@ test("returns 400 if properties are missing from query", async () => {
 
   req.localEnv = LOCAL_ENV;
 
-  const response = await update(req, res);
+  const response = await updateHandler(req, res);
 
   expect(response.statusCode).toEqual(400);
 });
@@ -55,7 +54,7 @@ describe("returns 201 if fund is updated", () => {
     done();
   });
 
-  test("name update", async () => {
+  test("name updateHandler", async () => {
     const db = mongoClient.db(dbName);
     const collection = db.collection(collectionName);
 
@@ -112,7 +111,7 @@ describe("returns 201 if fund is updated", () => {
 
     req.localEnv = LOCAL_ENV;
 
-    const response = await update(req, res);
+    const response = await updateHandler(req, res);
 
     expect(response.statusCode).toEqual(201);
 
@@ -127,7 +126,7 @@ describe("returns 201 if fund is updated", () => {
     expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 
-  test("amount update", async () => {
+  test("amount updateHandler", async () => {
     const email = "test@gmail.com";
 
     const db = mongoClient.db(dbName);
@@ -186,7 +185,7 @@ describe("returns 201 if fund is updated", () => {
 
     req.localEnv = LOCAL_ENV;
 
-    const response = await update(req, res);
+    const response = await updateHandler(req, res);
 
     expect(response.statusCode).toEqual(201);
 
@@ -201,7 +200,7 @@ describe("returns 201 if fund is updated", () => {
     expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 
-  test("combined update", async () => {
+  test("combined updateHandler", async () => {
     const email = "test@gmail.com";
 
     const db = mongoClient.db(dbName);
@@ -262,7 +261,7 @@ describe("returns 201 if fund is updated", () => {
 
     req.localEnv = LOCAL_ENV;
 
-    const response = await update(req, res);
+    const response = await updateHandler(req, res);
 
     expect(response.statusCode).toEqual(201);
 

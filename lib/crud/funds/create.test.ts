@@ -3,7 +3,7 @@ import { randomBytes } from "crypto";
 import { MongoClient } from "mongodb";
 import { createMocks } from "node-mocks-http";
 
-import { create } from "./create";
+import { createHandler } from "./create";
 
 import getEnv from "../../test-env";
 import { User } from "../../../types";
@@ -26,7 +26,7 @@ test("returns 400 if properties are missing from query", async () => {
 
   req.localEnv = LOCAL_ENV;
 
-  const response = await create(req, res);
+  const response = await createHandler(req, res);
 
   expect(response.statusCode).toEqual(400);
 });
@@ -69,7 +69,7 @@ test("returns 201 if fund is created", async () => {
   req.localEnv = LOCAL_ENV;
 
   try {
-    const response = await create(req, res);
+    const response = await createHandler(req, res);
 
     expect(response.statusCode).toEqual(201);
 

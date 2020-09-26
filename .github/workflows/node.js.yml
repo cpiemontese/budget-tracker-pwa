@@ -35,11 +35,8 @@ jobs:
         restore-keys: |
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-:
-          
-    - name: Docker Layer Caching
-      uses: satackey/action-docker-layer-caching@v0.0.8
 
-    - run: docker run -d mongo:4.4 -p 27017:27017
+    - run: docker run -p 27017:27017 -d mongo:4.4
     - run: npm ci
     # - run: npm run build --if-present
     - run: npm test

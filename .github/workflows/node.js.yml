@@ -36,12 +36,10 @@ jobs:
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-:
           
-    - name: Build docker images using cache
-      uses: whoan/docker-build-with-cache-action@v5
-      with:
-        # Name of the image to build
-        image_name: mongo:4.4
+    - name: Docker Layer Caching
+      uses: satackey/action-docker-layer-caching@v0.0.8
 
+    - run: docker run -d mongo:4.4 -p 27017:27017
     - run: npm ci
     # - run: npm run build --if-present
     - run: npm test

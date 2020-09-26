@@ -54,7 +54,7 @@ describe("returns 201 if fund is updated", () => {
     done();
   });
 
-  test("name updateHandler", async () => {
+  test("name update", async () => {
     const db = mongoClient.db(dbName);
     const collection = db.collection(collectionName);
 
@@ -126,7 +126,7 @@ describe("returns 201 if fund is updated", () => {
     expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 
-  test("amount updateHandler", async () => {
+  test("amount update", async () => {
     const email = "test@gmail.com";
 
     const db = mongoClient.db(dbName);
@@ -200,7 +200,7 @@ describe("returns 201 if fund is updated", () => {
     expect(updatedFund.updatedAt).toBeGreaterThan(updatedFund.createdAt);
   });
 
-  test("combined updateHandler", async () => {
+  test("combined update", async () => {
     const email = "test@gmail.com";
 
     const db = mongoClient.db(dbName);

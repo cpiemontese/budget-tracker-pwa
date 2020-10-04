@@ -1,5 +1,4 @@
 import get from "lodash.get";
-import set from "lodash.set";
 import cloneDeep from "lodash.clonedeep";
 
 import { NextApiResponse } from "next";
@@ -11,9 +10,13 @@ import {
   User,
 } from "../../../types";
 
-import { randomBytes } from "crypto";
+const amountToValue = (amount: number, type: string) =>
+  type === "expense" ? -amount : amount;
 
-const BUDGET_ITEMS_ID_LENGTH = 8;
+function parseFloatNullable(value: string) {
+  const floatValue = parseFloat(value);
+  return isNaN(floatValue) ? null : Math.abs(floatValue);
+}
 
 export async function updateHandler(
   req: NextApiRequestWithDB & NextApiRequestWithEnv & NextApiRequestWithLogger,
@@ -29,41 +32,43 @@ export async function updateHandler(
 
   const name = get(req.body, ["name"], null) as string;
   const type = get(req.body, ["type"], null) as string;
-  const amount = get(req.body, ["amount"], null) as number;
+  const amount = parseFloatNullable(get(req.body, ["amount"], null) as string);
   const fund = get(req.body, ["fund"], null) as string;
   const category = get(req.body, ["category"], null) as string;
   const description = get(req.body, ["description"], null) as string;
 
-  const $set = addPropsIfNotNull({}, [
-    {
-      name: "name",
-      value: name,
-    },
-    {
-      name: "type",
-      value: type,
-    },
-    {
-      name: "amount",
-      value: amount,
-    },
-    {
-      name: "fund",
-      value: fund,
-    },
-    {
-      name: "category",
-      value: category,
-    },
-    {
-      name: "description",
-      value: description,
-    },
-  ]);
+  const $set = addPropsIfNotNull(
+    {},
+    [
+      {
+        name: "name",
+        value: name,
+      },
+      {
+        name: "type",
+        value: type,
+      },
+      {
+        name: "amount",
+        value: amount,
+      },
+      {
+        name: "fund",
+        value: fund,
+      },
+      {
+        name: "category",
+        value: category,
+      },
+      {
+        name: "description",
+        value: description,
+      },
+    ],
+    "budgetItems.$."
+  );
 
-  const fixedAmount = type === "expense" ? -Math.abs(amount) : Math.abs(amount);
-
-  const budgetItemId = randomBytes(BUDGET_ITEMS_ID_LENGTH).toString("hex");
+  $set["budgetItems.$.updatedAt"] = Date.now();
 
   let user: User = null;
   try {
@@ -84,48 +89,48 @@ export async function updateHandler(
   }
 
   const budgetItem = user.budgetItems.find(({ id: itemId }) => itemId === id);
-  const fundChanged = fund !== null && fund !== undefined;
-  let previousFund = budgetItem.fund;
-  let previousAmount = budgetItem.amount;
 
-  if (fundChanged) {
-    try {
-      await req.usersCollection.updateOne(
-        {
-          email,
-          "funds.id": previousFund,
+  const fundToGiveBackTo = budgetItem.fund;
+  const amountToGiveBack = amountToValue(budgetItem.amount, budgetItem.type);
+
+  try {
+    await req.usersCollection.updateOne(
+      {
+        email,
+        "funds.id": fundToGiveBackTo,
+      },
+      {
+        $inc: {
+          "funds.$.amount": -amountToGiveBack,
         },
-        {
-          $inc: {
-            "funds.$.amount": -previousAmount, // give back the previous amount to the old fund
-          },
-        }
-      );
-    } catch (error) {
-      req.logger.error(
-        { error: error.message },
-        "PATCH /budgetItems - error on previous fund update"
-      );
-      res.status(500).send({});
-      return res;
-    }
+      }
+    );
+  } catch (error) {
+    req.logger.error(
+      { error: error.message },
+      "PATCH /budgetItems - error on previous fund update"
+    );
+    res.status(500).send({});
+    return res;
   }
+
+  const amountToGive = amountToValue(
+    amount || budgetItem.amount,
+    type || budgetItem.type
+  );
+  const fundToGiveTo = fund || fundToGiveBackTo;
 
   const filter = {
     email,
     "budgetItems.id": id,
-    ...(fundChanged ? { "funds.id": fund } : {}),
+    "funds.id": fundToGiveTo,
   };
 
   const update = {
     $set,
-    ...(fundChanged
-      ? {
-          $inc: {
-            "funds.$.amount": fixedAmount,
-          },
-        }
-      : {}),
+    $inc: {
+      "funds.$.amount": amountToGive,
+    },
   };
 
   try {
@@ -139,16 +144,20 @@ export async function updateHandler(
     return res;
   }
 
-  res.status(201).json({
-    id: budgetItemId,
-  });
+  res.status(204).send({});
   return res;
 }
 
-function addPropsIfNotNull(object, props: Array<{ name: string; value: any }>) {
+function addPropsIfNotNull(
+  object,
+  props: Array<{ name: string; value: any }>,
+  prefix = ""
+) {
   const clone = cloneDeep(object);
   props.forEach(({ name, value }) => {
-    set(clone, name, value);
+    if (value !== null) {
+      clone[`${prefix}${name}`] = value;
+    }
   });
   return clone;
 }

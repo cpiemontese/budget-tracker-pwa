@@ -31,7 +31,7 @@ test("returns 400 if properties are missing from query", async () => {
   expect(response.statusCode).toEqual(400);
 });
 
-test("returns 201 if fund is deleted", async () => {
+test("returns 204 if fund is deleted", async () => {
   const email = "test@gmail.com";
   const name = "fund";
   const amount = 100.0;
@@ -88,7 +88,7 @@ test("returns 201 if fund is deleted", async () => {
   try {
     const response = await deleteHandler(req, res);
 
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(204);
 
     const user: User = await collection.findOne({ email });
 

@@ -31,7 +31,7 @@ test("returns 400 if properties are missing from query", async () => {
   expect(response.statusCode).toEqual(400);
 });
 
-describe("returns 201 if fund is updated", () => {
+describe("returns 204 if fund is updated", () => {
   const mongoClient = new MongoClient(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -113,7 +113,7 @@ describe("returns 201 if fund is updated", () => {
 
     const response = await updateHandler(req, res);
 
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(204);
 
     const user: User = await collection.findOne({ email });
 
@@ -187,7 +187,7 @@ describe("returns 201 if fund is updated", () => {
 
     const response = await updateHandler(req, res);
 
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(204);
 
     const user: User = await collection.findOne({ email });
 
@@ -263,7 +263,7 @@ describe("returns 201 if fund is updated", () => {
 
     const response = await updateHandler(req, res);
 
-    expect(response.statusCode).toEqual(201);
+    expect(response.statusCode).toEqual(204);
 
     const user: User = await collection.findOne({ email });
 

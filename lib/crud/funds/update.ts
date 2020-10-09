@@ -51,10 +51,7 @@ export async function updateHandler(
     return res;
   }
 
-  // TODO set as 204 and return nothing (same for delete)
-  res.status(201).json({
-    fund,
-  });
+  res.status(204).json({});
 
   return res;
 }

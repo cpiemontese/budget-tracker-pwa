@@ -43,9 +43,7 @@ export async function deleteHandler(
     return res;
   }
 
-  res.status(201).json({
-    fund,
-  });
+  res.status(204).json({});
 
   return res;
 }

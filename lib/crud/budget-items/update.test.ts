@@ -336,4 +336,110 @@ describe("returns 204 if everything is update correctly", () => {
       affectedBudgetItem.updatedAt
     );
   });
+
+  test("fund change", async () => {
+    const db = mongoClient.db(dbName);
+    const collection = db.collection(collectionName);
+
+    const oldFundId = randomString();
+    const newFundId = randomString();
+    const oldFundAmount = 100;
+    const newFundAmount = 100;
+
+    const budgetItemId = randomString();
+    const amount = 50;
+
+    const now = Date.now();
+
+    await collection.updateOne(
+      {
+        email,
+      },
+      {
+        $push: {
+          funds: {
+            $each: [
+              {
+                id: oldFundId,
+                name: "some old fund",
+                amount: oldFundAmount,
+              },
+              {
+                id: newFundId,
+                name: "some new fund",
+                amount: newFundAmount,
+              },
+            ],
+          },
+          budgetItems: {
+            id: budgetItemId,
+            name: "name",
+            type: "expense",
+            amount: amount,
+            fund: oldFundId,
+            category: "category",
+            description: "description",
+            createdAt: now,
+            updatedAt: now,
+          },
+        },
+      }
+    );
+
+    const { req, res } = createMocks({
+      method: "PATCH",
+      query: {
+        email,
+        id: budgetItemId,
+      },
+      body: {
+        fund: newFundId,
+      },
+    });
+
+    req.logger = logger;
+    req.usersCollection = collection;
+    req.localEnv = LOCAL_ENV;
+
+    const response = await updateHandler(req, res);
+
+    expect(response.statusCode).toEqual(204);
+
+    const user: User = await collection.findOne({ email });
+    const funds = user.funds;
+    const budgetItems = user.budgetItems;
+
+    const oldFund = funds.find(({ id }) => id === oldFundId);
+    const newFund = funds.find(({ id }) => id === newFundId);
+
+    expect(oldFund).toMatchObject({
+      id: oldFundId,
+      name: "some old fund",
+      amount: oldFundAmount + amount,
+    });
+
+    expect(newFund).toMatchObject({
+      id: newFundId,
+      name: "some new fund",
+      amount: newFundAmount - amount,
+    });
+
+    const affectedBudgetItem = budgetItems.find(
+      ({ id }) => id === budgetItemId
+    );
+
+    expect(affectedBudgetItem).toMatchObject({
+      id: budgetItemId,
+      name: "name",
+      type: "expense",
+      amount: amount,
+      fund: newFundId,
+      category: "category",
+      description: "description",
+    });
+
+    expect(affectedBudgetItem.createdAt).toBeLessThan(
+      affectedBudgetItem.updatedAt
+    );
+  });
 });

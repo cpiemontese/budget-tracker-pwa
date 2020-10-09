@@ -130,6 +130,18 @@ describe("returns 204 if everything is update correctly", () => {
     done();
   });
 
+  beforeEach(async (done) => {
+    await mongoClient.db(dbName).collection(collectionName).updateOne({
+      email
+    }, {
+      $set: {
+        funds: [],
+        budgetTimes: [],
+      }
+    })
+    done();
+  })
+
   test("expense to income", async () => {
     const db = mongoClient.db(dbName);
     const collection = db.collection(collectionName);

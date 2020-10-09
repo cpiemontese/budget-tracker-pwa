@@ -120,21 +120,20 @@ export async function updateHandler(
   );
   const fundToGiveTo = fund || fundToGiveBackTo;
 
-  const filter = {
-    email,
-    "budgetItems.id": id,
-    "funds.id": fundToGiveTo,
-  };
-
-  const update = {
-    $set,
-    $inc: {
-      "funds.$.amount": amountToGive,
-    },
-  };
-
   try {
-    await req.usersCollection.updateOne(filter, update);
+    await req.usersCollection.updateOne({
+      email,
+      "budgetItems.id": id,
+    }, { $set });
+
+    await req.usersCollection.updateOne({
+      email,
+      "funds.id": fundToGiveTo,
+    }, {
+      $inc: {
+        "funds.$.amount": amountToGive,
+      }
+    });
   } catch (error) {
     req.logger.error(
       { error: error.message },

@@ -9,14 +9,7 @@ import {
   NextApiRequestWithEnv,
   User,
 } from "../../../types";
-
-const amountToValue = (amount: number, type: string) =>
-  type === "expense" ? -amount : amount;
-
-function parseFloatNullable(value: string) {
-  const floatValue = parseFloat(value);
-  return isNaN(floatValue) ? null : Math.abs(floatValue);
-}
+import { amountToValue } from "./common";
 
 export async function updateHandler(
   req: NextApiRequestWithDB & NextApiRequestWithEnv & NextApiRequestWithLogger,
@@ -159,4 +152,9 @@ function addPropsIfNotNull(
     }
   });
   return clone;
+}
+
+function parseFloatNullable(value: string) {
+  const floatValue = parseFloat(value);
+  return isNaN(floatValue) ? null : Math.abs(floatValue);
 }

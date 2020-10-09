@@ -106,7 +106,7 @@ describe("returns 400 if user or budget items is not found", () => {
   });
 });
 
-describe("returns 204 if everything is update correctly", () => {
+describe("returns 204 if everything is updated correctly", () => {
   const mongoClient = new MongoClient(MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,

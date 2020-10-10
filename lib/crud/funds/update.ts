@@ -5,6 +5,7 @@ import {
   NextApiRequestWithDB,
   NextApiRequestWithLogger,
   NextApiRequestWithEnv,
+  User,
 } from "../../../types";
 
 export async function updateHandler(
@@ -15,6 +16,24 @@ export async function updateHandler(
   const id = get(req.query, ["id"], null) as string;
 
   if ([email, id].some((value) => value === null)) {
+    res.status(400).send({});
+    return res;
+  }
+
+  let user: User = null;
+  try {
+    user = await req.usersCollection.findOne({ email, "funds.id": id });
+  } catch (error) {
+    req.logger.error(
+      { error: error.message },
+      "PATCH /funds - error on user find"
+    );
+    res.status(500).send({});
+    return res;
+  }
+
+  // no user or fund found
+  if (user === null || user === undefined) {
     res.status(400).send({});
     return res;
   }
@@ -31,7 +50,6 @@ export async function updateHandler(
     $set["funds.$.name"] = name;
   }
 
-  let fund = null;
   try {
     await req.usersCollection.updateOne(
       {

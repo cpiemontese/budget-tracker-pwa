@@ -31,6 +31,39 @@ test("returns 400 if properties are missing from query", async () => {
   expect(response.statusCode).toEqual(400);
 });
 
+test("returns 400 if fund is not found", async () => {
+  const dbName = randomString();
+  const collectionName = randomString();
+  const mongoClient = new MongoClient(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+
+  await mongoClient.connect();
+
+  const { req, res } = createMocks({
+    method: "PATCH",
+    query: {
+      email: 'does not matter',
+      id: 'does not matter',
+    },  
+  });
+
+  
+  req.logger = logger;
+  
+  req.localEnv = LOCAL_ENV;
+
+  req.usersCollection = mongoClient.db(dbName).collection(collectionName);
+
+  try {
+    const response = await updateHandler(req, res);
+    expect(response.statusCode).toEqual(400);
+  } finally {
+    await mongoClient.close()
+  }
+});
+
 describe("returns 204 if fund is updated", () => {
   const mongoClient = new MongoClient(MONGODB_URI, {
     useNewUrlParser: true,

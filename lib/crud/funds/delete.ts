@@ -19,7 +19,6 @@ export async function deleteHandler(
     return res;
   }
 
-  let fund = null;
   try {
     await req.usersCollection.updateOne(
       {

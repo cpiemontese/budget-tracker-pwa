@@ -58,6 +58,19 @@ type User = {
   budgetItems: Array<BudgetItem>;
 };
 
+type FundsMap = {
+  [id: string]: Fund
+}
+
+type BudgetItemsMap = {
+  [id: string]: BudgetItem
+}
+
+type ReduxState = {
+  funds: FundsMap,
+  budgetItems: BudgetItemsMap,
+}
+
 export type {
   User,
   NextApiRequestWithDB,
@@ -65,4 +78,6 @@ export type {
   NextApiRequestWithLogger,
   NextApiRequestWithEnv,
   LocalEnv,
+  ReduxState,
+  FundsMap
 };

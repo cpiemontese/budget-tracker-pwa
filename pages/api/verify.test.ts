@@ -5,7 +5,6 @@ import { verify } from "./verify";
 
 import getEnv from "../../lib/test-env";
 import { createCookie } from "../../lib/cookies";
-import { serialize } from "cookie";
 
 const LOCAL_ENV = getEnv();
 

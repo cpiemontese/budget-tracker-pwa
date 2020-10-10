@@ -11,7 +11,7 @@ const LOCAL_ENV = getEnv();
 
 test("returns 400 if there is no login Cookie", async () => {
   const { req, res } = createMocks({
-    method: "POST",
+    method: "GET",
   });
 
   req.transporter = {
@@ -34,7 +34,7 @@ test("returns 400 if there is no login Cookie", async () => {
 
 test("returns 500 if user is not found", async () => {
   const { req, res } = createMocks({
-    method: "POST",
+    method: "GET",
   });
 
   let actualFilter = null;
@@ -76,7 +76,7 @@ test("returns 500 if user is not found", async () => {
 
 test("returns 401 if token does not match", async () => {
   const { req, res } = createMocks({
-    method: "POST",
+    method: "GET",
   });
 
   let actualFilter = null;
@@ -121,7 +121,7 @@ test("returns 401 if token does not match", async () => {
 
 test("returns 401 if token is expired", async () => {
   const { req, res } = createMocks({
-    method: "POST",
+    method: "GET",
   });
 
   let actualFilter = null;
@@ -174,7 +174,7 @@ test("returns 401 if token is expired", async () => {
 
 test("returns 204 if token is valid", async () => {
   const { req, res } = createMocks({
-    method: "POST",
+    method: "GET",
   });
 
   let actualFilter = null;

@@ -27,9 +27,18 @@ export function getLoginCookie(
   name: string,
   logger: Logger
 ): { email: string; loginToken: string } {
-  const cookies = parse(res.getHeader("Cookie") as string);
+  const cookie = res.getHeader("Cookie");
 
-  let loginCookie = null;
+  let loginCookie = {
+    email: null,
+    loginToken: null
+  }
+  if (cookie === null || cookie === undefined) {
+    return loginCookie
+  }
+
+  const cookies = parse(cookie as string);
+
   try {
     loginCookie = JSON.parse(get(cookies, name, "null"));
   } catch (error) {

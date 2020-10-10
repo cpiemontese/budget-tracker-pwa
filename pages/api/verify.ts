@@ -13,8 +13,9 @@ import envLoader from "../../middleware/env-loader";
 
 import { verifyHandler } from "../../lib/verify-handler";
 import { createDeletionCookie, getLoginCookie } from "../../lib/cookies";
+import get from "lodash.get";
 
-const handler = nextConnect().use(envLoader).use(db).use(logger).post(verify);
+const handler = nextConnect().use(envLoader).use(db).use(logger).get(verify);
 
 export default handler;
 export { verify };
@@ -23,7 +24,7 @@ async function verify(
   req: NextApiRequestWithDB & NextApiRequestWithLogger & NextApiRequestWithEnv,
   res: NextApiResponse
 ) {
-  const { email, loginToken } = getLoginCookie(
+  const{ email, loginToken } = getLoginCookie(
     res,
     req.localEnv.loginCookie.name,
     req.logger

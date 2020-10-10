@@ -16,9 +16,6 @@
     "test": "jest"
   },
   "dependencies": {
-    "@types/react-redux": "^7.1.9",
-    "@types/redux": "^3.6.0",
-    "@types/redux-devtools-extension": "^2.13.2",
     "bcrypt": "^5.0.0",
     "cookie": "^0.4.1",
     "core-util-is": "^1.0.2",
@@ -36,7 +33,6 @@
     "react-dom": "16.13.1",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "redux-devtools-extension": "^2.13.8",
     "remark": "^12.0.1",
     "remark-html": "^12.0.0"
   },
@@ -53,11 +49,15 @@
     "@types/nodemailer": "^6.4.0",
     "@types/pino": "^6.3.1",
     "@types/react": "^16.9.49",
+    "@types/react-redux": "^7.1.9",
+    "@types/redux": "^3.6.0",
+    "@types/redux-devtools-extension": "^2.13.2",
     "babel-jest": "^26.3.0",
     "dotenv": "^8.2.0",
     "husky": "^4.3.0",
     "jest": "^26.4.2",
     "node-mocks-http": "^1.9.0",
+    "redux-devtools-extension": "^2.13.8",
     "ts-jest": "^26.4.0",
     "typescript": "^4.0.3"
   },

@@ -1,17 +1,33 @@
 import { useMemo } from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { ReduxState } from './types'
+import { updateHandler } from './lib/crud/budget-items/update'
+import { ActionTypes, ReduxState, UPDATE_FUND } from './types'
 
 let store
 
 const initialState: ReduxState = {
+  logged: false,
   funds: {},
   budgetItems: {},
 }
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = initialState, action: ActionTypes) => {
   switch (action.type) {
+    case UPDATE_FUND: {
+      const { id, updates } = action
+      const funds = state.funds
+      const fund = state.funds[id]
+      return Object.assign({}, state, {
+        funds: {
+          ...funds,
+          [id]: {
+            ...fund,
+            ...updates
+          }
+        }
+      })
+    }
     default:
       return state
   }
@@ -32,8 +48,8 @@ export const initializeStore = (preloadedState: ReduxState) => {
   // with the current state in the store, and create a new store
   if (preloadedState && store) {
     _store = initStore({
-      ...store.getState(),
       ...preloadedState,
+      ...store.getState(),
     })
     // Reset the current store
     store = undefined

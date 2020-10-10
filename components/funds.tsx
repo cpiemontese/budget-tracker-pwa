@@ -14,7 +14,7 @@ const Funds = () => {
   return (
     <ul className={utilStyles.list}>
       {Object.keys(funds).map(id => (
-        <Link href="/funds/[id]" as={`/funds/${id}`}>
+        <Link href="/funds/[id]" as={`/funds/${id}`} key={id}>
           <a>
             <p>{funds[id].name}</p>
             <p>{funds[id].amount}</p>

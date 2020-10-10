@@ -72,6 +72,16 @@ type ReduxState = {
   budgetItems: BudgetItemsMap,
 }
 
+export const UPDATE_FUND = "fund/update"
+
+interface UpdateFundAction {
+  type: typeof UPDATE_FUND,
+  id: string,
+  updates: { [name: string]: any }
+}
+
+type ActionTypes = UpdateFundAction 
+
 export type {
   User,
   NextApiRequestWithDB,
@@ -80,5 +90,6 @@ export type {
   NextApiRequestWithEnv,
   LocalEnv,
   ReduxState,
-  FundsMap
+  FundsMap,
+  ActionTypes
 };

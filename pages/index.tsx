@@ -25,6 +25,7 @@ export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {
       initialReduxState: {
+        logged: false,
         funds: {
           "1234": {
             id: "1234",

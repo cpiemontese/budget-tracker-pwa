@@ -67,6 +67,7 @@ type BudgetItemsMap = {
 }
 
 type ReduxState = {
+  logged: boolean,
   funds: FundsMap,
   budgetItems: BudgetItemsMap,
 }

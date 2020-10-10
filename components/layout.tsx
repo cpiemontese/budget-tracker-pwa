@@ -8,10 +8,12 @@ export const siteTitle = 'Budget Tracker'
 
 export default function Layout({
   children,
-  home
+  home,
+  overrideName
 }: {
   children: React.ReactNode
-  home?: boolean
+  home?: boolean,
+  overrideName?: string
 }) {
   return (
     <div className={styles.container}>
@@ -52,9 +54,7 @@ export default function Layout({
                 </a>
               </Link>
               <h2 className={utilStyles.headingLg}>
-                <Link href="/">
-                  <a className={utilStyles.colorInherit}>{name}</a>
-                </Link>
+                {overrideName ?? name}
               </h2>
             </>
           )}

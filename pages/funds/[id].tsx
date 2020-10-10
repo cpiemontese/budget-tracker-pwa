@@ -9,12 +9,10 @@ export default function FundPage() {
   const router = useRouter()
   const { id } = router.query
 
-  console.log(router.query, router.pathname, router.route)
-
   return (
-    <Layout>
+    <Layout overrideName={`Fund ${id}`}>
       <Head>
-        <title>Fund with id {id}</title>
+        <title>Fund Detail</title>
       </Head>
       <Fund id={id as string}/>
     </Layout>

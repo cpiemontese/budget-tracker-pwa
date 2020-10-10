@@ -3,7 +3,7 @@ import styles from './layout.module.css'
 import utilStyles from '../styles/utils.module.css'
 import Link from 'next/link'
 
-const name = 'Cristiano Piemontese'
+const name = 'Budget Tracker'
 export const siteTitle = 'Budget Tracker'
 
 export default function Layout({

@@ -3,6 +3,7 @@ import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { GetStaticProps } from 'next'
 import Funds from '../components/funds'
+import BudgetItems from '../components/budget-items'
 
 export default function Home() {
   return (
@@ -10,16 +11,11 @@ export default function Home() {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      <section className={utilStyles.headingMd}>
-        <p>[Your Self Introduction]</p>
-        <p>
-          (This is a sample website - you’ll be building a site like this in{' '}
-          <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
-        </p>
-      </section>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Funds</h2>
         <Funds />
+        <h2 className={utilStyles.headingLg}>Budget Items</h2>
+        <BudgetItems />
       </section>
     </Layout>
   )
@@ -38,7 +34,18 @@ export const getStaticProps: GetStaticProps = async () => {
             updatedAt: Date.now(),
           }
         },
-        budgetItems: {}
+        budgetItems: {
+          "4567": {
+            id: "4567",
+            fund: "1234",
+            amount: 50,
+            type: "expense",
+            name: "some item",
+            category: "some category",
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          }
+        }
       }
     }
   }

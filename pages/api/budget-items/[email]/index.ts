@@ -5,15 +5,13 @@ import logger from "../../../../middleware/logger";
 import envLoader from "../../../../middleware/env-loader";
 import verifier from "../../../../middleware/env-loader";
 
-import { updateHandler } from "../../../../lib/crud/funds/update";
-import { deleteHandler } from "../../../../lib/crud/funds/delete";
+import { createHandler } from "../../../../lib/crud/budget-items/create";
 
 const handler = nextConnect()
   .use(envLoader)
   .use(db)
   .use(logger)
   .use(verifier)
-  .patch(updateHandler)
-  .delete(deleteHandler);
+  .post(createHandler);
 
 export default handler;

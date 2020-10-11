@@ -13,7 +13,8 @@ type LocalEnv = {
   app: { name: string; host: string };
   db: {
     uri: string,
-    name: string;
+    name: string,
+    maxIdlePeriod: number,
     collections: { [name: string]: string }
   },
   loginCookie: { name: string; maxAge: number };

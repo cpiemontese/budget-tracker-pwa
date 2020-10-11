@@ -1,43 +1,42 @@
-import get from "lodash.get";
-import { NextApiResponse } from "next";
+import env from "../../env";
+import logger from "../../logger";
+import { closeDb, getDb } from "../../database";
+import { User } from "../../../types";
+import verify from "../../verify";
 
-import {
-  NextApiRequestWithDB,
-  NextApiRequestWithLogger,
-  NextApiRequestWithEnv,
-  User,
-} from "../../../types";
-
-export async function getHandler(
-  req: NextApiRequestWithDB & NextApiRequestWithEnv & NextApiRequestWithLogger,
-  res: NextApiResponse
-) {
-  const email = get(req.query, ["email"], null) as string;
-
+const localEnv = env();
+export async function get(email: string): Promise<User> {
   if (email === null) {
-    res.status(400).send({});
-    return res;
+    return null;
   }
+
+  const verified = await verify();
+
+  if (!verified) {
+    return null;
+  }
+
+  const db = await getDb();
+  const log = logger();
+  const usersCollection = db.collection(localEnv.db.collections.users);
 
   let user: User = null;
   try {
-    user = await req.usersCollection.findOne({ email });
+    user = await usersCollection.findOne({ email });
   } catch (error) {
-    req.logger.error(
+    log.error(
       { error: error.message },
-      "GET /users - error on user find"
+      "get user - error on user find"
     );
-    res.status(500).send({});
-    return res;
+    return null;
+  } finally {
+    closeDb();
   }
 
   // no user or fund found
   if (user === null || user === undefined) {
-    res.status(404).send({});
-    return res;
+    return null;
   }
 
-  res.status(200).json(user);
-
-  return res;
+  return user;
 }

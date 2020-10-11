@@ -9,6 +9,7 @@ export default function env(): LocalEnv {
     db: {
       uri: process.env.MONGODB_URI,
       name: process.env.DB_NAME,
+      maxIdlePeriod: parseInt(process.env.DB_MAX_IDLE_PERIOD),
       collections: {
         users: process.env.USERS_COLLECTION,
       }

@@ -64,30 +64,6 @@ type User = {
   budgetItems: Array<BudgetItem>;
 };
 
-type FundsMap = {
-  [id: string]: Fund
-}
-
-type BudgetItemsMap = {
-  [id: string]: BudgetItem
-}
-
-type ReduxState = {
-  logged: boolean,
-  funds: FundsMap,
-  budgetItems: BudgetItemsMap,
-}
-
-export const UPDATE_FUND = "fund/update"
-
-interface UpdateFundAction {
-  type: typeof UPDATE_FUND,
-  id: string,
-  updates: { [name: string]: any }
-}
-
-type ActionTypes = UpdateFundAction 
-
 export type {
   NextApiRequestWithDB,
   NextApiRequestWithTransporter,
@@ -97,7 +73,4 @@ export type {
   User,
   Fund,
   BudgetItem,
-  ReduxState,
-  FundsMap,
-  ActionTypes
 };

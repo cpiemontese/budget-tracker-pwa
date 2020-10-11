@@ -1,47 +1,87 @@
-import { useMemo } from 'react'
-import { createStore, applyMiddleware } from 'redux'
-import { composeWithDevTools } from 'redux-devtools-extension'
-import { ActionTypes, ReduxState, UPDATE_FUND } from '../types'
+import { useMemo } from "react";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import thunkMiddleware from "redux-thunk";
+import {
+  Action,
+  ReduxState,
+  UPDATE_FUND,
+  USER_ERROR,
+  USER_RECEIVE,
+  USER_REQUEST,
+} from "../redux/types";
 
-let store
+let store;
 
 const initialState: ReduxState = {
   logged: false,
+  fetching: false,
   funds: {},
   budgetItems: {},
-}
+};
 
-const reducer = (state = initialState, action: ActionTypes) => {
+const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
     case UPDATE_FUND: {
-      const { id, updates } = action
-      const funds = state.funds
-      const fund = state.funds[id]
-      return Object.assign({}, state, {
+      const { id, updates } = action;
+      const funds = state.funds;
+      const fund = state.funds[id];
+      return {
+        ...state,
         funds: {
           ...funds,
           [id]: {
             ...fund,
-            ...updates
-          }
-        }
-      })
+            ...updates,
+          },
+        },
+      };
+    }
+    case USER_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+      };
+    case USER_ERROR:
+      return {
+        ...state,
+        fetching: false,
+      };
+    case USER_RECEIVE: {
+      const funds = action.user.funds;
+      const budgetItems = action.user.budgetItems;
+
+      return {
+        ...state,
+        fetching: false,
+        funds: Object.keys(funds).reduce((fundsMap, fundKey) => {
+          fundsMap[fundKey] = funds[fundKey];
+          return fundsMap;
+        }, {}),
+        budgetItems: Object.keys(budgetItems).reduce(
+          (budgetItemsMap, budgetItemKey) => {
+            budgetItemsMap[budgetItemKey] = funds[budgetItemKey];
+            return budgetItemsMap;
+          },
+          {}
+        ),
+      };
     }
     default:
-      return state
+      return state;
   }
-}
+};
 
 function initStore(preloadedState = initialState) {
   return createStore(
     reducer,
     preloadedState,
-    composeWithDevTools(applyMiddleware())
-  )
+    composeWithDevTools(applyMiddleware(thunkMiddleware))
+  );
 }
 
 export const initializeStore = (preloadedState: ReduxState) => {
-  let _store = store ?? initStore(preloadedState)
+  let _store = store ?? initStore(preloadedState);
 
   // After navigating to a page with an initial Redux state, merge that state
   // with the current state in the store, and create a new store
@@ -49,20 +89,20 @@ export const initializeStore = (preloadedState: ReduxState) => {
     _store = initStore({
       ...preloadedState,
       ...store.getState(),
-    })
+    });
     // Reset the current store
-    store = undefined
+    store = undefined;
   }
 
   // For SSG and SSR always create a new store
-  if (typeof window === 'undefined') return _store
+  if (typeof window === "undefined") return _store;
   // Create the store once in the client
-  if (!store) store = _store
+  if (!store) store = _store;
 
-  return _store
-}
+  return _store;
+};
 
 export function useStore(initialState: ReduxState) {
-  const store = useMemo(() => initializeStore(initialState), [initialState])
-  return store
+  const store = useMemo(() => initializeStore(initialState), [initialState]);
+  return store;
 }

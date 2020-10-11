@@ -2,17 +2,10 @@ import env from "../../env";
 import logger from "../../logger";
 import { closeDb, getDb } from "../../database";
 import { User } from "../../../types";
-import verify from "../../verify";
 
 const localEnv = env();
 export async function get(email: string): Promise<User> {
   if (email === null) {
-    return null;
-  }
-
-  const verified = await verify();
-
-  if (!verified) {
     return null;
   }
 

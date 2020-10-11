@@ -13,14 +13,3 @@ export const userReceive = (user: User) => ({
 export const userError = {
   type: USER_ERROR,
 };
-
-export function fetchUser() {
-  return (dispatch) => {
-    dispatch(userRequest);
-
-    return fetch("/api/verify")
-      .then((response) => response.json())
-      .then((json) => dispatch(userReceive(json)))
-      .catch(console.error);
-  };
-}

@@ -1,21 +1,17 @@
 import Head from 'next/head'
-import { useRouter } from 'next/router'
 
-import FundModifier from '../../components/fund/modifier'
+import FundCreator from '../../components/fund/creator'
 import Layout from '../../components/layout'
 
-const pageName = "Fund Detail"
+const pageName = "New Fund"
 
 export default function FundPage() {
-  const router = useRouter()
-  const { id } = router.query
-
   return (
     <Layout overrideName={pageName}>
       <Head>
         <title>{pageName}</title>
       </Head>
-      <FundModifier id={id as string}/>
+      <FundCreator />
     </Layout>
   )
 }

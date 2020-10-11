@@ -21,6 +21,13 @@ export default function Home() {
   )
 }
 
+/*
+TODO
+- impostare azioni asicrone di fetch dei fondi
+- fare fetch dei fondi dall'api (i.e. fetch da mongo utente)
+- impostare l'update asicrono tramite api
+*/
+
 export const getStaticProps: GetStaticProps = async () => {
   return {
     props: {

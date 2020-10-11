@@ -1,8 +1,7 @@
 import { useMemo } from 'react'
 import { createStore, applyMiddleware } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
-import { updateHandler } from './lib/crud/budget-items/update'
-import { ActionTypes, ReduxState, UPDATE_FUND } from './types'
+import { ActionTypes, ReduxState, UPDATE_FUND } from '../types'
 
 let store
 

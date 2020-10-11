@@ -2,10 +2,17 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilStyles from '../styles/utils.module.css'
 import { GetStaticProps } from 'next'
-import Funds from '../components/funds'
-import BudgetItems from '../components/budget-items'
+import { useSelector } from 'react-redux'
+import { ReduxState } from '../types'
+import Link from 'next/link'
+import { amountToValue } from '../lib/crud/budget-items/common'
 
 export default function Home() {
+  const { funds, budgetItems } = useSelector((state: ReduxState) => ({
+    funds: state.funds,
+    budgetItems: state.budgetItems,
+  }))
+
   return (
     <Layout home>
       <Head>
@@ -13,9 +20,32 @@ export default function Home() {
       </Head>
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Funds</h2>
-        <Funds />
+        <ul className={utilStyles.list}>
+          {Object.keys(funds).map(id => (
+            <Link href="/funds/[id]" as={`/funds/${id}`} key={id}>
+              <a>
+                <p>{funds[id].name}</p>
+                <p>{funds[id].amount}</p>
+                <p>{funds[id].createdAt}</p>
+                <p>{funds[id].updatedAt}</p>
+              </a>
+            </Link>
+          ))}
+        </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
-        <BudgetItems />
+        <ul className={utilStyles.list}>
+          {Object.keys(budgetItems).map(id => (
+            <li className={utilStyles.listItem} key={id}>
+              <p>{budgetItems[id].name}</p>
+              <p>{amountToValue(budgetItems[id].amount, budgetItems[id].type)}</p>
+              <p>{budgetItems[id].type}</p>
+              <p>{budgetItems[id].category}</p>
+              <p>{budgetItems[id].fund}</p>
+              <p>{budgetItems[id].createdAt}</p>
+              <p>{budgetItems[id].updatedAt}</p>
+            </li>
+          ))}
+        </ul>
       </section>
     </Layout>
   )

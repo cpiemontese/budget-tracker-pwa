@@ -83,12 +83,14 @@ interface UpdateFundAction {
 type ActionTypes = UpdateFundAction 
 
 export type {
-  User,
   NextApiRequestWithDB,
   NextApiRequestWithTransporter,
   NextApiRequestWithLogger,
   NextApiRequestWithEnv,
   LocalEnv,
+  User,
+  Fund,
+  BudgetItem,
   ReduxState,
   FundsMap,
   ActionTypes

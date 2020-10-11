@@ -52,6 +52,7 @@ const reducer = (state = initialState, action: Action) => {
 
       return {
         ...state,
+        logged: true,
         fetching: false,
         funds: Object.keys(funds).reduce((fundsMap, fundKey) => {
           fundsMap[fundKey] = funds[fundKey];

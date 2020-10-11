@@ -29,8 +29,9 @@ test("returns 200 if user is found", async () => {
 
   const expectedUser = await usersCollection.findOne({ email });
 
-  closeDb();
-
   const user = await get(email);
   expect(user).toMatchObject(expectedUser);
+
+  await usersCollection.deleteOne({ email });
+  closeDb();
 });

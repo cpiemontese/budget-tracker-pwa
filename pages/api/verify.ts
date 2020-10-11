@@ -13,7 +13,6 @@ import envLoader from "../../middleware/env-loader";
 
 import { verifyHandler } from "../../lib/verify-handler";
 import { createDeletionCookie, getLoginCookie } from "../../lib/cookies";
-import get from "lodash.get";
 
 const handler = nextConnect().use(envLoader).use(db).use(logger).get(verify);
 

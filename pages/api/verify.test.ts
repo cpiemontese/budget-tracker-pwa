@@ -162,7 +162,7 @@ test("returns 401 if token is expired", async () => {
   expect(JSON.parse(cookie)).toEqual(null);
 });
 
-test("returns 204 if token is valid", async () => {
+test("returns 200 if token is valid", async () => {
   const { req, res } = createMocks({
     method: "GET",
   });
@@ -202,6 +202,6 @@ test("returns 204 if token is valid", async () => {
 
   const response = await verify(req, res);
 
-  expect(response.statusCode).toEqual(204);
+  expect(response.statusCode).toEqual(200);
   expect(actualFilter).toEqual({ email: "test@google.com" });
 });

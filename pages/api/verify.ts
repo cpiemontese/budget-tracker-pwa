@@ -36,6 +36,12 @@ async function verify(
     req.logger
   );
 
+  if (responseCode === 204) {
+    const user = await req.usersCollection.findOne({ email });
+    res.status(200).json(user);
+    return res;
+  }
+
   if (responseCode === 401) {
     // there should be no need to reset the cookie in the user doc
     // it will be reset by a new login

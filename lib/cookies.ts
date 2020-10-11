@@ -2,7 +2,7 @@ import get from "lodash.get";
 import { parse, serialize } from "cookie";
 
 import { Logger } from "pino";
-import { NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 
 export function createCookie(name: string, value: string, maxAge: number) {
   return serialize(name, value, {
@@ -23,11 +23,11 @@ export function createDeletionCookie(name: string) {
 }
 
 export function getLoginCookie(
-  res: NextApiResponse,
+  req: NextApiRequest,
   name: string,
   logger: Logger
 ): { email: string; loginToken: string } {
-  const cookie = res.getHeader("Cookie");
+  const cookie = req.headers.cookie
 
   let loginCookie = {
     email: null,

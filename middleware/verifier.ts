@@ -20,7 +20,7 @@ async function verifier(
   }
 
   const { email, loginToken } = getLoginCookie(
-    res,
+    req,
     req.localEnv.loginCookie.name,
     req.logger
   );

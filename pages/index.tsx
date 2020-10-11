@@ -6,12 +6,26 @@ import { useSelector } from 'react-redux'
 import { ReduxState } from '../types'
 import Link from 'next/link'
 import { amountToValue } from '../lib/crud/budget-items/common'
+import { useEffect } from 'react'
+import logger from '../lib/logger'
 
 export default function Home() {
   const { funds, budgetItems } = useSelector((state: ReduxState) => ({
     funds: state.funds,
     budgetItems: state.budgetItems,
   }))
+
+  useEffect(() => {
+    async function getVerify() {
+      const result = await fetch('/api/verify', {
+        headers: {
+          cookie: document.cookie
+        }
+      });
+      return result
+    }
+    getVerify();
+  })
 
   return (
     <Layout home>

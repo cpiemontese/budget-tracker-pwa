@@ -24,7 +24,7 @@ test("returns 400 if there is no login Cookie", async () => {
 
   req.localEnv = LOCAL_ENV;
 
-  res.setHeader("Cookie", "");
+  req.headers.cookie = "";
 
   const response = await verify(req, res);
 
@@ -53,16 +53,13 @@ test("returns 500 if user is not found", async () => {
     error() {},
   };
 
-  res.setHeader(
-    "Cookie",
-    createCookie(
-      LOCAL_ENV.loginCookie.name,
-      JSON.stringify({
-        email: "test@google.com",
-        loginToken: "token",
-      }),
-      1000 * 60 * 60
-    )
+  req.headers.cookie = createCookie(
+    LOCAL_ENV.loginCookie.name,
+    JSON.stringify({
+      email: "test@google.com",
+      loginToken: "token",
+    }),
+    1000 * 60 * 60
   );
 
   req.localEnv = LOCAL_ENV;
@@ -100,16 +97,13 @@ test("returns 401 if token does not match", async () => {
 
   req.localEnv = LOCAL_ENV;
 
-  res.setHeader(
-    "Cookie",
-    createCookie(
-      LOCAL_ENV.loginCookie.name,
-      JSON.stringify({
-        email: "test@google.com",
-        loginToken: "token",
-      }),
-      1000 * 60 * 60
-    )
+  req.headers.cookie = createCookie(
+    LOCAL_ENV.loginCookie.name,
+    JSON.stringify({
+      email: "test@google.com",
+      loginToken: "token",
+    }),
+    1000 * 60 * 60
   );
 
   const response = await verify(req, res);
@@ -145,16 +139,13 @@ test("returns 401 if token is expired", async () => {
     error() {},
   };
 
-  res.setHeader(
-    "Cookie",
-    createCookie(
-      LOCAL_ENV.loginCookie.name,
-      JSON.stringify({
-        email: "test@google.com",
-        loginToken: "token",
-      }),
-      1000 * 60 * 60
-    )
+  req.headers.cookie = createCookie(
+    LOCAL_ENV.loginCookie.name,
+    JSON.stringify({
+      email: "test@google.com",
+      loginToken: "token",
+    }),
+    1000 * 60 * 60
   );
 
   req.localEnv = LOCAL_ENV;
@@ -198,16 +189,13 @@ test("returns 204 if token is valid", async () => {
     error() {},
   };
 
-  res.setHeader(
-    "Cookie",
-    createCookie(
-      LOCAL_ENV.loginCookie.name,
-      JSON.stringify({
-        email: "test@google.com",
-        loginToken: "token",
-      }),
-      1000 * 60 * 60
-    )
+  req.headers.cookie = createCookie(
+    LOCAL_ENV.loginCookie.name,
+    JSON.stringify({
+      email: "test@google.com",
+      loginToken: "token",
+    }),
+    1000 * 60 * 60
   );
 
   req.localEnv = LOCAL_ENV;

@@ -24,7 +24,7 @@ async function verify(
   res: NextApiResponse
 ) {
   const{ email, loginToken } = getLoginCookie(
-    res,
+    req,
     req.localEnv.loginCookie.name,
     req.logger
   );

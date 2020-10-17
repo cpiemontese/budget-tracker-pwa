@@ -6,6 +6,14 @@ export default function getEnv(): LocalEnv {
       name: "Budget Tracker",
       host: "www.budget-tracker.com",
     },
+    db: {
+      uri: "mongodb://localhost:27017",
+      name: "test",
+      maxIdlePeriod: 1000,
+      collections: {
+        users: "users"
+      }
+    },
     logLevel: "debug",
     smtp: {
       host: "smtp-relay.sendinblue.com",

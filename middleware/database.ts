@@ -15,7 +15,7 @@ async function database(
 ) {
   if (!client.isConnected()) await client.connect();
   const db = client.db(process.env.DB_NAME);
-  req.usersCollection = db.collection(process.env.USERS_COLLECTION);
+  req.usersCollection = db.collection(process.env.DB_USERS_COLLECTION);
   return next();
 }
 

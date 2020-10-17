@@ -21,7 +21,7 @@ function envLoader(
       name: process.env.DB_NAME,
       maxIdlePeriod: parseInt(process.env.DB_MAX_IDLE_PERIOD),
       collections: {
-        users: process.env.USERS_COLLECTION,
+        users: process.env.DB_USERS_COLLECTION,
       }
     },
     logLevel: process.env.LOG_LEVEL,

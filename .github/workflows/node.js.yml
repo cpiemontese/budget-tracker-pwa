@@ -36,7 +36,7 @@ jobs:
           ${{ runner.OS }}-node-
           ${{ runner.OS }}-:
 
-    - run: docker run -p 27017:27017 -d mongo:4.4
+    - run: docker run -p 27017:27017 -d mongo:4.2
     - run: npm ci
     - run: npm run build --if-present
     - run: npm test

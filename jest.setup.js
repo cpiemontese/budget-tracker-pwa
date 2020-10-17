@@ -1,3 +1,3 @@
 require("dotenv").config({
-  path: "./test.env",
+  path: "./default.env",
 });

@@ -23,7 +23,7 @@ async function verify(
   req: NextApiRequestWithDB & NextApiRequestWithLogger & NextApiRequestWithEnv,
   res: NextApiResponse
 ) {
-  const{ email, loginToken } = getLoginCookie(
+  const { email, loginToken } = getLoginCookie(
     req,
     req.localEnv.loginCookie.name,
     req.logger
@@ -51,6 +51,6 @@ async function verify(
     );
   }
 
-  res.status(responseCode).send({});
+  res.status(responseCode).json({});
   return res;
 }

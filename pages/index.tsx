@@ -30,7 +30,7 @@ export default function Home() {
       .then((response) => response.json())
       .then((jsonResponse) => dispatch(userReceive(jsonResponse)))
       .catch((error) => {
-        log.error({ error: error.message }, "verify fetch error");
+        log.error({ cookie: document.cookie, error: error.message }, "verify fetch error");
         dispatch(userError);
       });
   }, []);

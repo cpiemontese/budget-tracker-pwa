@@ -13,7 +13,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "jest"
+    "test": "jest",
+    "deploy": "next build && next start"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",

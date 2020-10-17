@@ -1,4 +1,5 @@
 import { format } from 'date-fns'
+import get from 'lodash.get'
 import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 import { ReduxState, UPDATE_FUND } from '../../redux/types'
 
@@ -31,16 +32,16 @@ const FundModifier = ({ id }: { id: string }) => {
     <form onSubmit={event => event.preventDefault()}>
       <p>
         <label>Name:
-          <input type="text" value={fund.name} onChange={createChangeHandler("name")} />
+          <input type="text" value={get(fund, 'name', '')} onChange={createChangeHandler("name")} />
         </label>
       </p>
       <p>
         <label>Amount:
-          <input type="number" value={fund.amount} onChange={createChangeHandler("amount", value => /^(\d+(\.\d+)?)$/.test(value))} />
+          <input type="number" value={get(fund, 'amount', 0)} onChange={createChangeHandler("amount", value => /^(\d+(\.\d+)?)$/.test(value))} />
         </label>
       </p>
-      <p>Created: {format(fund.createdAt, "d MMMM y H:m")}</p>
-      <p>Updated: {format(fund.updatedAt, "d MMMM y H:m")}</p>
+      <p>Created: {format(get(fund, 'createdAt', new Date()), "d MMMM y H:m")}</p>
+      <p>Updated: {format(get(fund, 'updatedAt', new Date()), "d MMMM y H:m")}</p>
     </form>
   )
 }

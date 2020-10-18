@@ -30,7 +30,10 @@ export default function Home() {
       .then((response) => response.json())
       .then((jsonResponse) => dispatch(userReceive(jsonResponse)))
       .catch((error) => {
-        log.error({ cookie: document.cookie, error: error.message }, "verify fetch error");
+        log.error(
+          { cookie: document.cookie, error: error.message },
+          "verify fetch error"
+        );
         dispatch(userError);
       });
   }, []);
@@ -43,6 +46,9 @@ export default function Home() {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         {fetching && <p>Fetching...</p>}
         <h2 className={utilStyles.headingLg}>Funds</h2>
+        <button className="w-full text-2xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:text-gray-900 text-white font-bold py-1 px-2 rounded">
+          +
+        </button>
         <ul className={utilStyles.list}>
           {Object.keys(funds).map((id) => (
             <Link href="/funds/[id]" as={`/funds/${id}`} key={id}>
@@ -56,6 +62,9 @@ export default function Home() {
           ))}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
+        <button className="w-full text-2xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:text-gray-900 text-white font-bold py-1 px-2 rounded">
+          +
+        </button>
         <ul className={utilStyles.list}>
           {Object.keys(budgetItems).map((id) => (
             <li className={utilStyles.listItem} key={id}>

@@ -13,6 +13,7 @@ import envLoader from "../../middleware/env-loader";
 
 import { verifyHandler } from "../../lib/verify-handler";
 import { createDeletionCookie, getLoginCookie } from "../../lib/cookies";
+import { getNullUser } from "../../lib/common";
 
 const handler = nextConnect().use(envLoader).use(db).use(logger).get(verify);
 
@@ -29,17 +30,17 @@ async function verify(
     req.logger
   );
 
-  const responseCode = await verifyHandler(
+  let responseCode = await verifyHandler(
     email,
     loginToken,
     req.usersCollection,
     req.logger
   );
 
+  let user = getNullUser()
   if (responseCode === 204) {
-    const user = await req.usersCollection.findOne({ email });
-    res.status(200).json(user);
-    return res;
+    user = await req.usersCollection.findOne({ email });
+    responseCode = 200;
   }
 
   if (responseCode === 401) {
@@ -51,6 +52,6 @@ async function verify(
     );
   }
 
-  res.status(responseCode).json({});
+  res.status(responseCode).json(user);
   return res;
 }

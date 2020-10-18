@@ -47,24 +47,31 @@ const reducer = (state = initialState, action: Action) => {
         fetching: false,
       };
     case USER_RECEIVE: {
-      const funds = action.user.funds;
-      const budgetItems = action.user.budgetItems;
+      const { funds, budgetItems } = state;
+      const userFunds = action.user.funds;
+      const userBudgetItems = action.user.budgetItems;
 
       return {
         ...state,
         logged: true,
         fetching: false,
-        funds: Object.keys(funds).reduce((fundsMap, fundKey) => {
-          fundsMap[fundKey] = funds[fundKey];
-          return fundsMap;
-        }, {}),
-        budgetItems: Object.keys(budgetItems).reduce(
-          (budgetItemsMap, budgetItemKey) => {
-            budgetItemsMap[budgetItemKey] = funds[budgetItemKey];
-            return budgetItemsMap;
-          },
-          {}
-        ),
+        funds: {
+          ...funds,
+          ...Object.keys(userFunds).reduce((fundsMap, fundKey) => {
+            fundsMap[fundKey] = userFunds[fundKey];
+            return fundsMap;
+          }, {})
+        },
+        budgetItems: {
+          ...budgetItems,
+          ...Object.keys(userBudgetItems).reduce(
+            (budgetItemsMap, budgetItemKey) => {
+              budgetItemsMap[budgetItemKey] = userFunds[budgetItemKey];
+              return budgetItemsMap;
+            },
+            {}
+          )
+        },
       };
     }
     default:

@@ -46,9 +46,11 @@ export default function Home() {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         {fetching && <p>Fetching...</p>}
         <h2 className={utilStyles.headingLg}>Funds</h2>
-        <button className="w-full text-2xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:text-gray-900 text-white font-bold py-1 px-2 rounded">
-          +
-        </button>
+        <Link href="/funds">
+          <button className="w-full text-2xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:text-gray-900 text-white font-bold py-1 px-2 rounded">
+            +
+          </button>
+        </Link>
         <ul className={utilStyles.list}>
           {Object.keys(funds).map((id) => (
             <Link href="/funds/[id]" as={`/funds/${id}`} key={id}>

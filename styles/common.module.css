@@ -1,0 +1,33 @@
+.btn {
+  @apply text-white font-bold p-2 rounded;
+}
+
+.btn-green {
+  @apply bg-green-500;
+}
+.btn-green:hover {
+  @apply bg-green-600;
+}
+.btn-green:focus {
+  @apply bg-green-700;
+}
+
+.btn-blue {
+  @apply bg-blue-500;
+}
+.btn-blue:hover {
+  @apply bg-blue-600;
+}
+.btn-blue:focus {
+  @apply bg-blue-700;
+}
+
+.btn-red {
+  @apply bg-red-500;
+}
+.btn-red:hover {
+  @apply bg-red-600;
+}
+.btn-red:focus {
+  @apply bg-red-700;
+}

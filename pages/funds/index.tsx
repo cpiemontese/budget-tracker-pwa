@@ -1,26 +1,44 @@
 import Head from "next/head";
+import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../components/layout";
+import { createFund } from "../../redux/actions";
+import { ReduxState } from "../../redux/types";
 
 const pageName = "Create a new fund";
 
 const classes = {
   label: "text-black-500 font-bold md:text-right mb-1 md:mb-0 pr-4",
   input:
-    "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500",
+    "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500",
 };
 
 export default function FundPage() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0.0);
+  const router = useRouter();
+
+  const { logged, email } = useSelector((state: ReduxState) => ({
+    logged: state.logged,
+    email: state.email,
+  }));
+
+  const dispatch = useDispatch();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    // TODO
-    // - dispatch update
-    // - dispatch sync start if user is logged in
-    // - dispatch sync end when sync ends (if sync was started)
+    dispatch(createFund(name, amount));
+    router.push("/");
+
+    // WIP: sync with db if user is logged
+    // if (logged) {
+    // fetch("/api/funds", {
+    // method: "POST",
+    // body: JSON.stringify({ email, name, amount }),
+    // });
+    // }
   }
 
   return (

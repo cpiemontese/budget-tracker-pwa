@@ -1,3 +1,4 @@
+import { randomBytes } from "crypto";
 import { User } from "../types";
 
 export const getNullUser = (): User => ({
@@ -11,3 +12,5 @@ export const getNullUser = (): User => ({
   funds: [],
   budgetItems: []
 })
+
+export const randomString = () => randomBytes(8).toString('hex');

@@ -1,8 +1,11 @@
 import { useMemo } from "react";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
+import { randomString } from "../lib/common";
+
 import {
   Action,
+  CREATE_FUND,
   ReduxState,
   UPDATE_FUND,
   USER_ERROR,
@@ -15,12 +18,30 @@ let store;
 const initialState: ReduxState = {
   logged: false,
   fetching: false,
+  email: null,
   funds: {},
   budgetItems: {},
 };
 
 const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
+    case CREATE_FUND: {
+      const funds = state.funds;
+      const id = randomString();
+      return {
+        ...state,
+        funds: {
+          ...funds,
+          [id]: {
+            id,
+            name: action.name,
+            amount: action.amount,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          },
+        },
+      };
+    }
     case UPDATE_FUND: {
       const { id, updates } = action;
       const funds = state.funds;
@@ -55,12 +76,13 @@ const reducer = (state = initialState, action: Action) => {
         ...state,
         logged: true,
         fetching: false,
+        email: action.user.email,
         funds: {
           ...funds,
           ...Object.keys(userFunds).reduce((fundsMap, fundKey) => {
             fundsMap[fundKey] = userFunds[fundKey];
             return fundsMap;
-          }, {})
+          }, {}),
         },
         budgetItems: {
           ...budgetItems,
@@ -70,7 +92,7 @@ const reducer = (state = initialState, action: Action) => {
               return budgetItemsMap;
             },
             {}
-          )
+          ),
         },
       };
     }

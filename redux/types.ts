@@ -6,6 +6,7 @@ export const USER_RECEIVE = "user/receive";
 export const USER_ERROR = "user/error";
 
 // Fund
+export const CREATE_FUND = "fund/create";
 export const UPDATE_FUND = "fund/update";
 
 type FundsMap = {
@@ -19,6 +20,7 @@ type BudgetItemsMap = {
 type ReduxState = {
   logged: boolean;
   fetching: boolean;
+  email: string;
   funds: FundsMap;
   budgetItems: BudgetItemsMap;
 };
@@ -42,6 +44,12 @@ interface UpdateFund {
   updates: { [name: string]: any };
 }
 
-type Action = UserRequest | UserReceive | UserError | UpdateFund;
+interface CreateFund {
+  type: typeof CREATE_FUND;
+  name: string;
+  amount: number;
+}
+
+type Action = UserRequest | UserReceive | UserError | UpdateFund | CreateFund;
 
 export type { Action, ReduxState };

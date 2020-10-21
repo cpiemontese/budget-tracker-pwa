@@ -9,6 +9,11 @@ export const USER_ERROR = "user/error";
 export const CREATE_FUND = "fund/create";
 export const UPDATE_FUND = "fund/update";
 
+// Sync
+export const SYNC_REQUEST = "sync/request";
+export const SYNC_SUCCESS = "sync/success";
+export const SYNC_FAILURE = "sync/failure";
+
 type FundsMap = {
   [id: string]: Fund;
 };
@@ -18,8 +23,10 @@ type BudgetItemsMap = {
 };
 
 type ReduxState = {
-  logged: boolean;
   fetching: boolean;
+  syncing: boolean;
+  lastSyncFailed: boolean;
+  logged: boolean;
   email: string;
   funds: FundsMap;
   budgetItems: BudgetItemsMap;
@@ -50,6 +57,26 @@ interface CreateFund {
   amount: number;
 }
 
-type Action = UserRequest | UserReceive | UserError | UpdateFund | CreateFund;
+interface SyncRequest {
+  type: typeof SYNC_REQUEST;
+}
+
+interface SyncSuccess {
+  type: typeof SYNC_SUCCESS;
+}
+
+interface SyncFailure {
+  type: typeof SYNC_FAILURE;
+}
+
+type Action =
+  | UserRequest
+  | UserReceive
+  | UserError
+  | UpdateFund
+  | CreateFund
+  | SyncRequest
+  | SyncSuccess
+  | SyncFailure;
 
 export type { Action, ReduxState };

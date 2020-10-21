@@ -5,8 +5,16 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Layout from "../../components/layout";
 import commonStyles from "../../styles/common.module.css";
-import { createFund } from "../../redux/actions";
+import {
+  createFund,
+  syncFailure,
+  syncRequest,
+  syncSuccess,
+} from "../../redux/actions";
 import { ReduxState } from "../../redux/types";
+import logger from "../../lib/logger";
+
+const log = logger();
 
 const pageName = "Create a new fund";
 
@@ -31,13 +39,15 @@ export default function FundPage() {
     dispatch(createFund(name, amount));
     router.push("/");
 
-    // WIP: sync with db if user is logged
-    // if (logged) {
-    // fetch("/api/funds", {
-    // method: "POST",
-    // body: JSON.stringify({ email, name, amount }),
-    // });
-    // }
+    if (logged) {
+      dispatch(syncRequest);
+      fetch(`/api/funds/${email}`, {
+        method: "POST",
+        body: JSON.stringify({ name, amount }),
+      })
+        .then((response) => dispatch(response.ok ? syncSuccess : syncFailure))
+        .catch((error) => log.error({ error: error.message }));
+    }
   }
 
   return (

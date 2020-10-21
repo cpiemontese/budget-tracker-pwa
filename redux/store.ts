@@ -7,6 +7,9 @@ import {
   Action,
   CREATE_FUND,
   ReduxState,
+  SYNC_FAILURE,
+  SYNC_REQUEST,
+  SYNC_SUCCESS,
   UPDATE_FUND,
   USER_ERROR,
   USER_RECEIVE,
@@ -16,8 +19,10 @@ import {
 let store;
 
 const initialState: ReduxState = {
-  logged: false,
   fetching: false,
+  syncing: false,
+  lastSyncFailed: false,
+  logged: false,
   email: null,
   funds: {},
   budgetItems: {},
@@ -96,6 +101,24 @@ const reducer = (state = initialState, action: Action) => {
         },
       };
     }
+    case SYNC_REQUEST:
+      return {
+        ...state,
+        syncing: true,
+        lastSyncFailed: false,
+      };
+    case SYNC_SUCCESS:
+      return {
+        ...state,
+        syncing: false,
+        lastSyncFailed: false,
+      };
+    case SYNC_FAILURE:
+      return {
+        ...state,
+        syncing: false,
+        lastSyncFailed: true,
+      };
     default:
       return state;
   }

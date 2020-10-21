@@ -1,5 +1,13 @@
 import { User } from "../types";
-import { CREATE_FUND, USER_ERROR, USER_RECEIVE, USER_REQUEST } from "./types";
+import {
+  CREATE_FUND,
+  SYNC_FAILURE,
+  SYNC_REQUEST,
+  SYNC_SUCCESS,
+  USER_ERROR,
+  USER_RECEIVE,
+  USER_REQUEST,
+} from "./types";
 
 export const userRequest = {
   type: USER_REQUEST,
@@ -19,3 +27,15 @@ export const createFund = (name: string, amount: number) => ({
   name,
   amount,
 });
+
+export const syncRequest = {
+  type: SYNC_REQUEST,
+};
+
+export const syncSuccess = {
+  type: SYNC_SUCCESS,
+};
+
+export const syncFailure = {
+  type: SYNC_FAILURE,
+};

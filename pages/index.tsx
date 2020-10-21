@@ -93,6 +93,9 @@ export const getStaticProps: GetStaticProps = async () => {
       initialReduxState: {
         fetching: false,
         logged: false,
+        syncing: false,
+        lastSyncFailed: false,
+        email: null,
         funds: {
           "1234": {
             id: "1234",

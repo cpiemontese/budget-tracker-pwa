@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import utilStyles from "../styles/utils.module.css";
-import commonStyles from "../../styles/common.module.css";
+import commonStyles from "../styles/common.module.css";
 import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";

@@ -48,7 +48,7 @@ const reducer = (state = initialState, action: Action) => {
       };
     }
     case UPDATE_FUND: {
-      const { id, updates } = action;
+      const { id, name, amount } = action;
       const funds = state.funds;
       const fund = state.funds[id];
       return {
@@ -57,7 +57,9 @@ const reducer = (state = initialState, action: Action) => {
           ...funds,
           [id]: {
             ...fund,
-            ...updates,
+            name,
+            amount,
+            updatedAt: Date.now(),
           },
         },
       };

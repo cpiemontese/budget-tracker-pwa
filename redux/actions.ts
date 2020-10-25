@@ -4,6 +4,7 @@ import {
   SYNC_FAILURE,
   SYNC_REQUEST,
   SYNC_SUCCESS,
+  UPDATE_FUND,
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
@@ -24,6 +25,13 @@ export const userError = {
 
 export const createFund = (name: string, amount: number) => ({
   type: CREATE_FUND,
+  name,
+  amount,
+});
+
+export const updateFund = (id: string, name: string, amount: number) => ({
+  type: UPDATE_FUND,
+  id,
   name,
   amount,
 });

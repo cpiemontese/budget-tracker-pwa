@@ -48,7 +48,8 @@ interface UserError {
 interface UpdateFund {
   type: typeof UPDATE_FUND;
   id: string;
-  updates: { [name: string]: any };
+  name: string;
+  amount: number;
 }
 
 interface CreateFund {

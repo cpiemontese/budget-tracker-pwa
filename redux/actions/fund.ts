@@ -1,4 +1,10 @@
-import { CreateFund, ReduxState, UpdateFund } from "../types";
+import {
+  ReduxState,
+  CreateFund,
+  UpdateFund,
+  DeleteFund,
+  RemoveFund,
+} from "../types";
 
 export function createFund(state: ReduxState, action: CreateFund) {
   const funds = state.funds;
@@ -35,5 +41,28 @@ export function updateFund(state: ReduxState, action: UpdateFund) {
         updatedAt: Date.now(),
       },
     },
+  };
+}
+export function deleteFund(state: ReduxState, action: DeleteFund) {
+  const { id } = action;
+  const funds = state.funds;
+  const fund = state.funds[id];
+  return {
+    ...state,
+    funds: {
+      ...funds,
+      [id]: {
+        ...fund,
+        deleted: true,
+      },
+    },
+  };
+}
+
+export function removeFund(state: ReduxState, action: RemoveFund) {
+  const { id } = action;
+  delete state.funds[id];
+  return {
+    ...state,
   };
 }

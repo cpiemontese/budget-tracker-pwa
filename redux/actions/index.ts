@@ -1,6 +1,8 @@
 import { User } from "../../types";
 import {
   CREATE_FUND,
+  DELETE_FUND,
+  REMOVE_FUND,
   SYNC,
   SYNC_FAILURE,
   SYNC_REQUEST,
@@ -36,6 +38,16 @@ export const updateFund = (id: string, name: string, amount: number) => ({
   id,
   name,
   amount,
+});
+
+export const deleteFund = (id: string) => ({
+  type: DELETE_FUND,
+  id,
+});
+
+export const removeFund = (id: string) => ({
+  type: REMOVE_FUND,
+  id,
 });
 
 export const sync = (

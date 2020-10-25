@@ -8,6 +8,8 @@ export const USER_ERROR = "user/error";
 // Fund
 export const CREATE_FUND = "fund/create";
 export const UPDATE_FUND = "fund/update";
+export const DELETE_FUND = "fund/delete";
+export const REMOVE_FUND = "fund/remove";
 
 // Sync
 export const SYNC = "sync";
@@ -56,6 +58,13 @@ interface UserError {
   type: typeof USER_ERROR;
 }
 
+interface CreateFund {
+  type: typeof CREATE_FUND;
+  id: string;
+  name: string;
+  amount: number;
+}
+
 interface UpdateFund {
   type: typeof UPDATE_FUND;
   id: string;
@@ -63,11 +72,14 @@ interface UpdateFund {
   amount: number;
 }
 
-interface CreateFund {
-  type: typeof CREATE_FUND;
+interface DeleteFund {
+  type: typeof DELETE_FUND;
   id: string;
-  name: string;
-  amount: number;
+}
+
+interface RemoveFund {
+  type: typeof REMOVE_FUND;
+  id: string;
 }
 
 interface SyncRequest {
@@ -93,11 +105,21 @@ type Action =
   | UserRequest
   | UserReceive
   | UserError
-  | UpdateFund
   | CreateFund
+  | UpdateFund
+  | DeleteFund
+  | RemoveFund
   | Sync
   | SyncRequest
   | SyncSuccess
   | SyncFailure;
 
-export type { Action, ReduxState, Sync, CreateFund, UpdateFund };
+export type {
+  Action,
+  ReduxState,
+  Sync,
+  CreateFund,
+  UpdateFund,
+  DeleteFund,
+  RemoveFund,
+};

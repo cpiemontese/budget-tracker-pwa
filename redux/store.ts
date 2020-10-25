@@ -14,9 +14,11 @@ import {
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
+  DELETE_FUND,
+  REMOVE_FUND,
 } from "../redux/types";
 
-import { createFund, updateFund } from "./actions/fund";
+import { createFund, deleteFund, removeFund, updateFund } from "./actions/fund";
 import { sync } from "./actions/sync";
 
 let store;
@@ -37,6 +39,10 @@ const reducer = (state = initialState, action: Action) => {
       return createFund(state, action);
     case UPDATE_FUND:
       return updateFund(state, action);
+    case DELETE_FUND:
+      return deleteFund(state, action);
+    case REMOVE_FUND:
+      return removeFund(state, action);
     case USER_REQUEST:
       return {
         ...state,

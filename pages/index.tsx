@@ -60,14 +60,16 @@ export default function Home() {
           </button>
         </Link>
         <ul className={utilStyles.list}>
-          {Object.keys(funds).map((id) => (
-            <EntityListItem
-              id={id}
-              entityName="funds"
-              name={funds[id].name}
-              amount={funds[id].amount.toFixed(2)}
-            />
-          ))}
+          {Object.keys(funds).map((id) =>
+            funds[id].deleted ? null : (
+              <EntityListItem
+                id={id}
+                entityName="funds"
+                name={funds[id].name}
+                amount={funds[id].amount.toFixed(2)}
+              />
+            )
+          )}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
         <button
@@ -76,17 +78,19 @@ export default function Home() {
           +
         </button>
         <ul className={utilStyles.list}>
-          {Object.keys(budgetItems).map((id) => (
-            <EntityListItem
-              id={id}
-              entityName="budgetItems"
-              name={budgetItems[id].name}
-              amount={amountToValue(
-                budgetItems[id].amount,
-                budgetItems[id].type
-              ).toFixed(2)}
-            />
-          ))}
+          {Object.keys(budgetItems).map((id) =>
+            budgetItems[id].deleted ? null : (
+              <EntityListItem
+                id={id}
+                entityName="budgetItems"
+                name={budgetItems[id].name}
+                amount={amountToValue(
+                  budgetItems[id].amount,
+                  budgetItems[id].type
+                ).toFixed(2)}
+              />
+            )
+          )}
         </ul>
       </section>
     </Layout>

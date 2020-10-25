@@ -39,12 +39,14 @@ export default function CreateFund() {
     }
 
     dispatch(syncRequest);
-    fetch(`/api/funds/${email}`, {
+    fetch(`/api/budgetItems/${email}`, {
       method: "POST",
       body: JSON.stringify({ name, amount }),
     })
       .then((response) => response.json())
-      .then(({ id: backendId }) => dispatch(sync(localId, backendId, "funds")))
+      .then(({ id: backendId }) =>
+        dispatch(sync(localId, backendId, "budgetItems"))
+      )
       .then(() => dispatch(syncSuccess))
       .catch((error) => {
         dispatch(syncFailure);
@@ -54,7 +56,7 @@ export default function CreateFund() {
 
   return (
     <EntityForm
-      pageName={"Create a new fund"}
+      pageName={"Create a new budget item"}
       type="create"
       name={name}
       amount={amount}

@@ -24,7 +24,7 @@ export default function UpdateFund() {
   const { logged, email, fund } = useSelector((state: ReduxState) => ({
     logged: state.logged,
     email: state.email,
-    fund: state.funds[id],
+    fund: state.budgetItems[id],
   }));
 
   const [name, setName] = useState(get(fund, "name", ""));
@@ -34,7 +34,7 @@ export default function UpdateFund() {
 
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(updateEntity("funds", id, name, amount));
+    dispatch(updateEntity(id, name, amount));
     router.push("/");
 
     if (!logged) {
@@ -44,18 +44,20 @@ export default function UpdateFund() {
     dispatch(syncRequest);
 
     fund.synced
-      ? fetch(`/api/funds/${email}/${id}`, {
+      ? fetch(`/api/budgetItems/${email}/${id}`, {
           method: "PATCH",
           body: JSON.stringify({ name, amount }),
         })
           .then((response) => dispatch(response.ok ? syncSuccess : syncFailure))
           .catch((error) => log.error({ error: error.message }))
-      : fetch(`/api/funds/${email}`, {
+      : fetch(`/api/budgetItems/${email}`, {
           method: "POST",
           body: JSON.stringify({ name, amount }),
         })
           .then((response) => response.json())
-          .then(({ id: backendId }) => dispatch(sync(id, backendId, "funds")))
+          .then(({ id: backendId }) =>
+            dispatch(sync(id, backendId, "budgetItems"))
+          )
           .then(() => dispatch(syncSuccess))
           .catch((error) => {
             dispatch(syncFailure);
@@ -65,7 +67,7 @@ export default function UpdateFund() {
 
   return (
     <EntityForm
-      pageName={"Update fund"}
+      pageName={"Update budget item"}
       type="update"
       name={name}
       amount={amount}

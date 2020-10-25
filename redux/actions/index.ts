@@ -1,13 +1,13 @@
 import { User } from "../../types";
 import {
-  CREATE_FUND,
-  DELETE_FUND,
-  REMOVE_FUND,
+  CREATE_ENTITY,
+  DELETE_ENTITY,
+  REMOVE_ENTITY,
   SYNC,
   SYNC_FAILURE,
   SYNC_REQUEST,
   SYNC_SUCCESS,
-  UPDATE_FUND,
+  UPDATE_ENTITY,
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
@@ -26,27 +26,47 @@ export const userError = {
   type: USER_ERROR,
 };
 
-export const createFund = (id: string, name: string, amount: number) => ({
-  type: CREATE_FUND,
+export const createEntity = (
+  entityName: "funds" | "budgetItems",
+  id: string,
+  name: string,
+  amount: number
+) => ({
+  type: CREATE_ENTITY,
+  entityName,
   id,
   name,
   amount,
 });
 
-export const updateFund = (id: string, name: string, amount: number) => ({
-  type: UPDATE_FUND,
+export const updateEntity = (
+  entityName: "funds" | "budgetItems",
+  id: string,
+  name: string,
+  amount: number
+) => ({
+  type: UPDATE_ENTITY,
+  entityName,
   id,
   name,
   amount,
 });
 
-export const deleteFund = (id: string) => ({
-  type: DELETE_FUND,
+export const deleteEntity = (
+  entityName: "funds" | "budgetItems",
+  id: string
+) => ({
+  type: DELETE_ENTITY,
+  entityName,
   id,
 });
 
-export const removeFund = (id: string) => ({
-  type: REMOVE_FUND,
+export const removeEntity = (
+  entityName: "funds" | "budgetItems",
+  id: string
+) => ({
+  type: REMOVE_ENTITY,
+  entityName,
   id,
 });
 

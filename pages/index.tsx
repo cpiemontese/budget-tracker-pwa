@@ -64,6 +64,7 @@ export default function Home() {
             funds[id].deleted ? null : (
               <EntityListItem
                 id={id}
+                endpoint="funds"
                 entityName="funds"
                 name={funds[id].name}
                 amount={funds[id].amount.toFixed(2)}
@@ -72,16 +73,19 @@ export default function Home() {
           )}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
-        <button
-          className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-        >
-          +
-        </button>
+        <Link href="/budget-items">
+          <button
+            className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+          >
+            +
+          </button>
+        </Link>
         <ul className={utilStyles.list}>
           {Object.keys(budgetItems).map((id) =>
             budgetItems[id].deleted ? null : (
               <EntityListItem
                 id={id}
+                endpoint="budget-items"
                 entityName="budgetItems"
                 name={budgetItems[id].name}
                 amount={amountToValue(

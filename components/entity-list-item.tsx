@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
-import { deleteFund, removeFund } from "../redux/actions";
+import { deleteEntity, removeEntity } from "../redux/actions";
 import { trashCan } from "../styles/svg";
 import { ReduxState } from "../redux/types";
 
 const actions = {
   funds: {
-    delete: deleteFund,
-    remove: removeFund,
+    delete: deleteEntity,
+    remove: removeEntity,
   },
 };
 
@@ -20,11 +20,13 @@ export default function EntityListItem({
   id,
   name,
   amount,
+  endpoint,
   entityName,
 }: {
   id: string;
   name: string;
   amount: string;
+  endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
 }) {
   const { logged, email, entity } = useSelector((state: ReduxState) => ({
@@ -42,7 +44,7 @@ export default function EntityListItem({
       return;
     }
 
-    fetch(`/api/${entityName}/${email}/${id}`, {
+    fetch(`/api/${endpoint}/${email}/${id}`, {
       method: "DELETE",
     })
       .then(() => dispatch(actions[entityName].remove(id)))
@@ -51,7 +53,7 @@ export default function EntityListItem({
 
   return (
     <li className={commonStyles["list-item"]} key={id}>
-      <Link href={`/${entityName}/[id]`} as={`/${entityName}/${id}`} key={id}>
+      <Link href={`/${endpoint}/[id]`} as={`/${endpoint}/${id}`} key={id}>
         <a className={`w-full flex ${commonStyles["anchor"]}`}>
           <div className="w-1/4 mr-4 md:mr-0 font-bold">
             <p>Name</p>

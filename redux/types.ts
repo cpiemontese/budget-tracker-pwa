@@ -10,6 +10,7 @@ export const CREATE_FUND = "fund/create";
 export const UPDATE_FUND = "fund/update";
 
 // Sync
+export const SYNC = "sync";
 export const SYNC_REQUEST = "sync/request";
 export const SYNC_SUCCESS = "sync/success";
 export const SYNC_FAILURE = "sync/failure";
@@ -19,12 +20,17 @@ type ReduxFund = Fund & {
   deleted: boolean;
 };
 
+type ReduxBudgetItem = BudgetItem & {
+  synced: boolean;
+  deleted: boolean;
+};
+
 type FundsMap = {
   [id: string]: ReduxFund;
 };
 
 type BudgetItemsMap = {
-  [id: string]: BudgetItem;
+  [id: string]: ReduxBudgetItem;
 };
 
 type ReduxState = {
@@ -59,12 +65,20 @@ interface UpdateFund {
 
 interface CreateFund {
   type: typeof CREATE_FUND;
+  id: string;
   name: string;
   amount: number;
 }
 
 interface SyncRequest {
   type: typeof SYNC_REQUEST;
+}
+
+interface Sync {
+  type: typeof SYNC;
+  localId: string; // id of fund or budget item saved locally
+  backendId: string; // id of fund or budget item from backend
+  entityName: "funds" | "budgetItems";
 }
 
 interface SyncSuccess {
@@ -81,8 +95,9 @@ type Action =
   | UserError
   | UpdateFund
   | CreateFund
+  | Sync
   | SyncRequest
   | SyncSuccess
   | SyncFailure;
 
-export type { Action, ReduxState };
+export type { Action, ReduxState, Sync, CreateFund, UpdateFund };

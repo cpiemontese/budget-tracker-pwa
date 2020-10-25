@@ -11,12 +11,13 @@ import {
   updateFund,
   syncFailure,
   syncRequest,
+  sync,
   syncSuccess,
 } from "../../redux/actions";
 
 const log = logger();
 
-export default function FundPage() {
+export default function UpdateFund() {
   const router = useRouter();
   const id = router.query.id as string;
 
@@ -36,20 +37,36 @@ export default function FundPage() {
     dispatch(updateFund(id, name, amount));
     router.push("/");
 
-    if (logged) {
-      dispatch(syncRequest);
-      fetch(`/api/funds/${email}/${id}`, {
-        method: "PATCH",
-        body: JSON.stringify({ name, amount }),
-      })
-        .then((response) => dispatch(response.ok ? syncSuccess : syncFailure))
-        .catch((error) => log.error({ error: error.message }));
+    if (!logged) {
+      return;
     }
+
+    dispatch(syncRequest);
+
+    fund.synced
+      ? fetch(`/api/funds/${email}/${id}`, {
+          method: "PATCH",
+          body: JSON.stringify({ name, amount }),
+        })
+          .then((response) => dispatch(response.ok ? syncSuccess : syncFailure))
+          .catch((error) => log.error({ error: error.message }))
+      : fetch(`/api/funds/${email}`, {
+          method: "POST",
+          body: JSON.stringify({ name, amount }),
+        })
+          .then((response) => response.json())
+          .then(({ id: backendId }) => dispatch(sync(id, backendId, "funds")))
+          .then(() => dispatch(syncSuccess))
+          .catch((error) => {
+            dispatch(syncFailure);
+            log.error({ error: error.message });
+          });
   }
 
   return (
     <Fund
       pageName={"Update fund"}
+      type="update"
       name={name}
       amount={amount}
       setName={setName}

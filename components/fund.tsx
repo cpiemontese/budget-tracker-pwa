@@ -10,6 +10,7 @@ const formInput =
 
 const Fund = ({
   pageName,
+  type,
   name,
   amount,
   setName,
@@ -17,6 +18,7 @@ const Fund = ({
   submitHandler,
 }: {
   pageName: string;
+  type: "create" | "update";
   name: string;
   amount: number;
   setName: (value: SetStateAction<string>) => void;
@@ -58,9 +60,13 @@ const Fund = ({
         </div>
         <div>
           <input
-            className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+            className={`w-full ${commonStyles.btn} ${
+              type === "create"
+                ? commonStyles["btn-green"]
+                : commonStyles["btn-blue"]
+            }`}
             type="submit"
-            value="Update"
+            value={type === "create" ? "Create" : "Update"}
           />
         </div>
       </form>

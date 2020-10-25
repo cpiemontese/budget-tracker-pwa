@@ -8,13 +8,15 @@ import {
   createFund,
   syncFailure,
   syncRequest,
+  sync,
   syncSuccess,
 } from "../../redux/actions";
 import Fund from "../../components/fund";
+import { randomString } from "../../lib/common";
 
 const log = logger();
 
-export default function FundPage() {
+export default function CreateFund() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0.0);
   const router = useRouter();
@@ -28,23 +30,32 @@ export default function FundPage() {
 
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(createFund(name, amount));
+    const localId = randomString();
+    dispatch(createFund(localId, name, amount));
     router.push("/");
 
-    if (logged) {
-      dispatch(syncRequest);
-      fetch(`/api/funds/${email}`, {
-        method: "POST",
-        body: JSON.stringify({ name, amount }),
-      })
-        .then((response) => dispatch(response.ok ? syncSuccess : syncFailure))
-        .catch((error) => log.error({ error: error.message }));
+    if (!logged) {
+      return;
     }
+
+    dispatch(syncRequest);
+    fetch(`/api/funds/${email}`, {
+      method: "POST",
+      body: JSON.stringify({ name, amount }),
+    })
+      .then((response) => response.json())
+      .then(({ id: backendId }) => dispatch(sync(localId, backendId, "funds")))
+      .then(() => dispatch(syncSuccess))
+      .catch((error) => {
+        dispatch(syncFailure);
+        log.error({ error: error.message });
+      });
   }
 
   return (
     <Fund
       pageName={"Create a new fund"}
+      type="create"
       name={name}
       amount={amount}
       setName={setName}

@@ -1,6 +1,7 @@
-import { User } from "../types";
+import { User } from "../../types";
 import {
   CREATE_FUND,
+  SYNC,
   SYNC_FAILURE,
   SYNC_REQUEST,
   SYNC_SUCCESS,
@@ -8,7 +9,7 @@ import {
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
-} from "./types";
+} from "../types";
 
 export const userRequest = {
   type: USER_REQUEST,
@@ -23,8 +24,9 @@ export const userError = {
   type: USER_ERROR,
 };
 
-export const createFund = (name: string, amount: number) => ({
+export const createFund = (id: string, name: string, amount: number) => ({
   type: CREATE_FUND,
+  id,
   name,
   amount,
 });
@@ -34,6 +36,17 @@ export const updateFund = (id: string, name: string, amount: number) => ({
   id,
   name,
   amount,
+});
+
+export const sync = (
+  localId: string,
+  backendId: string,
+  entityName: "funds" | "budgetItems"
+) => ({
+  type: SYNC,
+  localId,
+  backendId,
+  entityName,
 });
 
 export const syncRequest = {

@@ -1,20 +1,23 @@
 import { useMemo } from "react";
 import { createStore, applyMiddleware } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
-import { randomString } from "../lib/common";
 
 import {
   Action,
-  CREATE_FUND,
   ReduxState,
+  SYNC,
   SYNC_FAILURE,
   SYNC_REQUEST,
   SYNC_SUCCESS,
+  CREATE_FUND,
   UPDATE_FUND,
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
 } from "../redux/types";
+
+import { createFund, updateFund } from "./actions/fund";
+import { sync } from "./actions/sync";
 
 let store;
 
@@ -30,40 +33,10 @@ const initialState: ReduxState = {
 
 const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case CREATE_FUND: {
-      const funds = state.funds;
-      const id = randomString();
-      return {
-        ...state,
-        funds: {
-          ...funds,
-          [id]: {
-            id,
-            name: action.name,
-            amount: action.amount,
-            createdAt: Date.now(),
-            updatedAt: Date.now(),
-          },
-        },
-      };
-    }
-    case UPDATE_FUND: {
-      const { id, name, amount } = action;
-      const funds = state.funds;
-      const fund = state.funds[id];
-      return {
-        ...state,
-        funds: {
-          ...funds,
-          [id]: {
-            ...fund,
-            name,
-            amount,
-            updatedAt: Date.now(),
-          },
-        },
-      };
-    }
+    case CREATE_FUND:
+      return createFund(state, action);
+    case UPDATE_FUND:
+      return updateFund(state, action);
     case USER_REQUEST:
       return {
         ...state,
@@ -103,6 +76,8 @@ const reducer = (state = initialState, action: Action) => {
         },
       };
     }
+    case SYNC:
+      return sync(state, action);
     case SYNC_REQUEST:
       return {
         ...state,

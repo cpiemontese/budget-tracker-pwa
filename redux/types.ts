@@ -14,8 +14,13 @@ export const SYNC_REQUEST = "sync/request";
 export const SYNC_SUCCESS = "sync/success";
 export const SYNC_FAILURE = "sync/failure";
 
+type ReduxFund = Fund & {
+  synced: boolean;
+  deleted: boolean;
+};
+
 type FundsMap = {
-  [id: string]: Fund;
+  [id: string]: ReduxFund;
 };
 
 type BudgetItemsMap = {

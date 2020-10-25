@@ -12,6 +12,8 @@ import commonStyles from "../styles/common.module.css";
 import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
+import { trashCan } from "../styles/svg";
+import EntityListItem from "../components/entity-list-item";
 
 const log = logger();
 
@@ -59,22 +61,12 @@ export default function Home() {
         </Link>
         <ul className={utilStyles.list}>
           {Object.keys(funds).map((id) => (
-            <Link href="/funds/[id]" as={`/funds/${id}`} key={id}>
-              <a className={commonStyles["list-item"]}>
-                <div className="w-1/4 mr-4 md:mr-0 font-bold">
-                  <p>Name</p>
-                  <p>Amount</p>
-                  <p>Creation</p>
-                  <p>Update</p>
-                </div>
-                <div className="w-3/4">
-                  <p>{funds[id].name}</p>
-                  <p>{funds[id].amount}</p>
-                  <p>{format(funds[id].createdAt, dateFormat)}</p>
-                  <p>{format(funds[id].updatedAt, dateFormat)}</p>
-                </div>
-              </a>
-            </Link>
+            <EntityListItem
+              id={id}
+              entityName="funds"
+              name={funds[id].name}
+              amount={funds[id].amount.toFixed(2)}
+            />
           ))}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
@@ -85,28 +77,15 @@ export default function Home() {
         </button>
         <ul className={utilStyles.list}>
           {Object.keys(budgetItems).map((id) => (
-            <a className={commonStyles["list-item"]} key={id}>
-              <div className="w-1/4 mr-4 md:mr-0 font-bold">
-                <p>Name</p>
-                <p>Amount</p>
-                <p>Type</p>
-                <p>Category</p>
-                <p>Fund</p>
-                <p>Creation</p>
-                <p>Update</p>
-              </div>
-              <div className="w-3/4">
-                <p>{budgetItems[id].name}</p>
-                <p>
-                  {amountToValue(budgetItems[id].amount, budgetItems[id].type)}
-                </p>
-                <p>{budgetItems[id].type}</p>
-                <p>{budgetItems[id].category}</p>
-                <p>{budgetItems[id].fund}</p>
-                <p>{format(budgetItems[id].createdAt, dateFormat)}</p>
-                <p>{format(budgetItems[id].updatedAt, dateFormat)}</p>
-              </div>
-            </a>
+            <EntityListItem
+              id={id}
+              entityName="budgetItems"
+              name={budgetItems[id].name}
+              amount={amountToValue(
+                budgetItems[id].amount,
+                budgetItems[id].type
+              ).toFixed(2)}
+            />
           ))}
         </ul>
       </section>

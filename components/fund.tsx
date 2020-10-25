@@ -8,7 +8,7 @@ const formLabel = "text-black-500 font-bold md:text-right mb-1 md:mb-0 pr-4";
 const formInput =
   "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500";
 
-const Fund = ({
+export default function Fund({
   pageName,
   type,
   name,
@@ -24,7 +24,7 @@ const Fund = ({
   setName: (value: SetStateAction<string>) => void;
   setAmount: (value: SetStateAction<number>) => void;
   submitHandler: (event: FormEvent<HTMLFormElement>) => void;
-}) => {
+}) {
   return (
     <Layout overrideName={pageName}>
       <Head>
@@ -72,6 +72,4 @@ const Fund = ({
       </form>
     </Layout>
   );
-};
-
-export default Fund;
+}

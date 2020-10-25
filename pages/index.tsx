@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import utilStyles from "../styles/utils.module.css";
+import commonStyles from "../../styles/common.module.css";
 import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
@@ -47,7 +48,9 @@ export default function Home() {
         {fetching && <p>Fetching...</p>}
         <h2 className={utilStyles.headingLg}>Funds</h2>
         <Link href="/funds">
-          <button className="w-full text-2xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:text-gray-900 text-white font-bold py-1 px-2 rounded">
+          <button
+            className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+          >
             +
           </button>
         </Link>
@@ -64,7 +67,9 @@ export default function Home() {
           ))}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
-        <button className="w-full text-2xl bg-blue-500 hover:bg-blue-600 active:bg-blue-700 active:text-gray-900 text-white font-bold py-1 px-2 rounded">
+        <button
+          className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+        >
           +
         </button>
         <ul className={utilStyles.list}>

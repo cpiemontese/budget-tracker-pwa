@@ -31,3 +31,10 @@
 .btn-red:focus {
   @apply bg-red-700;
 }
+
+.list-item {
+  @apply w-full block flex p-2 pl-4 mt-4 border-l-2 border-gray-500 text-black transform transition ease-in-out duration-300;
+}
+.list-item:hover {
+  @apply border-gray-600 no-underline bg-gray-100 scale-101 shadow-md;
+}

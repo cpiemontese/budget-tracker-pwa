@@ -2,6 +2,7 @@ import Head from "next/head";
 import Link from "next/link";
 import Layout, { siteTitle } from "../components/layout";
 import { useEffect } from "react";
+import { format } from "date-fns";
 import { GetStaticProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -13,6 +14,8 @@ import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
 
 const log = logger();
+
+const dateFormat = "d MMMM y H:mm";
 
 export default function Home() {
   const { funds, budgetItems, fetching } = useSelector((state: ReduxState) => ({
@@ -57,11 +60,19 @@ export default function Home() {
         <ul className={utilStyles.list}>
           {Object.keys(funds).map((id) => (
             <Link href="/funds/[id]" as={`/funds/${id}`} key={id}>
-              <a>
-                <p>{funds[id].name}</p>
-                <p>{funds[id].amount}</p>
-                <p>{funds[id].createdAt}</p>
-                <p>{funds[id].updatedAt}</p>
+              <a className={commonStyles["list-item"]}>
+                <div className="w-1/4 mr-4 md:mr-0 font-bold">
+                  <p>Name</p>
+                  <p>Amount</p>
+                  <p>Creation</p>
+                  <p>Update</p>
+                </div>
+                <div className="w-3/4">
+                  <p>{funds[id].name}</p>
+                  <p>{funds[id].amount}</p>
+                  <p>{format(funds[id].createdAt, dateFormat)}</p>
+                  <p>{format(funds[id].updatedAt, dateFormat)}</p>
+                </div>
               </a>
             </Link>
           ))}
@@ -74,17 +85,28 @@ export default function Home() {
         </button>
         <ul className={utilStyles.list}>
           {Object.keys(budgetItems).map((id) => (
-            <li className={utilStyles.listItem} key={id}>
-              <p>{budgetItems[id].name}</p>
-              <p>
-                {amountToValue(budgetItems[id].amount, budgetItems[id].type)}
-              </p>
-              <p>{budgetItems[id].type}</p>
-              <p>{budgetItems[id].category}</p>
-              <p>{budgetItems[id].fund}</p>
-              <p>{budgetItems[id].createdAt}</p>
-              <p>{budgetItems[id].updatedAt}</p>
-            </li>
+            <a className={commonStyles["list-item"]} key={id}>
+              <div className="w-1/4 mr-4 md:mr-0 font-bold">
+                <p>Name</p>
+                <p>Amount</p>
+                <p>Type</p>
+                <p>Category</p>
+                <p>Fund</p>
+                <p>Creation</p>
+                <p>Update</p>
+              </div>
+              <div className="w-3/4">
+                <p>{budgetItems[id].name}</p>
+                <p>
+                  {amountToValue(budgetItems[id].amount, budgetItems[id].type)}
+                </p>
+                <p>{budgetItems[id].type}</p>
+                <p>{budgetItems[id].category}</p>
+                <p>{budgetItems[id].fund}</p>
+                <p>{format(budgetItems[id].createdAt, dateFormat)}</p>
+                <p>{format(budgetItems[id].updatedAt, dateFormat)}</p>
+              </div>
+            </a>
           ))}
         </ul>
       </section>
@@ -115,7 +137,7 @@ export const getStaticProps: GetStaticProps = async () => {
         budgetItems: {
           "4567": {
             id: "4567",
-            fund: "1234",
+            fund: "some fund",
             amount: 50,
             type: "expense",
             name: "some item",

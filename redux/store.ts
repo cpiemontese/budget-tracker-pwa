@@ -79,7 +79,7 @@ const reducer = (state = initialState, action: Action) => {
 
       return {
         ...state,
-        logged: true,
+        logged: action.user.email !== null,
         fetching: false,
         email: action.user.email,
         funds: {

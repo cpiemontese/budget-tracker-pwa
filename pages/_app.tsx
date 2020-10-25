@@ -1,7 +1,9 @@
-import "../styles/tailwind.css";
-import "../styles/global.css";
 import { AppProps } from "next/app";
 import { Provider } from "react-redux";
+
+import "../styles/tailwind.css";
+import "../styles/global.css";
+
 import { useStore } from "../redux/store";
 import { ReduxState } from "../redux/types";
 

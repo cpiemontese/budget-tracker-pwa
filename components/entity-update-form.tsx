@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
-import EntityForm from "./entity-form";
 import { ReduxBudgetItem, ReduxFund, ReduxState } from "../redux/types";
 import {
   updateEntity,
@@ -12,22 +11,19 @@ import {
   syncSuccess,
   syncFailure,
 } from "../redux/actions";
-import { Inputs } from "../types";
 
 const log = logger({ browser: true });
 
 export default function EntityUpdateForm({
-  pageName,
   endpoint,
   entityName,
-  inputs,
   getData,
+  children,
 }: {
-  pageName: string;
   endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
-  inputs: Inputs;
   getData: () => object;
+  children: any;
 }) {
   const router = useRouter();
   const id = router.query.id as string;
@@ -73,12 +69,5 @@ export default function EntityUpdateForm({
       });
   }
 
-  return (
-    <EntityForm
-      pageName={pageName}
-      type="update"
-      inputs={inputs}
-      submitHandler={submitHandler}
-    />
-  );
+  return children(submitHandler);
 }

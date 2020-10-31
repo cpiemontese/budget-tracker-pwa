@@ -10,15 +10,14 @@ import commonStyles from "../../styles/common.module.css";
 import EntityUpdateForm from "../../components/entity-update-form";
 import { ReduxState } from "../../redux/types";
 
-const formLabel = "text-black-500 font-bold md:text-right mb-1 md:mb-0 pr-4";
-const formInput =
-  "bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-green-500";
+const formLabel = `md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`;
+const formInput = `md:w-2/3 ${commonStyles.smooth} ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`;
 
 export default function UpdateBudgetItem() {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const { funds, budgetItem } = useSelector((state: ReduxState) => ({
+  const { budgetItem } = useSelector((state: ReduxState) => ({
     funds: state.funds,
     budgetItem: state.budgetItems[id],
   }));
@@ -52,30 +51,24 @@ export default function UpdateBudgetItem() {
           </Head>
           <form onSubmit={submitHandler} className="w-full">
             <div className="md:flex md:items-center mb-6">
-              <label
-                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
-                htmlFor="name-input"
-              >
+              <label className={formLabel} htmlFor="name-input">
                 Name
               </label>
               <input
                 id="name-input"
-                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
+                className={formInput}
                 type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </div>
             <div className="md:flex md:items-center mb-6">
-              <label
-                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
-                htmlFor="amount-input"
-              >
+              <label className={formLabel} htmlFor="amount-input">
                 Amount
               </label>
               <input
                 id="amount-input"
-                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
+                className={formInput}
                 type="number"
                 step="0.01"
                 value={amount}
@@ -83,38 +76,34 @@ export default function UpdateBudgetItem() {
               />
             </div>
             <div className="md:flex md:items-center mb-6">
-              <label
-                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
-                htmlFor="category-input"
-              >
+              <label className={formLabel} htmlFor="category-input">
                 Category
               </label>
               <input
                 id="category-input"
-                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
+                className={formInput}
                 type="text"
                 value={category}
                 onChange={(event) => setCategory(event.target.value)}
               />
             </div>
             <div className="md:flex md:items-center mb-6">
-              <label
-                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
-                htmlFor="description-input"
-              >
+              <label className={formLabel} htmlFor="description-input">
                 Description
               </label>
-              <input
+              <textarea
                 id="description-input"
-                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
-                type="text"
-                value={category}
+                className={formInput}
+                rows={3}
+                maxLength={280}
                 onChange={(event) => setDescription(event.target.value)}
-              />
+              >
+                {description}
+              </textarea>
             </div>
             <div>
               <input
-                className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                className={`w-full ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
                 type="submit"
                 value="Update"
               />

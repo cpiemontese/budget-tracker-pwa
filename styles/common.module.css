@@ -57,8 +57,12 @@
 }
 
 .list-item {
-  @apply w-full block flex justify-between p-2 pl-4 mt-4 border-l-2 border-gray-500 transform transition ease-in-out duration-300;
+  @apply w-full block flex justify-between p-2 pl-4 mt-4 border-l-2 border-gray-500;
 }
 .list-item:hover {
   @apply border-gray-600 bg-gray-100;
+}
+
+.smooth {
+  @apply transform transition ease-in-out duration-200;
 }

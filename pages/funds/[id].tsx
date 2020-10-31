@@ -10,6 +10,9 @@ import commonStyles from "../../styles/common.module.css";
 import EntityUpdateForm from "../../components/entity-update-form";
 import { ReduxState } from "../../redux/types";
 
+const formLabel = `md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`;
+const formInput = `md:w-2/3 ${commonStyles.smooth} ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`;
+
 export default function UpdateFund() {
   const router = useRouter();
   const id = router.query.id as string;
@@ -35,30 +38,24 @@ export default function UpdateFund() {
           </Head>
           <form onSubmit={submitHandler} className="w-full">
             <div className="md:flex md:items-center mb-6">
-              <label
-                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
-                htmlFor="name-input"
-              >
+              <label className={formLabel} htmlFor="name-input">
                 Name
               </label>
               <input
                 id="name-input"
-                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
+                className={formInput}
                 type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
               />
             </div>
             <div className="md:flex md:items-center mb-6">
-              <label
-                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
-                htmlFor="amount-input"
-              >
+              <label className={formLabel} htmlFor="amount-input">
                 Amount
               </label>
               <input
                 id="amount-input"
-                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
+                className={formInput}
                 type="number"
                 step="0.01"
                 value={amount}
@@ -67,7 +64,7 @@ export default function UpdateFund() {
             </div>
             <div>
               <input
-                className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                className={`w-full ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
                 type="submit"
                 value="Update"
               />

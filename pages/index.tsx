@@ -1,23 +1,27 @@
 import Head from "next/head";
 import Link from "next/link";
-import Layout, { siteTitle } from "../components/layout";
 import { useEffect } from "react";
-import { format } from "date-fns";
 import { GetStaticProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import utilStyles from "../styles/utils.module.css";
 import commonStyles from "../styles/common.module.css";
+import EntityListItem from "../components/entity-list-item";
+import Layout, { siteTitle } from "../components/layout";
 import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
-import { trashCan } from "../styles/svg";
-import EntityListItem from "../components/entity-list-item";
 
-const log = logger();
+const log = logger({ browser: true });
 
-const dateFormat = "d MMMM y H:mm";
+const addButton = (
+  <button
+    className={`w-full ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+  >
+    +
+  </button>
+);
 
 export default function Home() {
   const { funds, budgetItems, fetching } = useSelector((state: ReduxState) => ({
@@ -52,13 +56,7 @@ export default function Home() {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         {fetching && <p>Fetching...</p>}
         <h2 className={utilStyles.headingLg}>Funds</h2>
-        <Link href="/funds">
-          <button
-            className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-          >
-            +
-          </button>
-        </Link>
+        <Link href="/funds">{addButton}</Link>
         <ul className={utilStyles.list}>
           {Object.keys(funds).map((id) =>
             funds[id].deleted ? null : (
@@ -74,13 +72,7 @@ export default function Home() {
           )}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
-        <Link href="/budget-items">
-          <button
-            className={`w-full ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-          >
-            +
-          </button>
-        </Link>
+        <Link href="/budget-items">{addButton}</Link>
         <ul className={utilStyles.list}>
           {Object.keys(budgetItems).map((id) =>
             budgetItems[id].deleted ? null : (

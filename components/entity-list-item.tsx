@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
-import { deleteEntity, removeEntity } from "../redux/actions";
 import { trashCan } from "../styles/svg";
 import { ReduxState } from "../redux/types";
+import { deleteEntity, removeEntity } from "../redux/actions";
 
 const log = logger({ browser: true });
 
@@ -45,7 +45,7 @@ export default function EntityListItem({
   }
 
   return (
-    <li className={commonStyles["list-item"]}>
+    <li className={`${commonStyles["smooth"]} ${commonStyles["list-item"]}`}>
       <Link href={`/${endpoint}/[id]`} as={`/${endpoint}/${id}`} key={id}>
         <a className={`w-full flex ${commonStyles["anchor"]}`}>
           <div className="w-1/4 mr-4 md:mr-0 font-bold">
@@ -59,7 +59,7 @@ export default function EntityListItem({
         </a>
       </Link>
       <button
-        className="self-center bg-red-500 hover:bg-red-600 text-gray-900 hover:text-black focus:bg-red-700 p-2 rounded"
+        className={`self-center text-gray-900 hover:text-black p-2 rounded ${commonStyles["smooth"]} ${commonStyles["btn-inverted"]} ${commonStyles["btn-red"]}`}
         onClick={deleteHandler}
       >
         <svg

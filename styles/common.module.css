@@ -9,6 +9,10 @@
   @apply text-white font-bold p-2 rounded;
 }
 
+.btn-inverted {
+  @apply text-black font-bold p-2 rounded;
+}
+
 .btn-green {
   @apply bg-green-500;
 }

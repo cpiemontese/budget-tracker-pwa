@@ -119,6 +119,8 @@ type Action =
 export type {
   Action,
   ReduxState,
+  ReduxFund,
+  ReduxBudgetItem,
   Sync,
   CreateEntity,
   UpdateEntity,

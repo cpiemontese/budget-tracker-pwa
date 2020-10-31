@@ -11,7 +11,7 @@ export function createEntity(state: ReduxState, action: CreateEntity) {
   const entities = state[entityName];
   return {
     ...state,
-    entitys: {
+    [entityName]: {
       ...entities,
       [id]: {
         id,
@@ -28,15 +28,14 @@ export function createEntity(state: ReduxState, action: CreateEntity) {
 
 export function updateEntity(state: ReduxState, action: UpdateEntity) {
   const { entityName, id, data } = action;
-  const entities = state;
+  const entities = state[entityName];
   const entity = state[entityName][id];
   return {
     ...state,
-    entitys: {
+    [entityName]: {
       ...entities,
       [id]: {
         ...entity,
-        name,
         ...data,
         updatedAt: Date.now(),
       },
@@ -49,7 +48,7 @@ export function deleteEntity(state: ReduxState, action: DeleteEntity) {
   const entity = state[entityName][id];
   return {
     ...state,
-    entitys: {
+    [entityName]: {
       ...entities,
       [id]: {
         ...entity,

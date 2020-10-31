@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { FormEvent, SetStateAction } from "react";
+import { Dispatch, FormEvent, SetStateAction } from "react";
 
 import Layout from "./layout";
 import commonStyles from "../styles/common.module.css";
@@ -19,7 +19,7 @@ export default function EntityForm({
   inputs: Array<{
     label: string;
     value: any;
-    setter: (value: SetStateAction<any>) => void;
+    setter: Dispatch<SetStateAction<any>>;
   }>;
   submitHandler: (event: FormEvent<HTMLFormElement>) => void;
 }) {

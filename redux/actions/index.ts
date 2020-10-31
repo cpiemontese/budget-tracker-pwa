@@ -46,7 +46,6 @@ export const updateEntity = (
   type: UPDATE_ENTITY,
   entityName,
   id,
-  name,
   data,
 });
 

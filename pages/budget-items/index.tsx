@@ -61,11 +61,13 @@ export default function CreateFund() {
       inputs={[
         {
           label: "Name",
+          type: "text",
           value: name,
           setter: setName,
         },
         {
           label: "Amount",
+          type: "number",
           value: amount,
           setter: setAmount,
         },

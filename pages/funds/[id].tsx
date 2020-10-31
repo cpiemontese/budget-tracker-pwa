@@ -24,13 +24,15 @@ export default function UpdateFund() {
       inputs={[
         {
           label: "Name",
+          type: "text",
           value: name,
           setter: setName,
         },
         {
           label: "Amount",
+          type: "number",
           value: amount,
-          setter: setAmount,
+          setter: (value) => setAmount(parseFloat(value)),
         },
       ]}
       getData={() => ({

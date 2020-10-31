@@ -32,16 +32,32 @@ export default function UpdateBudgetItem() {
       endpoint="budget-items"
       entityName="budgetItems"
       inputs={[
-        { label: "Name", value: name, setter: setName },
+        { label: "Name", type: "text", value: name, setter: setName },
         {
           label: "Fund",
+          type: "text",
           value: get(funds, [fundId, "name"], "No fund"),
           setter: setFundId,
         },
-        { label: "Amount", value: amount, setter: setAmount },
-        { label: "Type", value: type, setter: setType },
-        { label: "Category", value: category, setter: setCategory },
-        { label: "Description", value: description, setter: setDescription },
+        {
+          label: "Amount",
+          type: "number",
+          value: amount,
+          setter: (value) => setAmount(parseFloat(value)),
+        },
+        { label: "Type", type: "text", value: type, setter: setType },
+        {
+          label: "Category",
+          type: "text",
+          value: category,
+          setter: setCategory,
+        },
+        {
+          label: "Description",
+          type: "text",
+          value: description,
+          setter: setDescription,
+        },
       ]}
       getData={() => ({
         name,

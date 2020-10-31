@@ -1,6 +1,6 @@
+import { FormEvent } from "react";
 import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
-import { Dispatch, FormEvent, SetStateAction, useState } from "react";
 
 import logger from "../lib/logger";
 import EntityForm from "./entity-form";
@@ -12,6 +12,7 @@ import {
   syncSuccess,
   syncFailure,
 } from "../redux/actions";
+import { Inputs } from "../types";
 
 const log = logger({ browser: true });
 
@@ -25,11 +26,7 @@ export default function EntityUpdateForm({
   pageName: string;
   endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
-  inputs: Array<{
-    label: string;
-    value: any;
-    setter: Dispatch<SetStateAction<any>>;
-  }>;
+  inputs: Inputs;
   getData: () => object;
 }) {
   const router = useRouter();

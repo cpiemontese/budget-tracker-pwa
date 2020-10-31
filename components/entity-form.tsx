@@ -1,8 +1,9 @@
 import Head from "next/head";
-import { Dispatch, FormEvent, SetStateAction } from "react";
+import { FormEvent } from "react";
 
 import Layout from "./layout";
 import commonStyles from "../styles/common.module.css";
+import { Inputs } from "../types";
 
 const formLabel = "text-black-500 font-bold md:text-right mb-1 md:mb-0 pr-4";
 const formInput =
@@ -16,11 +17,7 @@ export default function EntityForm({
 }: {
   pageName: string;
   type: "create" | "update";
-  inputs: Array<{
-    label: string;
-    value: any;
-    setter: Dispatch<SetStateAction<any>>;
-  }>;
+  inputs: Inputs;
   submitHandler: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
@@ -29,7 +26,7 @@ export default function EntityForm({
         <title>{pageName}</title>
       </Head>
       <form onSubmit={submitHandler} className="w-full">
-        {inputs.map(({ label, value, setter }) => (
+        {inputs.map(({ label, value, setter, type: inputType }) => (
           <div key={label} className="md:flex md:items-center mb-6">
             <label
               className={`md:w-1/3 block ${formLabel}`}
@@ -40,7 +37,7 @@ export default function EntityForm({
             <input
               id="name-input"
               className={`md:w-2/3 ${formInput}`}
-              type="text"
+              type={inputType}
               value={value}
               onChange={(event) => setter(event.target.value)}
             />

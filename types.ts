@@ -1,7 +1,8 @@
 import { Logger } from "pino";
-import { Transporter } from "nodemailer";
 import { Collection } from "mongodb";
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextApiRequest } from "next";
+import { Transporter } from "nodemailer";
+import { Dispatch, SetStateAction } from "react";
 
 type NextApiRequestWithDB = NextApiRequest & { usersCollection: Collection };
 type NextApiRequestWithTransporter = NextApiRequest & {
@@ -12,11 +13,11 @@ type NextApiRequestWithLogger = NextApiRequest & { logger: Logger };
 type LocalEnv = {
   app: { name: string; host: string };
   db: {
-    uri: string,
-    name: string,
-    maxIdlePeriod: number,
-    collections: { [name: string]: string }
-  },
+    uri: string;
+    name: string;
+    maxIdlePeriod: number;
+    collections: { [name: string]: string };
+  };
   loginCookie: { name: string; maxAge: number };
   logLevel: string;
   mailerName: string;
@@ -64,6 +65,13 @@ type User = {
   budgetItems: Array<BudgetItem>;
 };
 
+type Inputs = Array<{
+  label: string;
+  type: string;
+  value: any;
+  setter: Dispatch<SetStateAction<any>>;
+}>;
+
 export type {
   NextApiRequestWithDB,
   NextApiRequestWithTransporter,
@@ -73,4 +81,5 @@ export type {
   User,
   Fund,
   BudgetItem,
+  Inputs,
 };

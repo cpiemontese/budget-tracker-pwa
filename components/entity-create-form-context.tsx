@@ -15,19 +15,16 @@ import {
 
 const log = logger({ browser: true });
 
-export default function EntityCreateForm({
+export default function EntityCreateFormContext({
   endpoint,
   entityName,
-  getData,
   children,
 }: {
   endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
-  getData: () => object;
   children: any;
 }) {
   const router = useRouter();
-  const id = router.query.id as string;
 
   const { logged, email } = useSelector((state: ReduxState) => ({
     logged: state.logged,
@@ -36,7 +33,10 @@ export default function EntityCreateForm({
 
   const dispatch = useDispatch();
 
-  function submitHandler(event: FormEvent<HTMLFormElement>) {
+  function submitHandler(
+    event: FormEvent<HTMLFormElement>,
+    getData: () => object
+  ) {
     event.preventDefault();
     const localId = randomString();
     dispatch(createEntity(entityName, localId, getData()));

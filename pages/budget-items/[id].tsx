@@ -131,6 +131,7 @@ export default function UpdateBudgetItem() {
               <textarea
                 id="description-input"
                 className={formInput}
+                value={description}
                 rows={3}
                 maxLength={280}
                 autoComplete="on"

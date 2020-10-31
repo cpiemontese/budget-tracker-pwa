@@ -53,14 +53,14 @@ export default function UpdateBudgetItem() {
           <form onSubmit={submitHandler} className="w-full">
             <div className="md:flex md:items-center mb-6">
               <label
-                className={`md:w-1/3 block ${formLabel}`}
+                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
                 htmlFor="name-input"
               >
                 Name
               </label>
               <input
                 id="name-input"
-                className={`md:w-2/3 ${formInput}`}
+                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
                 type="text"
                 value={name}
                 onChange={(event) => setName(event.target.value)}
@@ -68,14 +68,14 @@ export default function UpdateBudgetItem() {
             </div>
             <div className="md:flex md:items-center mb-6">
               <label
-                className={`md:w-1/3 block ${formLabel}`}
+                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
                 htmlFor="amount-input"
               >
                 Amount
               </label>
               <input
                 id="amount-input"
-                className={`md:w-2/3 ${formInput}`}
+                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
                 type="number"
                 step="0.01"
                 value={amount}
@@ -84,14 +84,14 @@ export default function UpdateBudgetItem() {
             </div>
             <div className="md:flex md:items-center mb-6">
               <label
-                className={`md:w-1/3 block ${formLabel}`}
+                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
                 htmlFor="category-input"
               >
                 Category
               </label>
               <input
                 id="category-input"
-                className={`md:w-2/3 ${formInput}`}
+                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
                 type="text"
                 value={category}
                 onChange={(event) => setCategory(event.target.value)}
@@ -99,14 +99,14 @@ export default function UpdateBudgetItem() {
             </div>
             <div className="md:flex md:items-center mb-6">
               <label
-                className={`md:w-1/3 block ${formLabel}`}
+                className={`md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`}
                 htmlFor="description-input"
               >
                 Description
               </label>
               <input
                 id="description-input"
-                className={`md:w-2/3 ${formInput}`}
+                className={`md:w-2/3 ${commonStyles["form-input"]} ${commonStyles["form-input-blue"]}`}
                 type="text"
                 value={category}
                 onChange={(event) => setDescription(event.target.value)}

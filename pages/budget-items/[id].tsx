@@ -17,15 +17,15 @@ export default function UpdateBudgetItem() {
   const router = useRouter();
   const id = router.query.id as string;
 
-  const { budgetItem } = useSelector((state: ReduxState) => ({
+  const { budgetItem, funds } = useSelector((state: ReduxState) => ({
     funds: state.funds,
     budgetItem: state.budgetItems[id],
   }));
 
   const [name, setName] = useState(get(budgetItem, "name", ""));
   const [amount, setAmount] = useState(get(budgetItem, "amount", 0.0));
-  const [fundId] = useState(get(budgetItem, "fund", ""));
-  const [type] = useState(get(budgetItem, "type", "expense"));
+  const [fundId, setFundId] = useState(get(budgetItem, "fund", ""));
+  const [type, setType] = useState(get(budgetItem, "type", "expense"));
   const [category, setCategory] = useState(get(budgetItem, "category", ""));
   const [description, setDescription] = useState(
     get(budgetItem, "description", "")
@@ -76,6 +76,43 @@ export default function UpdateBudgetItem() {
               />
             </div>
             <div className="md:flex md:items-center mb-6">
+              <label className={formLabel} htmlFor="type-input">
+                Type
+              </label>
+              <select
+                id="type-input"
+                className={formInput}
+                onChange={(event) =>
+                  setType(event.target.value as "expense" | "income")
+                }
+              >
+                <option value="expense" selected={type === "expense"}>
+                  Expense
+                </option>
+                <option value="income" selected={type === "income"}>
+                  Income
+                </option>
+              </select>
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <label className={formLabel} htmlFor="fund-input">
+                Fund
+              </label>
+              <select
+                id="fund-input"
+                className={formInput}
+                onChange={(event) => setFundId(event.target.value)}
+              >
+                {Object.keys(funds).map((key) => {
+                  return (
+                    <option value={key} selected={key === fundId}>
+                      {funds[key].name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className="md:flex md:items-center mb-6">
               <label className={formLabel} htmlFor="category-input">
                 Category
               </label>
@@ -96,6 +133,8 @@ export default function UpdateBudgetItem() {
                 className={formInput}
                 rows={3}
                 maxLength={280}
+                autoComplete="on"
+                spellCheck={true}
                 onChange={(event) => setDescription(event.target.value)}
               >
                 {description}

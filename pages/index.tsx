@@ -114,6 +114,15 @@ export const getStaticProps: GetStaticProps = async () => {
             createdAt: Date.now(),
             updatedAt: Date.now(),
           },
+          "4321": {
+            id: "4321",
+            amount: 321,
+            name: "some other fund",
+            synced: false,
+            deleted: false,
+            createdAt: Date.now(),
+            updatedAt: Date.now(),
+          },
         },
         budgetItems: {
           "4567": {

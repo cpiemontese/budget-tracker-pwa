@@ -1,6 +1,6 @@
 import Head from "next/head";
 import Link from "next/link";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { GetStaticProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -12,6 +12,7 @@ import Layout, { siteTitle } from "../components/layout";
 import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
+import FundDeleteModal from "../components/fund-delete-modal";
 
 const log = logger({ browser: true });
 
@@ -40,19 +41,32 @@ export default function Home() {
       .then((response) => response.json())
       .then((jsonResponse) => dispatch(userReceive(jsonResponse)))
       .catch((error) => {
+        dispatch(userError);
         log.error(
           { cookie: document.cookie, error: error.message },
           "verify fetch error"
         );
-        dispatch(userError);
       });
   }, []);
+
+  const [fundModal, setFundModal] = useState(false);
+  const [fundToDelete, setFundToDelete] = useState("");
+
+  const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
+    if (entityName === "funds") {
+      setFundModal(true);
+      setFundToDelete(id);
+    }
+  };
 
   return (
     <Layout home>
       <Head>
         <title>{siteTitle}</title>
       </Head>
+      {fundModal && (
+        <FundDeleteModal id={fundToDelete} setVisible={setFundModal} />
+      )}
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         {fetching && <p>Fetching...</p>}
         <h2 className={utilStyles.headingLg}>Funds</h2>
@@ -67,6 +81,7 @@ export default function Home() {
                 entityName="funds"
                 name={funds[id].name}
                 amount={funds[id].amount.toFixed(2)}
+                deleteHandler={deleteHandler}
               />
             )
           )}
@@ -86,6 +101,7 @@ export default function Home() {
                   budgetItems[id].amount,
                   budgetItems[id].type
                 ).toFixed(2)}
+                deleteHandler={deleteHandler}
               />
             )
           )}

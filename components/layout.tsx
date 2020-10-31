@@ -1,19 +1,19 @@
-import Head from 'next/head'
-import styles from './layout.module.css'
-import utilStyles from '../styles/utils.module.css'
-import Link from 'next/link'
+import Head from "next/head";
+import styles from "./layout.module.css";
+import utilStyles from "../styles/utils.module.css";
+import Link from "next/link";
 
-const name = 'Budget Tracker'
-export const siteTitle = 'Budget Tracker'
+const name = "Budget Tracker";
+export const siteTitle = "Budget Tracker";
 
 export default function Layout({
   children,
   home,
-  overrideName
+  overrideName,
 }: {
-  children: React.ReactNode
-  home?: boolean,
-  overrideName?: string
+  children: React.ReactNode;
+  home?: boolean;
+  overrideName?: string;
 }) {
   return (
     <div className={styles.container}>
@@ -43,23 +43,21 @@ export default function Layout({
             <h1 className={utilStyles.heading2Xl}>{name}</h1>
           </>
         ) : (
-            <>
-              <Link href="/">
-                <a>
-                  <img
-                    src="/images/profile.jpg"
-                    className={`${styles.headerImage} ${utilStyles.borderCircle}`}
-                    alt={name}
-                  />
-                </a>
-              </Link>
-              <h2 className={utilStyles.headingLg}>
-                {overrideName ?? name}
-              </h2>
-            </>
-          )}
+          <>
+            <Link href="/">
+              <a>
+                <img
+                  src="/images/profile.jpg"
+                  className={`${styles.headerImage} ${utilStyles.borderCircle}`}
+                  alt={name}
+                />
+              </a>
+            </Link>
+            <h2 className={utilStyles.headingLg}>{overrideName ?? name}</h2>
+          </>
+        )}
       </header>
-      <main>{children}</main>
+      <main className="relative">{children}</main>
       {!home && (
         <div className={styles.backToHome}>
           <Link href="/">
@@ -68,5 +66,5 @@ export default function Layout({
         </div>
       )}
     </div>
-  )
+  );
 }

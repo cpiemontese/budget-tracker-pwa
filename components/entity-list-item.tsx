@@ -15,34 +15,36 @@ export default function EntityListItem({
   amount,
   endpoint,
   entityName,
+  deleteHandler,
 }: {
   id: string;
   name: string;
   amount: string;
   endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
+  deleteHandler: (id: string, entityName: "funds" | "budgetItems") => void;
 }) {
-  const { logged, email, entity } = useSelector((state: ReduxState) => ({
-    logged: state.logged,
-    email: state.email,
-    entity: state[entityName][id],
-  }));
+  // const { logged, email, entity } = useSelector((state: ReduxState) => ({
+  // logged: state.logged,
+  // email: state.email,
+  // entity: state[entityName][id],
+  // }));
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
-  function deleteHandler() {
-    dispatch(deleteEntity(entityName, id));
+  // function deleteHandler() {
+  //   dispatch(deleteEntity(entityName, id));
 
-    if (!logged || !entity.synced) {
-      return;
-    }
+  //   if (!logged || !entity.synced) {
+  //     return;
+  //   }
 
-    fetch(`/api/${endpoint}/${email}/${id}`, {
-      method: "DELETE",
-    })
-      .then(() => dispatch(removeEntity(entityName, id)))
-      .catch((error) => log.error({ error: error.message }));
-  }
+  //   fetch(`/api/${endpoint}/${email}/${id}`, {
+  //     method: "DELETE",
+  //   })
+  //     .then(() => dispatch(removeEntity(entityName, id)))
+  //     .catch((error) => log.error({ error: error.message }));
+  // }
 
   return (
     <li className={`${commonStyles["smooth"]} ${commonStyles["list-item"]}`}>
@@ -60,7 +62,7 @@ export default function EntityListItem({
       </Link>
       <button
         className={`self-center text-gray-900 hover:text-black p-2 rounded ${commonStyles["smooth"]} ${commonStyles["btn-inverted"]} ${commonStyles["btn-red"]}`}
-        onClick={deleteHandler}
+        onClick={() => deleteHandler(id, entityName)}
       >
         <svg
           className="fill-current"

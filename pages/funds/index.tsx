@@ -1,76 +1,67 @@
-import { useRouter } from "next/router";
-import { FormEvent, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import Head from "next/head";
+import React, { FormEvent, useState } from "react";
 
-import logger from "../../lib/logger";
-import { ReduxState } from "../../redux/types";
-import {
-  createEntity,
-  syncFailure,
-  syncRequest,
-  sync,
-  syncSuccess,
-} from "../../redux/actions";
-import EntityForm from "../../components/entity-form";
-import { randomString } from "../../lib/common";
+import Layout from "../../components/layout";
+import commonStyles from "../../styles/common.module.css";
+import EntityCreateForm from "../../components/entity-create-form";
 
-const log = logger();
+const formLabel = `md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`;
+const formInput = `md:w-2/3 ${commonStyles.smooth} ${commonStyles["form-input"]} ${commonStyles["form-input-green"]}`;
 
 export default function CreateFund() {
   const [name, setName] = useState("");
   const [amount, setAmount] = useState(0.0);
-  const router = useRouter();
-
-  const { logged, email } = useSelector((state: ReduxState) => ({
-    logged: state.logged,
-    email: state.email,
-  }));
-
-  const dispatch = useDispatch();
-
-  function submitHandler(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    const localId = randomString();
-    dispatch(createEntity("funds", localId, { name, amount }));
-    router.push("/");
-
-    if (!logged) {
-      return;
-    }
-
-    dispatch(syncRequest);
-    fetch(`/api/funds/${email}`, {
-      method: "POST",
-      body: JSON.stringify({ name, amount }),
-    })
-      .then((response) => response.json())
-      .then(({ id: backendId }) => dispatch(sync(localId, backendId, "funds")))
-      .then(() => dispatch(syncSuccess))
-      .catch((error) => {
-        dispatch(syncFailure);
-        log.error({ error: error.message });
-      });
-  }
 
   return (
-    <EntityForm
-      pageName={"Create a new fund"}
-      type="create"
-      inputs={[
-        {
-          label: "Name",
-          type: "text",
-          value: name,
-          setter: setName,
-        },
-        {
-          label: "Amount",
-          type: "number",
-          value: amount,
-          setter: setAmount,
-        },
-      ]}
-      submitHandler={submitHandler}
-    />
+    <EntityCreateForm
+      endpoint="funds"
+      entityName="funds"
+      getData={() => ({
+        name,
+        amount,
+      })}
+    >
+      {(submitHandler: (event: FormEvent<HTMLFormElement>) => void) => (
+        <Layout overrideName="Create fund">
+          <Head>
+            <title>Update fund</title>
+          </Head>
+          <form onSubmit={submitHandler} className="w-full">
+            <div className="md:flex md:items-center mb-6">
+              <label className={formLabel} htmlFor="name-input">
+                Name
+              </label>
+              <input
+                id="name-input"
+                className={formInput}
+                type="text"
+                value={name}
+                onChange={(event) => setName(event.target.value)}
+              />
+            </div>
+            <div className="md:flex md:items-center mb-6">
+              <label className={formLabel} htmlFor="amount-input">
+                Amount
+              </label>
+              <input
+                id="amount-input"
+                className={formInput}
+                type="number"
+                step="0.01"
+                value={amount}
+                onChange={(event) => setAmount(parseFloat(event.target.value))}
+              />
+            </div>
+            <div>
+              <input
+                className={`w-full ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-green"]}`}
+                type="submit"
+                value="Create"
+              />
+            </div>
+          </form>
+        </Layout>
+      )}
+    </EntityCreateForm>
   );
 }

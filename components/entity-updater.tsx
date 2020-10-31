@@ -4,7 +4,7 @@ import { useRouter } from "next/router";
 import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import EntityForm from "./entity";
+import EntityForm from "./entity-form";
 import logger from "../lib/logger";
 import { ReduxState } from "../redux/types";
 import {
@@ -48,7 +48,7 @@ export default function UpdateEntity({
 
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(actions[entityName].update(id, name, amount));
+    dispatch(updateEntity(entityName, id, { name, amount }));
     router.push("/");
 
     if (!logged) {

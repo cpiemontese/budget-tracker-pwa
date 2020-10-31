@@ -7,7 +7,7 @@ import {
 } from "../types";
 
 export function createEntity(state: ReduxState, action: CreateEntity) {
-  const { entityName, id, name, amount } = action;
+  const { entityName, id, data } = action;
   const entities = state[entityName];
   return {
     ...state,
@@ -16,7 +16,7 @@ export function createEntity(state: ReduxState, action: CreateEntity) {
       [id]: {
         id,
         name,
-        amount,
+        ...data,
         synced: false,
         deleted: false,
         createdAt: Date.now(),
@@ -27,7 +27,7 @@ export function createEntity(state: ReduxState, action: CreateEntity) {
 }
 
 export function updateEntity(state: ReduxState, action: UpdateEntity) {
-  const { entityName, id, name, amount } = action;
+  const { entityName, id, data } = action;
   const entities = state;
   const entity = state[entityName][id];
   return {
@@ -37,7 +37,7 @@ export function updateEntity(state: ReduxState, action: UpdateEntity) {
       [id]: {
         ...entity,
         name,
-        amount,
+        ...data,
         updatedAt: Date.now(),
       },
     },

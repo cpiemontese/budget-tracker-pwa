@@ -1,4 +1,5 @@
 import { User } from "../../types";
+
 import {
   CREATE_ENTITY,
   DELETE_ENTITY,
@@ -29,27 +30,24 @@ export const userError = {
 export const createEntity = (
   entityName: "funds" | "budgetItems",
   id: string,
-  name: string,
-  amount: number
+  data: object
 ) => ({
   type: CREATE_ENTITY,
   entityName,
   id,
-  name,
-  amount,
+  data,
 });
 
 export const updateEntity = (
   entityName: "funds" | "budgetItems",
   id: string,
-  name: string,
-  amount: number
+  data: object
 ) => ({
   type: UPDATE_ENTITY,
   entityName,
   id,
   name,
-  amount,
+  data,
 });
 
 export const deleteEntity = (

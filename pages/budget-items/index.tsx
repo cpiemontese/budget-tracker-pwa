@@ -11,7 +11,7 @@ import {
   sync,
   syncSuccess,
 } from "../../redux/actions";
-import EntityForm from "../../components/entity";
+import EntityForm from "../../components/entity-form";
 import { randomString } from "../../lib/common";
 
 const log = logger();
@@ -31,7 +31,7 @@ export default function CreateFund() {
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const localId = randomString();
-    dispatch(createEntity(localId, name, amount));
+    dispatch(createEntity("budgetItems", localId, { name, amount }));
     router.push("/");
 
     if (!logged) {

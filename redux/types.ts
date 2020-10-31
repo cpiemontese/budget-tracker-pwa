@@ -62,16 +62,14 @@ interface CreateEntity {
   type: typeof CREATE_ENTITY;
   entityName: "funds" | "budgetItems";
   id: string;
-  name: string;
-  amount: number;
+  data: object;
 }
 
 interface UpdateEntity {
   type: typeof UPDATE_ENTITY;
   entityName: "funds" | "budgetItems";
   id: string;
-  name: string;
-  amount: number;
+  data: object;
 }
 
 interface DeleteEntity {

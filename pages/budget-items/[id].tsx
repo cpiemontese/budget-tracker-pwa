@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../../lib/logger";
-import EntityForm from "../../components/entity";
+import EntityForm from "../../components/entity-form";
 import { ReduxState } from "../../redux/types";
 import {
   updateEntity,
@@ -17,7 +17,7 @@ import {
 
 const log = logger();
 
-export default function UpdateFund() {
+export default function UpdateBudgetItem() {
   const router = useRouter();
   const id = router.query.id as string;
 
@@ -34,7 +34,7 @@ export default function UpdateFund() {
 
   function submitHandler(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    dispatch(updateEntity(id, name, amount));
+    dispatch(updateEntity("budgetItems", id, { name, amount }));
     router.push("/");
 
     if (!logged) {

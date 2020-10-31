@@ -1,4 +1,4 @@
-import { ReduxState, Sync, UpdateFund } from "../types";
+import { ReduxState, Sync } from "../types";
 
 export function sync(state: ReduxState, action: Sync) {
   const { localId, backendId, entityName } = action;

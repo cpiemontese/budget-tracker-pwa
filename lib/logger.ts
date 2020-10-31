@@ -3,8 +3,15 @@ import env from "./env";
 
 const localEnv = env();
 
-const pinoLogger = pino({ level: localEnv.logLevel });
+const serverLogger = pino({
+  level: localEnv.logLevel,
+});
 
-export default function logger() {
-  return pinoLogger
+const browserLogger = pino({
+  level: localEnv.logLevel,
+  browser: { asObject: true },
+});
+
+export default function logger({ browser = false } = {}) {
+  return browser ? browserLogger : serverLogger;
 }

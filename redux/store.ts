@@ -9,16 +9,21 @@ import {
   SYNC_FAILURE,
   SYNC_REQUEST,
   SYNC_SUCCESS,
-  CREATE_FUND,
-  UPDATE_FUND,
+  CREATE_ENTITY,
+  UPDATE_ENTITY,
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
-  DELETE_FUND,
-  REMOVE_FUND,
+  DELETE_ENTITY,
+  REMOVE_ENTITY,
 } from "../redux/types";
 
-import { createFund, deleteFund, removeFund, updateFund } from "./actions/fund";
+import {
+  createEntity,
+  deleteEntity,
+  removeEntity,
+  updateEntity,
+} from "./actions/entity";
 import { sync } from "./actions/sync";
 
 let store;
@@ -35,14 +40,14 @@ const initialState: ReduxState = {
 
 const reducer = (state = initialState, action: Action) => {
   switch (action.type) {
-    case CREATE_FUND:
-      return createFund(state, action);
-    case UPDATE_FUND:
-      return updateFund(state, action);
-    case DELETE_FUND:
-      return deleteFund(state, action);
-    case REMOVE_FUND:
-      return removeFund(state, action);
+    case CREATE_ENTITY:
+      return createEntity(state, action);
+    case UPDATE_ENTITY:
+      return updateEntity(state, action);
+    case DELETE_ENTITY:
+      return deleteEntity(state, action);
+    case REMOVE_ENTITY:
+      return removeEntity(state, action);
     case USER_REQUEST:
       return {
         ...state,

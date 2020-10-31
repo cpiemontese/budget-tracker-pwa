@@ -6,10 +6,10 @@ export const USER_RECEIVE = "user/receive";
 export const USER_ERROR = "user/error";
 
 // Fund
-export const CREATE_FUND = "fund/create";
-export const UPDATE_FUND = "fund/update";
-export const DELETE_FUND = "fund/delete";
-export const REMOVE_FUND = "fund/remove";
+export const CREATE_ENTITY = "entity/create";
+export const UPDATE_ENTITY = "entity/update";
+export const DELETE_ENTITY = "entity/delete";
+export const REMOVE_ENTITY = "entity/remove";
 
 // Sync
 export const SYNC = "sync";
@@ -58,27 +58,29 @@ interface UserError {
   type: typeof USER_ERROR;
 }
 
-interface CreateFund {
-  type: typeof CREATE_FUND;
+interface CreateEntity {
+  type: typeof CREATE_ENTITY;
+  entityName: "funds" | "budgetItems";
   id: string;
-  name: string;
-  amount: number;
+  data: object;
 }
 
-interface UpdateFund {
-  type: typeof UPDATE_FUND;
+interface UpdateEntity {
+  type: typeof UPDATE_ENTITY;
+  entityName: "funds" | "budgetItems";
   id: string;
-  name: string;
-  amount: number;
+  data: object;
 }
 
-interface DeleteFund {
-  type: typeof DELETE_FUND;
+interface DeleteEntity {
+  type: typeof DELETE_ENTITY;
+  entityName: "funds" | "budgetItems";
   id: string;
 }
 
-interface RemoveFund {
-  type: typeof REMOVE_FUND;
+interface RemoveEntity {
+  type: typeof REMOVE_ENTITY;
+  entityName: "funds" | "budgetItems";
   id: string;
 }
 
@@ -105,10 +107,10 @@ type Action =
   | UserRequest
   | UserReceive
   | UserError
-  | CreateFund
-  | UpdateFund
-  | DeleteFund
-  | RemoveFund
+  | CreateEntity
+  | UpdateEntity
+  | DeleteEntity
+  | RemoveEntity
   | Sync
   | SyncRequest
   | SyncSuccess
@@ -117,9 +119,11 @@ type Action =
 export type {
   Action,
   ReduxState,
+  ReduxFund,
+  ReduxBudgetItem,
   Sync,
-  CreateFund,
-  UpdateFund,
-  DeleteFund,
-  RemoveFund,
+  CreateEntity,
+  UpdateEntity,
+  DeleteEntity,
+  RemoveEntity,
 };

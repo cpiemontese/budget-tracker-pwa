@@ -8,19 +8,19 @@ import { ReduxState } from "../redux/types";
 
 export default function BudgetItemForm({
   type,
-  startingName = "",
-  startingAmount = 0.0,
-  startingFundId = "",
-  startingType = "expense",
-  startingCategory = "",
-  startingDescription = "",
+  startingName,
+  startingAmount,
+  startingFundId,
+  startingType,
+  startingCategory,
+  startingDescription,
   submitHandler,
 }: {
   type: "create" | "update";
   startingName: string;
   startingAmount: number;
   startingFundId: string;
-  startingType: string;
+  startingType: "expense" | "income";
   startingCategory: string;
   startingDescription: string;
   submitHandler: (

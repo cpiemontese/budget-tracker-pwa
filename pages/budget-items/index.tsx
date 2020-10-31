@@ -10,7 +10,7 @@ export default function CreateBudgetItem() {
           startingAmount={0.0}
           startingName=""
           startingFundId=""
-          startingType=""
+          startingType="expense"
           startingCategory=""
           startingDescription=""
           submitHandler={submitHandler}

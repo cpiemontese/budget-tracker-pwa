@@ -6,8 +6,8 @@ import commonStyles from "../styles/common.module.css";
 
 export default function FundForm({
   type,
-  startingName = "",
-  startingAmount = 0.0,
+  startingName,
+  startingAmount,
   submitHandler,
 }: {
   type: "create" | "update";

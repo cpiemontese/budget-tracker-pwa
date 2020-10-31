@@ -12,6 +12,6 @@ const browserLogger = pino({
   browser: { asObject: true },
 });
 
-export default function logger(browser = false) {
+export default function logger({ browser = false } = {}) {
   return browser ? browserLogger : serverLogger;
 }

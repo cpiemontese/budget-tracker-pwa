@@ -7,14 +7,7 @@ import { deleteEntity, removeEntity } from "../redux/actions";
 import { trashCan } from "../styles/svg";
 import { ReduxState } from "../redux/types";
 
-const actions = {
-  funds: {
-    delete: deleteEntity,
-    remove: removeEntity,
-  },
-};
-
-const log = logger();
+const log = logger({ browser: true });
 
 export default function EntityListItem({
   id,
@@ -37,8 +30,8 @@ export default function EntityListItem({
 
   const dispatch = useDispatch();
 
-  function deleteEntity() {
-    dispatch(actions[entityName].delete(id));
+  function deleteHandler() {
+    dispatch(deleteEntity(entityName, id));
 
     if (!logged || !entity.synced) {
       return;
@@ -47,7 +40,7 @@ export default function EntityListItem({
     fetch(`/api/${endpoint}/${email}/${id}`, {
       method: "DELETE",
     })
-      .then(() => dispatch(actions[entityName].remove(id)))
+      .then(() => dispatch(removeEntity(entityName, id)))
       .catch((error) => log.error({ error: error.message }));
   }
 
@@ -67,7 +60,7 @@ export default function EntityListItem({
       </Link>
       <button
         className="self-center bg-red-500 hover:bg-red-600 text-gray-900 hover:text-black focus:bg-red-700 p-2 rounded"
-        onClick={deleteEntity}
+        onClick={deleteHandler}
       >
         <svg
           className="fill-current"

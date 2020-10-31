@@ -24,28 +24,6 @@ export default function EntityListItem({
   entityName: "funds" | "budgetItems";
   deleteHandler: (id: string, entityName: "funds" | "budgetItems") => void;
 }) {
-  // const { logged, email, entity } = useSelector((state: ReduxState) => ({
-  // logged: state.logged,
-  // email: state.email,
-  // entity: state[entityName][id],
-  // }));
-
-  // const dispatch = useDispatch();
-
-  // function deleteHandler() {
-  //   dispatch(deleteEntity(entityName, id));
-
-  //   if (!logged || !entity.synced) {
-  //     return;
-  //   }
-
-  //   fetch(`/api/${endpoint}/${email}/${id}`, {
-  //     method: "DELETE",
-  //   })
-  //     .then(() => dispatch(removeEntity(entityName, id)))
-  //     .catch((error) => log.error({ error: error.message }));
-  // }
-
   return (
     <li className={`${commonStyles["smooth"]} ${commonStyles["list-item"]}`}>
       <Link href={`/${endpoint}/[id]`} as={`/${endpoint}/${id}`} key={id}>

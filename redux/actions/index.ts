@@ -51,11 +51,13 @@ export const updateEntity = (
 
 export const deleteEntity = (
   entityName: "funds" | "budgetItems",
-  id: string
+  id: string,
+  moveId: string
 ) => ({
   type: DELETE_ENTITY,
   entityName,
   id,
+  moveId,
 });
 
 export const removeEntity = (

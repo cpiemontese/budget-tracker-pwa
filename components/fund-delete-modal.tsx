@@ -1,8 +1,12 @@
 import { SetStateAction, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteEntity, removeEntity } from "../redux/actions";
 
-import { ReduxState } from "../redux/types";
+import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
+import { ReduxState } from "../redux/types";
+
+const log = logger({ browser: true });
 
 export default function FundDeleteModal({
   id,
@@ -21,6 +25,28 @@ export default function FundDeleteModal({
   );
 
   const [newFundId, setNewFundId] = useState("");
+
+  const { logged, email, fund } = useSelector((state: ReduxState) => ({
+    logged: state.logged,
+    email: state.email,
+    fund: state.funds[id],
+  }));
+
+  const dispatch = useDispatch();
+
+  function deleteFund() {
+    dispatch(deleteEntity("funds", id, newFundId));
+
+    if (!logged || !fund.synced) {
+      return;
+    }
+
+    fetch(`/api/funds/${email}/${id}`, {
+      method: "DELETE",
+    })
+      .then(() => dispatch(removeEntity("funds", id)))
+      .catch((error) => log.error({ error: error.message }));
+  }
 
   return (
     <div
@@ -48,6 +74,7 @@ export default function FundDeleteModal({
       <div className="flex items-center">
         <button
           className={`flex-1 mr-1 ${commonStyles.btn} ${commonStyles["btn-red"]} ${commonStyles.smooth}`}
+          onClick={deleteFund}
         >
           Delete
         </button>

@@ -14,15 +14,13 @@ import {
 
 const log = logger({ browser: true });
 
-export default function EntityUpdateForm({
+export default function EntityUpdateFormContext({
   endpoint,
   entityName,
-  getData,
   children,
 }: {
   endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
-  getData: () => object;
   children: any;
 }) {
   const router = useRouter();
@@ -36,7 +34,10 @@ export default function EntityUpdateForm({
 
   const dispatch = useDispatch();
 
-  function submitHandler(event: FormEvent<HTMLFormElement>) {
+  function submitHandler(
+    event: FormEvent<HTMLFormElement>,
+    getData: () => object
+  ) {
     event.preventDefault();
     dispatch(updateEntity(entityName, id, getData()));
     router.push("/");

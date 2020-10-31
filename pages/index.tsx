@@ -126,11 +126,12 @@ export const getStaticProps: GetStaticProps = async () => {
         budgetItems: {
           "4567": {
             id: "4567",
-            fund: "some fund",
+            fund: "1234",
             amount: 50,
             type: "expense",
             name: "some item",
             category: "some category",
+            description: "some description",
             synced: false,
             deleted: false,
             createdAt: Date.now(),

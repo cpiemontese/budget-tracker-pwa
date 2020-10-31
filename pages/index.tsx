@@ -13,6 +13,7 @@ import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
 import FundDeleteModal from "../components/fund-delete-modal";
+import BudgeItemDeleteModal from "../components/budget-item-delete-modal";
 
 const log = logger({ browser: true });
 
@@ -52,10 +53,24 @@ export default function Home() {
   const [fundModal, setFundModal] = useState(false);
   const [fundToDelete, setFundToDelete] = useState("");
 
+  const [budgetItemModal, setBudgetItemModal] = useState(false);
+  const [budgetItemToDelete, setBudgetItemToDelete] = useState("");
+
   const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
-    if (entityName === "funds") {
-      setFundModal(true);
-      setFundToDelete(id);
+    switch (entityName) {
+      case "funds":
+        setFundModal(true);
+        setFundToDelete(id);
+        setBudgetItemModal(false);
+        return;
+      case "budgetItems":
+        setFundModal(false);
+        setBudgetItemModal(true);
+        setBudgetItemToDelete(id);
+        return;
+      default:
+        log.warn({ id, entityName }, "Delete handler - unknown entity");
+        return;
     }
   };
 
@@ -66,6 +81,12 @@ export default function Home() {
       </Head>
       {fundModal && (
         <FundDeleteModal id={fundToDelete} setVisible={setFundModal} />
+      )}
+      {budgetItemModal && (
+        <BudgeItemDeleteModal
+          id={budgetItemToDelete}
+          setVisible={setBudgetItemModal}
+        />
       )}
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         {fetching && <p>Fetching...</p>}

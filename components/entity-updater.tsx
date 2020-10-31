@@ -83,10 +83,18 @@ export default function UpdateEntity({
     <EntityForm
       pageName={pageName}
       type="update"
-      name={name}
-      amount={amount}
-      setName={setName}
-      setAmount={setAmount}
+      inputs={[
+        {
+          label: "Name",
+          value: name,
+          setter: setName,
+        },
+        {
+          label: "Amount",
+          value: amount,
+          setter: setAmount,
+        },
+      ]}
       submitHandler={submitHandler}
     />
   );

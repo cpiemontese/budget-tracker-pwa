@@ -11,18 +11,16 @@ const formInput =
 export default function EntityForm({
   pageName,
   type,
-  name,
-  amount,
-  setName,
-  setAmount,
+  inputs,
   submitHandler,
 }: {
   pageName: string;
   type: "create" | "update";
-  name: string;
-  amount: number;
-  setName: (value: SetStateAction<string>) => void;
-  setAmount: (value: SetStateAction<number>) => void;
+  inputs: Array<{
+    label: string;
+    value: any;
+    setter: (value: SetStateAction<any>) => void;
+  }>;
   submitHandler: (event: FormEvent<HTMLFormElement>) => void;
 }) {
   return (
@@ -31,33 +29,23 @@ export default function EntityForm({
         <title>{pageName}</title>
       </Head>
       <form onSubmit={submitHandler} className="w-full">
-        <div className="md:flex md:items-center mb-6">
-          <label className={`md:w-1/3 block ${formLabel}`} htmlFor="name-input">
-            Name
-          </label>
-          <input
-            id="name-input"
-            className={`md:w-2/3 ${formInput}`}
-            type="text"
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-          />
-        </div>
-        <div className="md:flex md:items-center mb-6">
-          <label
-            className={`md:w-1/3 block ${formLabel}`}
-            htmlFor="amount-input"
-          >
-            Amount
-          </label>
-          <input
-            type="number"
-            className={`md:w-2/3 ${formInput}`}
-            step="0.01"
-            value={amount}
-            onChange={(event) => setAmount(parseFloat(event.target.value))}
-          />
-        </div>
+        {inputs.map(({ label, value, setter }) => (
+          <div key={label} className="md:flex md:items-center mb-6">
+            <label
+              className={`md:w-1/3 block ${formLabel}`}
+              htmlFor="name-input"
+            >
+              {label}
+            </label>
+            <input
+              id="name-input"
+              className={`md:w-2/3 ${formInput}`}
+              type="text"
+              value={value}
+              onChange={(event) => setter(event.target.value)}
+            />
+          </div>
+        ))}
         <div>
           <input
             className={`w-full ${commonStyles.btn} ${

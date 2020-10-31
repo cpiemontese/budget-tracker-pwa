@@ -56,10 +56,18 @@ export default function CreateFund() {
     <EntityForm
       pageName={"Create a new fund"}
       type="create"
-      name={name}
-      amount={amount}
-      setName={setName}
-      setAmount={setAmount}
+      inputs={[
+        {
+          label: "Name",
+          value: name,
+          setter: setName,
+        },
+        {
+          label: "Amount",
+          value: amount,
+          setter: setAmount,
+        },
+      ]}
       submitHandler={submitHandler}
     />
   );

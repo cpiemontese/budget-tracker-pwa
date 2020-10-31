@@ -63,6 +63,7 @@ export default function Home() {
           {Object.keys(funds).map((id) =>
             funds[id].deleted ? null : (
               <EntityListItem
+                key={id}
                 id={id}
                 endpoint="funds"
                 entityName="funds"
@@ -84,6 +85,7 @@ export default function Home() {
           {Object.keys(budgetItems).map((id) =>
             budgetItems[id].deleted ? null : (
               <EntityListItem
+                key={id}
                 id={id}
                 endpoint="budget-items"
                 entityName="budgetItems"

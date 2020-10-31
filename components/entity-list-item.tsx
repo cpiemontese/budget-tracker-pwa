@@ -45,7 +45,7 @@ export default function EntityListItem({
   }
 
   return (
-    <li className={commonStyles["list-item"]} key={id}>
+    <li className={commonStyles["list-item"]}>
       <Link href={`/${endpoint}/[id]`} as={`/${endpoint}/${id}`} key={id}>
         <a className={`w-full flex ${commonStyles["anchor"]}`}>
           <div className="w-1/4 mr-4 md:mr-0 font-bold">
@@ -67,8 +67,8 @@ export default function EntityListItem({
           width="24"
           height="24"
           xmlns="http://www.w3.org/2000/svg"
-          fill-rule="evenodd"
-          clip-rule="evenodd"
+          fillRule="evenodd"
+          clipRule="evenodd"
           viewBox="0 0 24 24"
         >
           <path d={trashCan} />

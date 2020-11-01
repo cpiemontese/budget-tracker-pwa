@@ -6,6 +6,17 @@ module.exports = {
   purge: ['./components/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {},
+    maxHeight: {
+      '0': '0',
+      '1/4': '25%',
+      '1/2': '50%',
+      '3/4': '75%',
+      'full': '100%',
+      40: '10rem',
+      48: '12rem',
+      56: '14rem',
+      64: '16rem',
+    },
     scale: {
       0: '0',
       25: '.25',

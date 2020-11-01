@@ -5,7 +5,6 @@ import { GetStaticProps } from "next";
 import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
-import utilStyles from "../styles/utils.module.css";
 import commonStyles from "../styles/common.module.css";
 import EntityListItem from "../components/entity-list-item";
 import Layout, { siteTitle } from "../components/layout";
@@ -19,7 +18,7 @@ const log = logger({ browser: true });
 
 const addButton = (clickHandler: (event: any) => void = () => null) => (
   <button
-    className={`w-full ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+    className={`w-full mb-4 ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
     onClick={clickHandler}
   >
     +
@@ -115,11 +114,11 @@ export default function Home() {
           </div>
         </div>
       )}
-      <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
+      <section className="">
         {fetching && <p>Fetching...</p>}
-        <h2 className={utilStyles.headingLg}>Funds</h2>
+        <h2 className="text-2xl font-medium mb-2">Funds</h2>
         <Link href="/funds">{addButton()}</Link>
-        <ul className={utilStyles.list}>
+        <ul className="mb-4 max-h-48 overflow-y-scroll">
           {Object.keys(funds).map((id) =>
             funds[id].deleted ? null : (
               <EntityListItem
@@ -134,7 +133,7 @@ export default function Home() {
             )
           )}
         </ul>
-        <h2 className={utilStyles.headingLg}>Budget Items</h2>
+        <h2 className="text-2xl font-medium mb-2">Budget items</h2>
         <Link href="/budget-items">
           {addButton((event) => {
             if (
@@ -150,7 +149,7 @@ export default function Home() {
             }
           })}
         </Link>
-        <ul className={utilStyles.list}>
+        <ul>
           {Object.keys(budgetItems).map((id) =>
             budgetItems[id].deleted ? null : (
               <EntityListItem

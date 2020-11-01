@@ -1,7 +1,7 @@
 import Head from "next/head";
-import styles from "./layout.module.css";
-import utilStyles from "../styles/utils.module.css";
 import Link from "next/link";
+
+import commonStyles from "../styles/common.module.css";
 
 const name = "Budget Tracker";
 export const siteTitle = "Budget Tracker";
@@ -16,7 +16,7 @@ export default function Layout({
   overrideName?: string;
 }) {
   return (
-    <div className={styles.container}>
+    <div className="max-w-xl min-h-screen mx-auto p-4">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -31,38 +31,23 @@ export default function Layout({
           )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
         />
         <meta name="og:title" content={siteTitle} />
-        <meta name="twitter:card" content="summary_large_image" />
       </Head>
-      <header className={styles.header}>
+      <header className="flex justify-center mb-4 border-b-2">
         {home ? (
-          <>
-            <img
-              src="/images/profile.jpg"
-              className={`${styles.headerHomeImage} ${utilStyles.borderCircle}`}
-              alt={name}
-            />
-            <h1 className={utilStyles.heading2Xl}>{name}</h1>
-          </>
+          <h1 className="text-4xl font-light mb-4">{name}</h1>
         ) : (
-          <>
-            <Link href="/">
-              <a>
-                <img
-                  src="/images/profile.jpg"
-                  className={`${styles.headerImage} ${utilStyles.borderCircle}`}
-                  alt={name}
-                />
-              </a>
-            </Link>
-            <h2 className={utilStyles.headingLg}>{overrideName ?? name}</h2>
-          </>
+          <h2 className="text-3xl font-light mb-4">{overrideName ?? name}</h2>
         )}
       </header>
       <main className="relative">{children}</main>
       {!home && (
-        <div className={styles.backToHome}>
+        <div className="mt-6">
           <Link href="/">
-            <a>← Back to home</a>
+            <button
+              className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+            >
+              ← Back
+            </button>
           </Link>
         </div>
       )}

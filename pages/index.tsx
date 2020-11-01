@@ -17,9 +17,10 @@ import BudgeItemDeleteModal from "../components/budget-item-delete-modal";
 
 const log = logger({ browser: true });
 
-const addButton = (
+const addButton = (clickHandler: (event: any) => void = () => null) => (
   <button
     className={`w-full ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+    onClick={clickHandler}
   >
     +
   </button>
@@ -49,6 +50,10 @@ export default function Home() {
         );
       });
   }, []);
+
+  const [messageModal, setMessageModal] = useState(false);
+  const [messageTitle, setMessageTitle] = useState("");
+  const [messageBody, setMessageBody] = useState("");
 
   const [fundModal, setFundModal] = useState(false);
   const [fundToDelete, setFundToDelete] = useState("");
@@ -88,10 +93,26 @@ export default function Home() {
           setVisible={setBudgetItemModal}
         />
       )}
+      {messageModal && (
+        <div className={`${commonStyles.modal} ${commonStyles.smooth}`}>
+          <div className="mb-4 font-semibold text-xl border-b-2">
+            {messageTitle}
+          </div>
+          <div className="mb-4">{messageBody}</div>
+          <div className="flex justify-end">
+            <button
+              className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
+              onClick={() => setMessageModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         {fetching && <p>Fetching...</p>}
         <h2 className={utilStyles.headingLg}>Funds</h2>
-        <Link href="/funds">{addButton}</Link>
+        <Link href="/funds">{addButton()}</Link>
         <ul className={utilStyles.list}>
           {Object.keys(funds).map((id) =>
             funds[id].deleted ? null : (
@@ -108,7 +129,21 @@ export default function Home() {
           )}
         </ul>
         <h2 className={utilStyles.headingLg}>Budget Items</h2>
-        <Link href="/budget-items">{addButton}</Link>
+        <Link href="/budget-items">
+          {addButton((event) => {
+            if (
+              Object.keys(funds).filter((key) => !funds[key].deleted).length ===
+              0
+            ) {
+              event.preventDefault();
+              setMessageModal(true);
+              setMessageTitle("No fund present");
+              setMessageBody(
+                "You can't add a new item without any funds! Please add a fund first."
+              );
+            }
+          })}
+        </Link>
         <ul className={utilStyles.list}>
           {Object.keys(budgetItems).map((id) =>
             budgetItems[id].deleted ? null : (

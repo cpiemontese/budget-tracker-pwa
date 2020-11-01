@@ -57,7 +57,7 @@ export default function FundDeleteModal({
   }
 
   return (
-    <div className={commonStyles["delete-modal"]}>
+    <div className={commonStyles["modal"]}>
       <div className="mb-4 font-semibold text-xl">Deleting fund</div>
       {fundHasLinkedBIs && (
         <div className="mb-4">

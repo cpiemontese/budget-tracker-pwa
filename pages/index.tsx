@@ -27,15 +27,21 @@ const addButton = (clickHandler: (event: any) => void = () => null) => (
 );
 
 export default function Home() {
-  const { funds, budgetItems, fetching } = useSelector((state: ReduxState) => ({
-    funds: state.funds,
-    budgetItems: state.budgetItems,
-    fetching: state.fetching,
-  }));
+  const { funds, budgetItems, logged, fetching } = useSelector(
+    (state: ReduxState) => ({
+      funds: state.funds,
+      budgetItems: state.budgetItems,
+      logged: state.logged,
+      fetching: state.fetching,
+    })
+  );
 
   const dispatch = useDispatch();
 
   useEffect(() => {
+    if (logged) {
+      return;
+    }
     dispatch(userRequest);
     fetch("/api/verify", {
       headers: { cookie: document.cookie },

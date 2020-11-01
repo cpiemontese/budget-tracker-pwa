@@ -7,6 +7,22 @@ import commonStyles from "../styles/common.module.css";
 const name = "Budget Tracker";
 export const siteTitle = "Budget Tracker";
 
+function LoginButton({ className }) {
+  return (
+    <Link href="/login">
+      <button className={className}>Login</button>
+    </Link>
+  );
+}
+
+function SignupButton({ className }) {
+  return (
+    <Link href="/signup">
+      <button className={className}>Signup</button>
+    </Link>
+  );
+}
+
 export default function Layout({
   children,
   home,
@@ -66,16 +82,12 @@ export default function Layout({
                 "flex justify-between invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4 self-center"
               }
             >
-              <button
+              <SignupButton
                 className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-              >
-                Signup
-              </button>
-              <button
+              />
+              <LoginButton
                 className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-              >
-                Login
-              </button>
+              />
             </div>
           </>
         ) : (
@@ -89,16 +101,12 @@ export default function Layout({
               burger ? "opacity-full" : "w-0 opacity-0"
             } overflow-hidden bg-white ${commonStyles.smooth}`}
           >
-            <button
+            <SignupButton
               className={`w-full block mb-4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-            >
-              Signup
-            </button>
-            <button
+            />
+            <LoginButton
               className={`w-full block ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-            >
-              Login
-            </button>
+            />
           </div>
         }
         {children}

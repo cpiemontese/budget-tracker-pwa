@@ -50,6 +50,10 @@ export default function FundDeleteModal({
     }
 
     fetch(`/api/funds/${email}/${id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       method: "DELETE",
     })
       .then(() => dispatch(removeEntity("funds", id)))

@@ -44,7 +44,11 @@ export default function Home() {
     }
     dispatch(userRequest);
     fetch("/api/verify", {
-      headers: { cookie: document.cookie },
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        cookie: document.cookie,
+      },
     })
       .then((response) => response.json())
       .then((jsonResponse) => dispatch(userReceive(jsonResponse)))

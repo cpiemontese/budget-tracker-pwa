@@ -46,7 +46,9 @@ export default function Login() {
           setMessageBody(
             "Something went wrong while logging you in, please retry"
           );
+          return;
         }
+        router.push("/");
       })
       .catch((error) => {
         log.error({ error: error.message }, "Login error");

@@ -32,6 +32,10 @@ export default function BudgeItemDeleteModal({
     }
 
     fetch(`/api/budgetItems/${email}/${id}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       method: "DELETE",
     })
       .then(() => dispatch(removeEntity("budgetItems", id)))

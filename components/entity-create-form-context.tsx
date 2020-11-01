@@ -48,6 +48,10 @@ export default function EntityCreateFormContext({
 
     dispatch(syncRequest);
     fetch(`/api/${endpoint}/${email}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       method: "POST",
       body: JSON.stringify(getData()),
     })

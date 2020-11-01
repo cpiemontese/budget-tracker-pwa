@@ -50,6 +50,10 @@ export default function EntityUpdateFormContext({
 
     if (entity.synced) {
       return fetch(`/api/${endpoint}/${email}/${id}`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
         method: "PATCH",
         body: JSON.stringify(getData()),
       })
@@ -58,6 +62,10 @@ export default function EntityUpdateFormContext({
     }
 
     return fetch(`/api/${endpoint}/${email}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
       method: "POST",
       body: JSON.stringify(getData()),
     })

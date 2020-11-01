@@ -39,6 +39,20 @@ export function updateEntity(state: ReduxState, action: UpdateEntity) {
   const { entityName, id, data } = action;
   const entities = state[entityName];
   const entity = state[entityName][id];
+
+  if (entityName === "budgetItems") {
+    const oldFund = state.budgetItems[id].fund;
+    const oldType = state.budgetItems[id].type;
+    const oldAmount = state.budgetItems[id].amount;
+
+    const newFund = data["fund"] as string;
+    const newType = data["type"] as string;
+    const newAmount = data["amount"] as number;
+
+    state.funds[oldFund].amount -= amountToValue(oldAmount, oldType);
+    state.funds[newFund].amount += amountToValue(newAmount, newType);
+  }
+
   return {
     ...state,
     [entityName]: {

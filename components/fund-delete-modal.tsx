@@ -28,7 +28,7 @@ export default function FundDeleteModal({
   const anotherFundId = Object.keys(funds).find(
     (key) => key !== id && !funds[key].deleted
   );
-  console.log(anotherFundId);
+
   const thereExistOtherFunds =
     anotherFundId !== null && anotherFundId !== undefined;
   const [substituteId, setSubstitute] = useState(anotherFundId ?? DELETE_ALL);
@@ -41,7 +41,7 @@ export default function FundDeleteModal({
 
   const dispatch = useDispatch();
 
-  function deleteHanlder() {
+  function deleteHandler() {
     dispatch(deleteFund(id, substituteId));
     setVisible(false);
 
@@ -92,7 +92,7 @@ export default function FundDeleteModal({
       <div className="flex items-center">
         <button
           className={`flex-1 mr-1 ${commonStyles.btn} ${commonStyles["btn-red"]} ${commonStyles.smooth}`}
-          onClick={deleteHanlder}
+          onClick={deleteHandler}
         >
           Delete
         </button>

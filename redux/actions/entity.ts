@@ -1,3 +1,4 @@
+import { link } from "fs/promises";
 import { amountToValue } from "../../lib/crud/budget-items/common";
 import {
   ReduxState,
@@ -129,18 +130,23 @@ export function deleteBudgetItem(state: ReduxState, action: DeleteBudgetItem) {
   const funds = state.funds;
   const budgetItems = state.budgetItems;
 
+  const itemToDelete = budgetItems[id];
+  const linkedFund = funds[budgetItems[id].fund];
+
   return {
     ...state,
     funds: {
       ...funds,
-      [budgetItems[id].fund]: {
-        ...funds[budgetItems[id].fund],
-        amount: amountToValue(budgetItems[id].amount, budgetItems[id].type),
+      [itemToDelete.fund]: {
+        ...linkedFund,
+        amount:
+          linkedFund.amount -
+          amountToValue(itemToDelete.amount, itemToDelete.type),
       },
     },
     budgetItems: {
       [id]: {
-        ...budgetItems[id],
+        ...itemToDelete,
         deleted: true,
       },
     },

@@ -1,12 +1,12 @@
 import Link from "next/link";
 
-import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
 import { trashCan } from "../styles/svg";
 
 export default function EntityListItem({
   id,
   name,
+  last,
   amount,
   endpoint,
   entityName,
@@ -14,13 +14,18 @@ export default function EntityListItem({
 }: {
   id: string;
   name: string;
+  last: boolean;
   amount: string;
   endpoint: "funds" | "budget-items";
   entityName: "funds" | "budgetItems";
   deleteHandler: (id: string, entityName: "funds" | "budgetItems") => void;
 }) {
   return (
-    <li className={`${commonStyles["smooth"]} ${commonStyles["list-item"]}`}>
+    <li
+      className={`${!last ? "mb-2" : ""} ${commonStyles["list-item"]} ${
+        commonStyles["smooth"]
+      }`}
+    >
       <Link href={`/${endpoint}/[id]`} as={`/${endpoint}/${id}`} key={id}>
         <a className={`w-full flex ${commonStyles["anchor"]}`}>
           <div className="w-1/4 mr-4 md:mr-0 font-bold">

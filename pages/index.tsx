@@ -84,6 +84,9 @@ export default function Home() {
     }
   };
 
+  const fundsKeys = Object.keys(funds);
+  const budgetItemsKeys = Object.keys(budgetItems);
+
   return (
     <Layout home>
       <Head>
@@ -119,11 +122,12 @@ export default function Home() {
         <h2 className="text-2xl font-medium mb-2">Funds</h2>
         <Link href="/funds">{addButton()}</Link>
         <ul className="mb-4 max-h-48 overflow-y-scroll">
-          {Object.keys(funds).map((id) =>
+          {fundsKeys.map((id, index) =>
             funds[id].deleted ? null : (
               <EntityListItem
                 key={id}
                 id={id}
+                last={index === fundsKeys.length - 1}
                 endpoint="funds"
                 entityName="funds"
                 name={funds[id].name}
@@ -136,10 +140,7 @@ export default function Home() {
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
         <Link href="/budget-items">
           {addButton((event) => {
-            if (
-              Object.keys(funds).filter((key) => !funds[key].deleted).length ===
-              0
-            ) {
+            if (fundsKeys.filter((key) => !funds[key].deleted).length === 0) {
               event.preventDefault();
               setMessageModal(true);
               setMessageTitle("No fund present");
@@ -149,12 +150,13 @@ export default function Home() {
             }
           })}
         </Link>
-        <ul>
-          {Object.keys(budgetItems).map((id) =>
+        <ul className="max-h-screen overflow-y-scroll">
+          {budgetItemsKeys.map((id, index) =>
             budgetItems[id].deleted ? null : (
               <EntityListItem
                 key={id}
                 id={id}
+                last={index === budgetItemsKeys.length - 1}
                 endpoint="budget-items"
                 entityName="budgetItems"
                 name={budgetItems[id].name}

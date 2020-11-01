@@ -1,5 +1,4 @@
 import pino from "pino";
-import { randomBytes } from "crypto";
 import { MongoClient } from "mongodb";
 import { createMocks } from "node-mocks-http";
 
@@ -7,8 +6,12 @@ import { deleteHandler } from "./delete";
 
 import getEnv from "../../test-env";
 import { User } from "../../../types";
-
-const randomString = () => randomBytes(8).toString("hex");
+import {
+  randomExpense,
+  randomFund,
+  randomIncome,
+  randomString,
+} from "../../common";
 
 const LOCAL_ENV = getEnv();
 
@@ -23,7 +26,6 @@ test("returns 400 if properties are missing from query", async () => {
   });
 
   req.logger = logger;
-
   req.localEnv = LOCAL_ENV;
 
   const response = await deleteHandler(req, res);
@@ -31,10 +33,14 @@ test("returns 400 if properties are missing from query", async () => {
   expect(response.statusCode).toEqual(400);
 });
 
-test("returns 204 if fund is deleted", async () => {
+test("returns 204 if fund is deleted - delete all linked budget items", async () => {
   const email = "test@gmail.com";
-  const name = "fund";
-  const amount = 100.0;
+
+  const fundToDelete = randomFund();
+  const fundNotToDelete = randomFund();
+
+  const itemToDelete = randomExpense(fundToDelete.id);
+  const itemNotToDelete = randomIncome(fundNotToDelete.id);
 
   const mongoClient = new MongoClient(MONGODB_URI, {
     useNewUrlParser: true,
@@ -46,43 +52,23 @@ test("returns 204 if fund is deleted", async () => {
   const collectionName = randomString();
   const collection = db.collection(collectionName);
 
-  const idToDelete = randomString();
   await collection.insertOne({
     email,
-    funds: [
-      {
-        id: randomString(),
-        name: "some other fund",
-        amount: 200,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      },
-      {
-        id: idToDelete,
-        name: "fund to delete",
-        amount: 1020.93,
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      },
-    ],
+    funds: [fundToDelete, fundNotToDelete],
+    budgetItems: [itemToDelete, itemNotToDelete],
   });
 
   const { req, res } = createMocks({
     method: "DELETE",
     query: {
       email,
-      id: idToDelete,
-    },
-    body: {
-      name,
-      amount,
+      id: fundToDelete.id,
+      substituteId: "delete-all",
     },
   });
 
   req.logger = logger;
-
   req.usersCollection = collection;
-
   req.localEnv = LOCAL_ENV;
 
   try {
@@ -93,7 +79,73 @@ test("returns 204 if fund is deleted", async () => {
     const user: User = await collection.findOne({ email });
 
     expect(user.funds.length).toBe(1);
-    expect(user.funds.find(({ id }) => id === idToDelete)).toBe(undefined);
+    expect(user.funds.find(({ id }) => id === fundToDelete.id)).toBe(undefined);
+
+    expect(user.budgetItems.length).toBe(1);
+    expect(user.budgetItems.find(({ id }) => id === itemToDelete.id)).toBe(
+      undefined
+    );
+  } finally {
+    await db.dropDatabase();
+    await mongoClient.close();
+  }
+});
+
+test("returns 204 if fund is deleted - move all linked budget items", async () => {
+  const email = "test@gmail.com";
+
+  const fundToDelete = randomFund();
+  const fundNotToDelete = randomFund();
+
+  const itemToMove = randomExpense(fundToDelete.id);
+  const itemNotToMove = randomIncome(fundNotToDelete.id);
+
+  const mongoClient = new MongoClient(MONGODB_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  });
+  await mongoClient.connect();
+  const dbName = randomString();
+  const db = mongoClient.db(dbName);
+  const collectionName = randomString();
+  const collection = db.collection(collectionName);
+
+  await collection.insertOne({
+    email,
+    funds: [fundToDelete, fundNotToDelete],
+    budgetItems: [itemToMove, itemNotToMove],
+  });
+
+  const { req, res } = createMocks({
+    method: "DELETE",
+    query: {
+      email,
+      id: fundToDelete.id,
+      substituteId: fundNotToDelete.id,
+    },
+  });
+
+  req.logger = logger;
+  req.usersCollection = collection;
+  req.localEnv = LOCAL_ENV;
+
+  try {
+    const response = await deleteHandler(req, res);
+
+    expect(response.statusCode).toEqual(204);
+
+    const user: User = await collection.findOne({ email });
+
+    expect(user.funds.length).toBe(1);
+    expect(user.funds.find(({ id }) => id === fundToDelete.id)).toBe(undefined);
+
+    expect(user.budgetItems.length).toBe(2);
+    expect(user.budgetItems.find(({ id }) => id === itemToMove.id)).not.toBe(
+      undefined
+    );
+    expect(user.funds.find(({ id }) => id === fundNotToDelete.id).amount).toBe(
+      fundNotToDelete.amount - itemToMove.amount
+    );
   } finally {
     await db.dropDatabase();
     await mongoClient.close();

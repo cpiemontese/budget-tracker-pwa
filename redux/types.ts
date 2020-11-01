@@ -8,7 +8,8 @@ export const USER_ERROR = "user/error";
 // Fund
 export const CREATE_ENTITY = "entity/create";
 export const UPDATE_ENTITY = "entity/update";
-export const DELETE_ENTITY = "entity/delete";
+export const DELETE_FUND = "entity/delete/fund";
+export const DELETE_BUDGET_ITEM = "entity/delete/budgetItem";
 export const REMOVE_ENTITY = "entity/remove";
 
 // Sync
@@ -72,9 +73,14 @@ interface UpdateEntity {
   data: object;
 }
 
-interface DeleteEntity {
-  type: typeof DELETE_ENTITY;
-  entityName: "funds" | "budgetItems";
+interface DeleteFund {
+  type: typeof DELETE_FUND;
+  id: string;
+  substituteId: string;
+}
+
+interface DeleteBudgetItem {
+  type: typeof DELETE_BUDGET_ITEM;
   id: string;
 }
 
@@ -109,7 +115,8 @@ type Action =
   | UserError
   | CreateEntity
   | UpdateEntity
-  | DeleteEntity
+  | DeleteFund
+  | DeleteBudgetItem
   | RemoveEntity
   | Sync
   | SyncRequest
@@ -124,6 +131,8 @@ export type {
   Sync,
   CreateEntity,
   UpdateEntity,
-  DeleteEntity,
+  DeleteFund,
   RemoveEntity,
+  FundsMap,
+  BudgetItemsMap,
 };

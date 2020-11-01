@@ -20,8 +20,9 @@ export default function Layout({
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
-          name="description"
-          content="Learn how to build a personal website using Next.js"
+          name="Budget Tracker"
+          charSet="utf-8"
+          content="Track your expenses and income with Budget Tracker"
         />
         <meta
           property="og:image"

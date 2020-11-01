@@ -43,6 +43,10 @@
   @apply bg-red-700;
 }
 
+.delete-modal {
+  @apply w-full absolute z-10 p-4 rounded bg-white shadow-2xl;
+}
+
 .form-label {
   @apply text-black font-bold mb-1 pr-4;
 }

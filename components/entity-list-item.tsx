@@ -1,13 +1,8 @@
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
 import { trashCan } from "../styles/svg";
-import { ReduxState } from "../redux/types";
-import { deleteEntity, removeEntity } from "../redux/actions";
-
-const log = logger({ browser: true });
 
 export default function EntityListItem({
   id,

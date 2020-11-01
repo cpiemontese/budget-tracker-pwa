@@ -1,8 +1,9 @@
+import { amountToValue } from "../../lib/crud/budget-items/common";
 import {
   ReduxState,
   CreateEntity,
   UpdateEntity,
-  DeleteEntity,
+  DeleteFund,
   RemoveEntity,
 } from "../types";
 
@@ -42,20 +43,61 @@ export function updateEntity(state: ReduxState, action: UpdateEntity) {
     },
   };
 }
-export function deleteEntity(state: ReduxState, action: DeleteEntity) {
-  const { entityName, id } = action;
-  const entities = state[entityName];
-  const entity = state[entityName][id];
-  return {
-    ...state,
-    [entityName]: {
-      ...entities,
-      [id]: {
-        ...entity,
-        deleted: true,
-      },
-    },
-  };
+
+export function deleteFund(state: ReduxState, action: DeleteFund) {
+  const { id, substituteId } = action;
+
+  const funds = state.funds;
+  const budgetItems = state.budgetItems;
+
+  let fundAmountUpdate = 0.0;
+  const updateBudgetItems = Object.keys(budgetItems).map((key) => {
+    if (budgetItems[key].fund === id) {
+      fundAmountUpdate += amountToValue(
+        budgetItems[key].amount,
+        budgetItems[key].type
+      );
+      return {
+        ...budgetItems[key],
+        ...(substituteId === "delete-all"
+          ? {
+              deleted: true,
+            }
+          : {
+              fund: substituteId,
+            }),
+      };
+    }
+    return budgetItems[key];
+  });
+
+  return substituteId === "delete-all"
+    ? {
+        ...state,
+        budgetItems: updateBudgetItems,
+        funds: {
+          ...funds,
+          [id]: {
+            ...funds[id],
+            deleted: true,
+          },
+        },
+      }
+    : {
+        ...state,
+        budgetItems: updateBudgetItems,
+        funds: {
+          ...funds,
+          [id]: {
+            ...funds[id],
+            deleted: true,
+          },
+          [substituteId]: {
+            ...funds[substituteId],
+            amount: funds[substituteId].amount + fundAmountUpdate,
+          },
+        },
+      };
 }
 
 export function removeEntity(state: ReduxState, action: RemoveEntity) {

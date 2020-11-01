@@ -14,13 +14,13 @@ import {
   USER_ERROR,
   USER_RECEIVE,
   USER_REQUEST,
-  DELETE_ENTITY,
+  DELETE_FUND,
   REMOVE_ENTITY,
 } from "../redux/types";
 
 import {
   createEntity,
-  deleteEntity,
+  deleteFund,
   removeEntity,
   updateEntity,
 } from "./actions/entity";
@@ -44,8 +44,8 @@ const reducer = (state = initialState, action: Action) => {
       return createEntity(state, action);
     case UPDATE_ENTITY:
       return updateEntity(state, action);
-    case DELETE_ENTITY:
-      return deleteEntity(state, action);
+    case DELETE_FUND:
+      return deleteFund(state, action);
     case REMOVE_ENTITY:
       return removeEntity(state, action);
     case USER_REQUEST:

@@ -2,7 +2,7 @@ import { User } from "../../types";
 
 import {
   CREATE_ENTITY,
-  DELETE_ENTITY,
+  DELETE_FUND,
   REMOVE_ENTITY,
   SYNC,
   SYNC_FAILURE,
@@ -49,15 +49,10 @@ export const updateEntity = (
   data,
 });
 
-export const deleteEntity = (
-  entityName: "funds" | "budgetItems",
-  id: string,
-  moveId: string
-) => ({
-  type: DELETE_ENTITY,
-  entityName,
+export const deleteFund = (id: string, substituteId?: string) => ({
+  type: DELETE_FUND,
   id,
-  moveId,
+  substituteId,
 });
 
 export const removeEntity = (

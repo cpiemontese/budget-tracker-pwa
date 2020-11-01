@@ -16,10 +16,12 @@ import {
   USER_REQUEST,
   DELETE_FUND,
   REMOVE_ENTITY,
+  DELETE_BUDGET_ITEM,
 } from "../redux/types";
 
 import {
   createEntity,
+  deleteBudgetItem,
   deleteFund,
   removeEntity,
   updateEntity,
@@ -46,6 +48,8 @@ const reducer = (state = initialState, action: Action) => {
       return updateEntity(state, action);
     case DELETE_FUND:
       return deleteFund(state, action);
+    case DELETE_BUDGET_ITEM:
+      return deleteBudgetItem(state, action);
     case REMOVE_ENTITY:
       return removeEntity(state, action);
     case USER_REQUEST:

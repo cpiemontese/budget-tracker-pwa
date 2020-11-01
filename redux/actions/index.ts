@@ -2,6 +2,7 @@ import { User } from "../../types";
 
 import {
   CREATE_ENTITY,
+  DELETE_BUDGET_ITEM,
   DELETE_FUND,
   REMOVE_ENTITY,
   SYNC,
@@ -53,6 +54,11 @@ export const deleteFund = (id: string, substituteId?: string) => ({
   type: DELETE_FUND,
   id,
   substituteId,
+});
+
+export const deleteBudgetItem = (id: string) => ({
+  type: DELETE_BUDGET_ITEM,
+  id,
 });
 
 export const removeEntity = (

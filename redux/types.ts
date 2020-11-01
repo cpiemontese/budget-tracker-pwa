@@ -132,6 +132,7 @@ export type {
   CreateEntity,
   UpdateEntity,
   DeleteFund,
+  DeleteBudgetItem,
   RemoveEntity,
   FundsMap,
   BudgetItemsMap,

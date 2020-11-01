@@ -5,6 +5,7 @@ import {
   UpdateEntity,
   DeleteFund,
   RemoveEntity,
+  DeleteBudgetItem,
 } from "../types";
 
 export function createEntity(state: ReduxState, action: CreateEntity) {
@@ -120,6 +121,30 @@ export function deleteFund(state: ReduxState, action: DeleteFund) {
           },
         },
       };
+}
+
+export function deleteBudgetItem(state: ReduxState, action: DeleteBudgetItem) {
+  const { id } = action;
+
+  const funds = state.funds;
+  const budgetItems = state.budgetItems;
+
+  return {
+    ...state,
+    funds: {
+      ...funds,
+      [budgetItems[id].fund]: {
+        ...funds[budgetItems[id].fund],
+        amount: amountToValue(budgetItems[id].amount, budgetItems[id].type),
+      },
+    },
+    budgetItems: {
+      [id]: {
+        ...budgetItems[id],
+        deleted: true,
+      },
+    },
+  };
 }
 
 export function removeEntity(state: ReduxState, action: RemoveEntity) {

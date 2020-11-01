@@ -68,7 +68,7 @@
 }
 
 .modal {
-  @apply w-full absolute z-10 p-4 rounded bg-white shadow-2xl;
+  @apply w-full absolute z-10 p-4 rounded bg-white shadow-xl;
 }
 
 .smooth {

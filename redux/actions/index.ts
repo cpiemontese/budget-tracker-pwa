@@ -11,6 +11,7 @@ import {
   SYNC_SUCCESS,
   UPDATE_ENTITY,
   USER_ERROR,
+  USER_LOGOUT,
   USER_RECEIVE,
   USER_REQUEST,
 } from "../types";
@@ -23,6 +24,10 @@ export const userReceive = (user: User) => ({
   type: USER_RECEIVE,
   user,
 });
+
+export const userLogout = {
+  type: USER_LOGOUT,
+};
 
 export const userError = {
   type: USER_ERROR,

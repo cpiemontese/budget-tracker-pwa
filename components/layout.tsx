@@ -1,9 +1,15 @@
 import Head from "next/head";
 import Link from "next/link";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
+import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
+import { ReduxState } from "../redux/types";
+import { userLogout } from "../redux/actions";
+import MessageModal from "./message-modal";
 
+const log = logger({ browser: true });
 const name = "Budget Tracker";
 export const siteTitle = "Budget Tracker";
 
@@ -23,6 +29,14 @@ function SignupButton({ className }) {
   );
 }
 
+function LogoutButton({ className, logoutHandler }) {
+  return (
+    <button className={className} onClick={logoutHandler}>
+      Logout
+    </button>
+  );
+}
+
 export default function Layout({
   children,
   home,
@@ -33,6 +47,38 @@ export default function Layout({
   overrideName?: string;
 }) {
   const [burger, setBurger] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const { logged, email } = useSelector((state: ReduxState) => ({
+    email: state.email,
+    logged: state.logged,
+  }));
+
+  const [messageModal, setMessageModal] = useState(false);
+  const [messageTitle, setMessageTitle] = useState("");
+  const [messageBody, setMessageBody] = useState("");
+
+  function setLogoutErrorMessage() {
+    setMessageTitle("Logout error");
+    setMessageBody("An error occurred during logout, please retry");
+    setMessageModal(true);
+  }
+
+  function logoutHandler() {
+    fetch(`/api/logout/${email}`)
+      .then((response) => {
+        if (response.ok) {
+          dispatch(userLogout);
+          return;
+        }
+        setLogoutErrorMessage();
+      })
+      .catch((error) => {
+        setLogoutErrorMessage();
+        log.error({ error: error.message }, "Logout error");
+      });
+  }
 
   return (
     <div className="max-w-xl min-h-screen mx-auto p-4 overflow-hidden">
@@ -78,16 +124,25 @@ export default function Layout({
               </div>
             }
             <div
-              className={
-                "flex justify-between invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4 self-center"
-              }
+              className={`flex ${
+                logged ? "justify-end" : "justify-center"
+              } self-center invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4`}
             >
-              <SignupButton
-                className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-              />
-              <LoginButton
-                className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-              />
+              {logged ? (
+                <LogoutButton
+                  logoutHandler={logoutHandler}
+                  className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                />
+              ) : (
+                <>
+                  <SignupButton
+                    className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                  />
+                  <LoginButton
+                    className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                  />
+                </>
+              )}
             </div>
           </>
         ) : (
@@ -95,20 +150,33 @@ export default function Layout({
         )}
       </header>
       <main className="relative">
-        {
-          <div
-            className={`absolute inset-x-0 h-screen ${
-              burger ? "opacity-full" : "w-0 opacity-0"
-            } overflow-hidden bg-white ${commonStyles.smooth}`}
-          >
-            <SignupButton
+        <MessageModal
+          visible={messageModal}
+          title={messageTitle}
+          body={messageBody}
+          setVisible={setMessageModal}
+        />
+        <div
+          className={`absolute inset-x-0 h-screen ${
+            burger ? "opacity-full" : "w-0 opacity-0"
+          } overflow-hidden bg-white ${commonStyles.smooth}`}
+        >
+          {logged ? (
+            <LogoutButton
+              logoutHandler={logoutHandler}
               className={`w-full block mb-4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
             />
-            <LoginButton
-              className={`w-full block ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-            />
-          </div>
-        }
+          ) : (
+            <>
+              <SignupButton
+                className={`w-full block mb-4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+              />
+              <LoginButton
+                className={`w-full block mb-4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+              />
+            </>
+          )}
+        </div>
         {children}
       </main>
       {!home && (

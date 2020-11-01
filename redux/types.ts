@@ -3,6 +3,7 @@ import { BudgetItem, Fund, User } from "../types";
 // User
 export const USER_REQUEST = "user/request";
 export const USER_RECEIVE = "user/receive";
+export const USER_LOGOUT = "user/logout";
 export const USER_ERROR = "user/error";
 
 // Fund
@@ -53,6 +54,10 @@ interface UserRequest {
 interface UserReceive {
   type: typeof USER_RECEIVE;
   user: User;
+}
+
+interface UserLogout {
+  type: typeof USER_LOGOUT;
 }
 
 interface UserError {
@@ -112,6 +117,7 @@ interface SyncFailure {
 type Action =
   | UserRequest
   | UserReceive
+  | UserLogout
   | UserError
   | CreateEntity
   | UpdateEntity

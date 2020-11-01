@@ -9,7 +9,7 @@ import commonStyles from "../styles/common.module.css";
 
 const log = logger({ browser: true });
 
-const pageName = "Login";
+const pageName = "Signup";
 export default function Signup() {
   const formLabel = `md:w-1/3 block md:text-right md:mb-0 ${commonStyles["form-label"]}`;
   const formInput = `md:w-2/3 ${commonStyles.smooth} ${

@@ -17,6 +17,7 @@ import {
   DELETE_FUND,
   REMOVE_ENTITY,
   DELETE_BUDGET_ITEM,
+  USER_LOGOUT,
 } from "../redux/types";
 
 import {
@@ -56,6 +57,11 @@ const reducer = (state = initialState, action: Action) => {
       return {
         ...state,
         fetching: true,
+      };
+    case USER_LOGOUT:
+      return {
+        ...state,
+        logged: false,
       };
     case USER_ERROR:
       return {

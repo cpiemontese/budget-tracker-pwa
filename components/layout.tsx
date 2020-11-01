@@ -19,7 +19,7 @@ export default function Layout({
   const [burger, setBurger] = useState(false);
 
   return (
-    <div className="max-w-xl min-h-screen mx-auto p-4">
+    <div className="max-w-xl min-h-screen mx-auto p-4 overflow-hidden">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -82,7 +82,27 @@ export default function Layout({
           <h2 className="text-3xl font-light">{overrideName ?? name}</h2>
         )}
       </header>
-      <main className="relative">{children}</main>
+      <main className="relative">
+        {
+          <div
+            className={`absolute inset-x-0 h-screen ${
+              burger ? "opacity-full" : "w-0 opacity-0"
+            } overflow-hidden bg-white ${commonStyles.smooth}`}
+          >
+            <button
+              className={`w-full block mb-4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+            >
+              Signup
+            </button>
+            <button
+              className={`w-full block ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+            >
+              Login
+            </button>
+          </div>
+        }
+        {children}
+      </main>
       {!home && (
         <div className="mt-6">
           <Link href="/">

@@ -28,11 +28,11 @@ export default function EntityListItem({
     >
       <Link href={`/${endpoint}/[id]`} as={`/${endpoint}/${id}`} key={id}>
         <a className={`w-full flex ${commonStyles["anchor"]}`}>
-          <div className="w-1/4 mr-4 md:mr-0 font-bold">
+          <div className="w-1/5 mr-4 md:mr-0 font-medium text-gray-700">
             <p>Name</p>
             <p>Amount</p>
           </div>
-          <div className="w-3/4">
+          <div className="w-4/5">
             <p>{name}</p>
             <p>{amount}</p>
           </div>

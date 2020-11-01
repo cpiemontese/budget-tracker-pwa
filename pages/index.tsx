@@ -13,6 +13,7 @@ import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
 import FundDeleteModal from "../components/fund-delete-modal";
 import BudgeItemDeleteModal from "../components/budget-item-delete-modal";
+import MessageModal from "../components/message-modal";
 
 const log = logger({ browser: true });
 
@@ -101,22 +102,12 @@ export default function Home() {
           setVisible={setBudgetItemModal}
         />
       )}
-      {messageModal && (
-        <div className={`${commonStyles.modal} ${commonStyles.smooth}`}>
-          <div className="mb-4 font-semibold text-xl border-b-2">
-            {messageTitle}
-          </div>
-          <div className="mb-4">{messageBody}</div>
-          <div className="flex justify-end">
-            <button
-              className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
-              onClick={() => setMessageModal(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+      <MessageModal
+        visible={messageModal}
+        title={messageTitle}
+        body={messageBody}
+        setVisible={setMessageModal}
+      />
       <section className="">
         {fetching && <p>Fetching...</p>}
         <h2 className="text-2xl font-medium mb-2">Funds</h2>

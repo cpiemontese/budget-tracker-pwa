@@ -39,6 +39,8 @@ async function signup(
   const username = get(req.body, ["username"], null) as string;
   const password = get(req.body, ["password"], null) as string;
 
+  req.logger.debug({ email, username, password }, "/api/signup - body");
+
   if ([email, username, password].some((value) => value === null)) {
     res.status(400).send({});
     return res;
@@ -113,6 +115,8 @@ async function signup(
     res.status(500).send({});
     return res;
   }
+
+  // TODO create login token
 
   res.status(204).send({});
   return res;

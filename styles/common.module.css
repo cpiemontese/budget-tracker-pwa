@@ -72,5 +72,5 @@
 }
 
 .smooth {
-  @apply transform transition ease-in-out duration-200;
+  @apply transition-all ease-in-out duration-200;
 }

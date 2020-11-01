@@ -3,7 +3,7 @@ import { NextApiRequestWithLogger } from "../types";
 import { NextApiResponse } from "next";
 import { randomString } from "../lib/common";
 
-async function reqLogger(
+async function tracer(
   req: NextApiRequestWithLogger,
   res: NextApiResponse,
   next: NextHandler
@@ -41,6 +41,6 @@ async function reqLogger(
 
 const middleware = nextConnect();
 
-middleware.use(reqLogger);
+middleware.use(tracer);
 
 export default middleware;

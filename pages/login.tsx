@@ -18,7 +18,7 @@ export default function Login() {
 
   const router = useRouter();
 
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const [messageModal, setMessageModal] = useState(false);
@@ -35,7 +35,7 @@ export default function Login() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username,
+        email,
         password,
       }),
     })
@@ -73,15 +73,15 @@ export default function Login() {
       />
       <form onSubmit={submitHandler} className="w-full">
         <div className="md:flex md:items-center mb-6">
-          <label className={formLabel} htmlFor="username-input">
-            Username
+          <label className={formLabel} htmlFor="email-input">
+            Email
           </label>
           <input
-            id="username-input"
+            id="email-input"
             className={formInput}
             type="text"
-            value={username}
-            onChange={(event) => setUsername(event.target.value)}
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
           />
         </div>
         <div className="md:flex md:items-center mb-6">

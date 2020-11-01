@@ -81,6 +81,8 @@ test("returns 204 if user is correctly created", async () => {
   });
 
   let actualUserDoc: User = null;
+  let actualFilter = null;
+  let actualUpdate = null;
   req.usersCollection = {
     async findOne() {
       return null;
@@ -88,6 +90,10 @@ test("returns 204 if user is correctly created", async () => {
     async insertOne(userDoc: User) {
       actualUserDoc = userDoc;
       return "mongodb_id";
+    },
+    async updateOne(filter: object, update: object) {
+      actualFilter = filter;
+      actualUpdate = update;
     },
   };
 
@@ -110,6 +116,8 @@ test("returns 204 if user is correctly created", async () => {
     username,
     authenticated: false,
   });
+  expect(actualFilter).toMatchObject({ email });
+  expect(actualUpdate).toHaveProperty("$set.loginToken");
 
   expect(await compare(plaintextPassword, actualUserDoc.password)).toBe(true);
 });
@@ -136,6 +144,9 @@ test("returns 204 and sends mail if user is correctly created", async () => {
     async insertOne(userDoc: User) {
       interceptedauthenticationToken = userDoc.authenticationToken;
       return "mongodb_id";
+    },
+    async updateOne() {
+      // do nothing
     },
   };
 

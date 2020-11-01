@@ -14,10 +14,16 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
+import tracer from "../../middleware/tracer";
 import envLoader from "../../middleware/env-loader";
 import { createCookie } from "../../lib/cookies";
 
-const handler = nextConnect().use(envLoader).use(db).use(logger).post(login);
+const handler = nextConnect()
+  .use(envLoader)
+  .use(db)
+  .use(logger)
+  .use(tracer)
+  .post(login);
 
 export default handler;
 export { login };
@@ -77,7 +83,7 @@ async function login(
   try {
     await req.usersCollection.updateOne(
       { email },
-      { loginToken: { value, expiration } }
+      { $set: { loginToken: { value, expiration } } }
     );
   } catch (error) {
     req.logger.error(

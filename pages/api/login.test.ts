@@ -180,7 +180,7 @@ test("returns 204 if password matches, user is updated and cookie is set", async
   );
 
   expect(JSON.parse(cookie)).toEqual({
-    loginToken: interceptedUpdate.loginToken.value,
+    loginToken: interceptedUpdate["$set"].loginToken.value,
     email,
   });
 });

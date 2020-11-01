@@ -14,11 +14,14 @@ import {
 
 import db from "../../middleware/database";
 import logger from "../../middleware/logger";
+import tracer from "../../middleware/tracer";
 import envLoader from "../../middleware/env-loader";
 import transporter from "../../middleware/transporter";
 import { randomBytes } from "crypto";
+import { createCookie } from "../../lib/cookies";
 
 const SALT_ROUNDS = 12;
+const LOGIN_TOKEN_LENGTH = 16;
 const VERIFICATION_SECRET_LENGTH = 16;
 
 const handler = nextConnect()
@@ -26,6 +29,7 @@ const handler = nextConnect()
   .use(db)
   .use(logger)
   .use(transporter)
+  .use(tracer)
   .post(signup);
 
 async function signup(
@@ -38,8 +42,6 @@ async function signup(
   const email = get(req.body, ["email"], null) as string;
   const username = get(req.body, ["username"], null) as string;
   const password = get(req.body, ["password"], null) as string;
-
-  req.logger.debug({ email, username, password }, "/api/signup - body");
 
   if ([email, username, password].some((value) => value === null)) {
     res.status(400).send({});
@@ -116,7 +118,34 @@ async function signup(
     return res;
   }
 
-  // TODO create login token
+  const value = randomBytes(LOGIN_TOKEN_LENGTH).toString("hex");
+  const expiration = Date.now() + req.localEnv.loginCookie.maxAge;
+  const cookie = createCookie(
+    req.localEnv.loginCookie.name,
+    JSON.stringify({
+      email,
+      loginToken: value,
+    }),
+    expiration
+  );
+
+  try {
+    await req.usersCollection.updateOne(
+      { email },
+      { $set: { loginToken: { value, expiration } } }
+    );
+  } catch (error) {
+    req.logger.error(
+      {
+        error: error.message,
+      },
+      "/api/signup - user login token set error"
+    );
+    res.status(500).send({});
+    return res;
+  }
+
+  res.setHeader("Set-Cookie", cookie);
 
   res.status(204).send({});
   return res;

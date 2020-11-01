@@ -9,7 +9,7 @@ export default function CreateBudgetItem() {
           type="create"
           startingAmount={0.0}
           startingName=""
-          startingFundId=""
+          startingFundId={null}
           startingType="expense"
           startingCategory=""
           startingDescription=""

@@ -19,7 +19,7 @@ export default function BudgetItemForm({
   type: "create" | "update";
   startingName: string;
   startingAmount: number;
-  startingFundId: string;
+  startingFundId?: string;
   startingType: "expense" | "income";
   startingCategory: string;
   startingDescription: string;
@@ -30,9 +30,11 @@ export default function BudgetItemForm({
 }) {
   const funds = useSelector((state: ReduxState) => state.funds);
 
+  const [firstFund] = Object.keys(funds);
+
   const [name, setName] = useState(startingName);
   const [amount, setAmount] = useState(startingAmount);
-  const [fundId, setFundId] = useState(startingFundId);
+  const [fundId, setFundId] = useState(startingFundId ?? firstFund);
   const [budgetItemType, setType] = useState(startingType);
   const [category, setCategory] = useState(startingCategory);
   const [description, setDescription] = useState(startingDescription);

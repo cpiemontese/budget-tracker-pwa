@@ -10,6 +10,14 @@ import {
 export function createEntity(state: ReduxState, action: CreateEntity) {
   const { entityName, id, data } = action;
   const entities = state[entityName];
+
+  if (entityName === "budgetItems") {
+    const fundId = data["fund"] as string;
+    const amount = data["amount"] as number;
+    const type = data["type"] as string;
+    state.funds[fundId].amount += amountToValue(amount, type);
+  }
+
   return {
     ...state,
     [entityName]: {

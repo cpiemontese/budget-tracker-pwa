@@ -44,7 +44,7 @@
 }
 
 .form-label {
-  @apply text-black font-bold mb-1 pr-4;
+  @apply text-black font-bold pr-4;
 }
 
 .form-input {

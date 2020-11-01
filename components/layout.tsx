@@ -32,11 +32,18 @@ export default function Layout({
         />
         <meta name="og:title" content={siteTitle} />
       </Head>
-      <header className="flex justify-center mb-4 border-b-2">
+      <header className="flex relative mb-4 border-b-2">
         {home ? (
-          <h1 className="text-4xl font-light mb-4">{name}</h1>
+          <>
+            <h1 className="w-4/5 sm:w-5/6 text-4xl font-light">{name}</h1>
+            <button
+              className={`sm:absolute sm:right-0 w-1/5 sm:w-1/6 self-center ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+            >
+              Login
+            </button>
+          </>
         ) : (
-          <h2 className="text-3xl font-light mb-4">{overrideName ?? name}</h2>
+          <h2 className="text-3xl font-light">{overrideName ?? name}</h2>
         )}
       </header>
       <main className="relative">{children}</main>

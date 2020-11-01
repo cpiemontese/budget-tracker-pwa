@@ -50,9 +50,9 @@ export default function Layout({
 
   const dispatch = useDispatch();
 
-  const { logged, email } = useSelector((state: ReduxState) => ({
-    email: state.email,
+  const { logged, fetching } = useSelector((state: ReduxState) => ({
     logged: state.logged,
+    fetching: state.fetching,
   }));
 
   const [messageModal, setMessageModal] = useState(false);
@@ -66,7 +66,7 @@ export default function Layout({
   }
 
   function logoutHandler() {
-    fetch(`/api/logout/${email}`)
+    fetch("/api/logout")
       .then((response) => {
         if (response.ok) {
           dispatch(userLogout);
@@ -125,7 +125,7 @@ export default function Layout({
             }
             <div
               className={`flex ${
-                logged ? "justify-end" : "justify-center"
+                logged ? "justify-end" : "justify-between"
               } self-center invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4`}
             >
               {logged ? (

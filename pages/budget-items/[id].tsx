@@ -25,9 +25,7 @@ export default function UpdateBudgetItem() {
           startingAmount={get(budgetItem, "amount", 0.0)}
           startingFundId={get(budgetItem, "fund", "")}
           startingType={get(budgetItem, "type", "expense")}
-          startingDate={budgetItemDateFormat(
-            get(budgetItem, "date", Date.now())
-          )}
+          startingDate={get(budgetItem, "date", Date.now())}
           startingCategory={get(budgetItem, "category", "")}
           startingDescription={get(budgetItem, "description", "")}
           submitHandler={submitHandler}

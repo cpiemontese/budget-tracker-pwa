@@ -1,9 +1,12 @@
-import { format } from "date-fns";
+import { DateTime } from "luxon";
 import { randomBytes, randomInt } from "crypto";
 import { BudgetItem, Fund, User } from "../types";
 
 export const budgetItemDateFormat = (timestamp: number) =>
-  format(timestamp, "yyyy-MM-dd");
+  DateTime.fromMillis(timestamp).toISODate();
+
+export const budgetItemDateParse = (isoDate: string) =>
+  DateTime.fromISO(isoDate).toUTC().toMillis();
 
 export const getNullUser = (): User => ({
   email: null,

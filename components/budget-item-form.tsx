@@ -5,6 +5,7 @@ import React, { FormEvent, useState } from "react";
 import Layout from "./layout";
 import commonStyles from "../styles/common.module.css";
 import { ReduxState } from "../redux/types";
+import { budgetItemDateFormat, budgetItemDateParse } from "../lib/common";
 
 export default function BudgetItemForm({
   type,
@@ -22,7 +23,7 @@ export default function BudgetItemForm({
   startingAmount: number;
   startingFundId?: string;
   startingType: "expense" | "income";
-  startingDate: string;
+  startingDate: number;
   startingCategory: string;
   startingDescription: string;
   submitHandler: (
@@ -138,8 +139,10 @@ export default function BudgetItemForm({
             id="date-input"
             className={formInput}
             type="date"
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
+            value={budgetItemDateFormat(date)}
+            onChange={(event) =>
+              setDate(budgetItemDateParse(event.target.value))
+            }
           />
         </div>
         <div className="md:flex md:items-center mb-6">

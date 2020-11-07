@@ -14,7 +14,10 @@ function envLoader(
   req.localEnv = {
     app: {
       name: process.env.APP_NAME,
-      host: process.env.APP_HOST,
+      host:
+        process.env.NODE_ENV === "production"
+          ? process.env.NOW_URL
+          : process.env.APP_HOST,
     },
     db: {
       uri: process.env.MONGODB_URI,
@@ -22,7 +25,7 @@ function envLoader(
       maxIdlePeriod: parseInt(process.env.DB_MAX_IDLE_PERIOD),
       collections: {
         users: process.env.DB_USERS_COLLECTION,
-      }
+      },
     },
     logLevel: process.env.LOG_LEVEL,
     smtp: {

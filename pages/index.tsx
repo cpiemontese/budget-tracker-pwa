@@ -14,6 +14,7 @@ import { userError, userReceive, userRequest } from "../redux/actions";
 import FundDeleteModal from "../components/fund-delete-modal";
 import BudgeItemDeleteModal from "../components/budget-item-delete-modal";
 import MessageModal from "../components/message-modal";
+import Spinner from "../components/spinner";
 
 const log = logger({ browser: true });
 
@@ -117,25 +118,30 @@ export default function Home() {
         setVisible={setMessageModal}
       />
       <section className="">
-        {fetching && <p>Fetching...</p>}
         <h2 className="text-2xl font-medium mb-2">Funds</h2>
         <Link href="/funds">{addButton()}</Link>
-        <ul className="mb-4 max-h-48 overflow-y-scroll">
-          {fundsKeys.map((id, index) =>
-            funds[id].deleted ? null : (
-              <EntityListItem
-                key={id}
-                id={id}
-                last={index === fundsKeys.length - 1}
-                endpoint="funds"
-                entityName="funds"
-                name={funds[id].name}
-                amount={funds[id].amount.toFixed(2)}
-                deleteHandler={deleteHandler}
-              />
-            )
-          )}
-        </ul>
+        {fetching ? (
+          <div className="w-full h-12 flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <ul className="mb-4 max-h-48 overflow-y-scroll">
+            {fundsKeys.map((id, index) =>
+              funds[id].deleted ? null : (
+                <EntityListItem
+                  key={id}
+                  id={id}
+                  last={index === fundsKeys.length - 1}
+                  endpoint="funds"
+                  entityName="funds"
+                  name={funds[id].name}
+                  amount={funds[id].amount.toFixed(2)}
+                  deleteHandler={deleteHandler}
+                />
+              )
+            )}
+          </ul>
+        )}
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
         <Link href="/budget-items">
           {addButton((event) => {
@@ -149,25 +155,31 @@ export default function Home() {
             }
           })}
         </Link>
-        <ul className="max-h-screen overflow-y-scroll">
-          {budgetItemsKeys.map((id, index) =>
-            budgetItems[id].deleted ? null : (
-              <EntityListItem
-                key={id}
-                id={id}
-                last={index === budgetItemsKeys.length - 1}
-                endpoint="budget-items"
-                entityName="budgetItems"
-                name={budgetItems[id].name}
-                amount={amountToValue(
-                  budgetItems[id].amount,
-                  budgetItems[id].type
-                ).toFixed(2)}
-                deleteHandler={deleteHandler}
-              />
-            )
-          )}
-        </ul>
+        {fetching ? (
+          <div className="w-full h-12 flex justify-center items-center">
+            <Spinner />
+          </div>
+        ) : (
+          <ul className="max-h-screen overflow-y-scroll">
+            {budgetItemsKeys.map((id, index) =>
+              budgetItems[id].deleted ? null : (
+                <EntityListItem
+                  key={id}
+                  id={id}
+                  last={index === budgetItemsKeys.length - 1}
+                  endpoint="budget-items"
+                  entityName="budgetItems"
+                  name={budgetItems[id].name}
+                  amount={amountToValue(
+                    budgetItems[id].amount,
+                    budgetItems[id].type
+                  ).toFixed(2)}
+                  deleteHandler={deleteHandler}
+                />
+              )
+            )}
+          </ul>
+        )}
       </section>
     </Layout>
   );

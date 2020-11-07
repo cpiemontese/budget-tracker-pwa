@@ -4,10 +4,11 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
+import MessageModal from "./message-modal";
 import commonStyles from "../styles/common.module.css";
 import { ReduxState } from "../redux/types";
 import { userLogout } from "../redux/actions";
-import MessageModal from "./message-modal";
+import Spinner from "./spinner";
 
 const log = logger({ browser: true });
 const name = "Budget Tracker";
@@ -123,27 +124,33 @@ export default function Layout({
                 ></span>
               </div>
             }
-            <div
-              className={`flex ${
-                logged ? "justify-end" : "justify-between"
-              } self-center invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4`}
-            >
-              {logged ? (
-                <LogoutButton
-                  logoutHandler={logoutHandler}
-                  className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-                />
-              ) : (
-                <>
-                  <SignupButton
+            {fetching ? (
+              <div className="flex justify-center align-center self-center invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4">
+                <Spinner />
+              </div>
+            ) : (
+              <div
+                className={`flex ${
+                  logged ? "justify-end" : "justify-between"
+                } self-center invisible sm:visible sm:absolute sm:right-0 w-0 sm:w-1/4`}
+              >
+                {logged ? (
+                  <LogoutButton
+                    logoutHandler={logoutHandler}
                     className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
                   />
-                  <LoginButton
-                    className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
-                  />
-                </>
-              )}
-            </div>
+                ) : (
+                  <>
+                    <SignupButton
+                      className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                    />
+                    <LoginButton
+                      className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                    />
+                  </>
+                )}
+              </div>
+            )}
           </>
         ) : (
           <h2 className="text-3xl font-light">{overrideName ?? name}</h2>

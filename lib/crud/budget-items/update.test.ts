@@ -131,16 +131,22 @@ describe("returns 204 if everything is updated correctly", () => {
   });
 
   beforeEach(async (done) => {
-    await mongoClient.db(dbName).collection(collectionName).updateOne({
-      email
-    }, {
-      $set: {
-        funds: [],
-        budgetTimes: [],
-      }
-    })
+    await mongoClient
+      .db(dbName)
+      .collection(collectionName)
+      .updateOne(
+        {
+          email,
+        },
+        {
+          $set: {
+            funds: [],
+            budgetTimes: [],
+          },
+        }
+      );
     done();
-  })
+  });
 
   test("expense to income", async () => {
     const db = mongoClient.db(dbName);
@@ -278,6 +284,7 @@ describe("returns 204 if everything is updated correctly", () => {
             type: "expense",
             amount: oldBudgetItemAmount,
             fund: fundId,
+            date: now,
             category: "category",
             description: "description",
             createdAt: now,
@@ -328,6 +335,7 @@ describe("returns 204 if everything is updated correctly", () => {
       type: "expense",
       amount: newBudgetItemAmount,
       fund: fundId,
+      date: now,
       category: "category",
       description: "description",
     });
@@ -377,6 +385,7 @@ describe("returns 204 if everything is updated correctly", () => {
             type: "expense",
             amount: amount,
             fund: oldFundId,
+            date: now,
             category: "category",
             description: "description",
             createdAt: now,
@@ -434,6 +443,7 @@ describe("returns 204 if everything is updated correctly", () => {
       type: "expense",
       amount: amount,
       fund: newFundId,
+      date: now,
       category: "category",
       description: "description",
     });
@@ -484,6 +494,7 @@ describe("returns 204 if everything is updated correctly", () => {
             type: "expense",
             amount: oldAmount,
             fund: oldFundId,
+            date: now,
             category: "category",
             description: "description",
             createdAt: now,
@@ -524,13 +535,13 @@ describe("returns 204 if everything is updated correctly", () => {
     expect(oldFund).toMatchObject({
       id: oldFundId,
       name: "some old fund",
-      amount: oldFundAmount + oldAmount
+      amount: oldFundAmount + oldAmount,
     });
 
     expect(newFund).toMatchObject({
       id: newFundId,
       name: "some new fund",
-      amount: newFundAmount + newAmount
+      amount: newFundAmount + newAmount,
     });
 
     const affectedBudgetItem = budgetItems.find(
@@ -543,6 +554,7 @@ describe("returns 204 if everything is updated correctly", () => {
       type: "income",
       amount: newAmount,
       fund: newFundId,
+      date: now,
       category: "category",
       description: "description",
     });

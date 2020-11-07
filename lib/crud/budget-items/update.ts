@@ -27,6 +27,7 @@ export async function updateHandler(
   const type = get(req.body, ["type"], null) as string;
   const amount = parseFloatNullable(get(req.body, ["amount"], null) as string);
   const fund = get(req.body, ["fund"], null) as string;
+  const date = get(req.body, ["date"], null) as number;
   const category = get(req.body, ["category"], null) as string;
   const description = get(req.body, ["description"], null) as string;
 
@@ -48,6 +49,10 @@ export async function updateHandler(
       {
         name: "fund",
         value: fund,
+      },
+      {
+        name: "date",
+        value: date,
       },
       {
         name: "category",
@@ -114,19 +119,25 @@ export async function updateHandler(
   const fundToGiveTo = fund || fundToGiveBackTo;
 
   try {
-    await req.usersCollection.updateOne({
-      email,
-      "budgetItems.id": id,
-    }, { $set });
+    await req.usersCollection.updateOne(
+      {
+        email,
+        "budgetItems.id": id,
+      },
+      { $set }
+    );
 
-    await req.usersCollection.updateOne({
-      email,
-      "funds.id": fundToGiveTo,
-    }, {
-      $inc: {
-        "funds.$.amount": amountToGive,
+    await req.usersCollection.updateOne(
+      {
+        email,
+        "funds.id": fundToGiveTo,
+      },
+      {
+        $inc: {
+          "funds.$.amount": amountToGive,
+        },
       }
-    });
+    );
   } catch (error) {
     req.logger.error(
       { error: error.message },

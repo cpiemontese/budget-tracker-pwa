@@ -20,8 +20,9 @@ export async function createHandler(
   const type = get(req.body, ["type"], null) as string;
   const amount = get(req.body, ["amount"], null) as number;
   const fund = get(req.body, ["fund"], null) as string;
+  const date = get(req.body, ["date"], null) as number;
 
-  if ([email, name, amount, type, fund].some((value) => value === null)) {
+  if ([email, name, amount, type, fund, date].some((value) => value === null)) {
     res.status(400).send({});
     return res;
   }
@@ -48,6 +49,7 @@ export async function createHandler(
             type,
             amount: fixedAmount,
             fund,
+            date,
             category,
             description,
             createdAt,

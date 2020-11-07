@@ -62,6 +62,7 @@ test("returns 201 if budget item is created", async () => {
   const name = "name";
   const type = "expense";
   const amount = 10.28;
+  const now = Date.now();
   const { req, res } = createMocks({
     method: "POST",
     query: {
@@ -72,6 +73,7 @@ test("returns 201 if budget item is created", async () => {
       type,
       amount,
       fund: fundId,
+      date: now,
     },
   });
 
@@ -96,6 +98,7 @@ test("returns 201 if budget item is created", async () => {
       fund: fundId,
     });
     expect(user.budgetItems[0].id).not.toBe(null);
+    expect(user.budgetItems[0].date).toBe(now);
     expect(user.budgetItems[0].createdAt).not.toBe(null);
     expect(user.budgetItems[0].updatedAt).toBe(user.budgetItems[0].createdAt);
 

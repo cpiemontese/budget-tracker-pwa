@@ -13,18 +13,24 @@ export default function Modal({
 }) {
   return (
     visible && (
-      <div className={`${commonStyles.modal} ${commonStyles.smooth}`}>
-        <div className="mb-4 font-semibold text-xl border-b-2">{title}</div>
-        {children}
-        <div className="flex justify-end">
-          <button
-            className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
-            onClick={() => setVisible(false)}
-          >
-            Close
-          </button>
+      <>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-25"
+          onClick={() => setVisible(false)}
+        ></div>
+        <div className={`${commonStyles.modal} ${commonStyles.smooth}`}>
+          <div className="mb-4 font-semibold text-xl border-b-2">{title}</div>
+          {children}
+          <div className="flex justify-end">
+            <button
+              className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
+              onClick={() => setVisible(false)}
+            >
+              Close
+            </button>
+          </div>
         </div>
-      </div>
+      </>
     )
   );
 }

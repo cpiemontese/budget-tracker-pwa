@@ -80,20 +80,20 @@ const reducer = (state = initialState, action: Action) => {
         email: action.user.email,
         funds: {
           ...funds,
-          ...Object.keys(userFunds).reduce((fundsMap, fundKey) => {
-            fundsMap[fundKey] = userFunds[fundKey];
+          ...userFunds.reduce((fundsMap, fund) => {
+            fundsMap[fund.id] = fund;
+            fundsMap[fund.id].synced = true;
             return fundsMap;
           }, {}),
         },
         budgetItems: {
           ...budgetItems,
-          ...Object.keys(userBudgetItems).reduce(
-            (budgetItemsMap, budgetItemKey) => {
-              budgetItemsMap[budgetItemKey] = userFunds[budgetItemKey];
-              return budgetItemsMap;
-            },
-            {}
-          ),
+          ...userBudgetItems.reduce((budgetItemsMap, budgetItem) => {
+            budgetItem.amount = Math.abs(budgetItem.amount);
+            budgetItemsMap[budgetItem.id] = budgetItem;
+            budgetItemsMap[budgetItem.id].synced = true;
+            return budgetItemsMap;
+          }, {}),
         },
       };
     }

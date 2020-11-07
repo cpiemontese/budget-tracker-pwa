@@ -1,4 +1,3 @@
-import { link } from "fs/promises";
 import { amountToValue } from "../../lib/crud/budget-items/common";
 import {
   ReduxState,
@@ -155,8 +154,13 @@ export function deleteBudgetItem(state: ReduxState, action: DeleteBudgetItem) {
 
 export function removeEntity(state: ReduxState, action: RemoveEntity) {
   const { entityName, id } = action;
-  delete state[entityName][id];
   return {
     ...state,
+    [entityName]: Object.keys(state[entityName]).reduce((newEntities, key) => {
+      if (key !== id) {
+        newEntities[key] = state[entityName][key];
+      }
+      return newEntities;
+    }, {}),
   };
 }

@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 
 import BudgetItemForm from "../../components/budget-item-form";
 import EntityUpdateFormContext from "../../components/entity-update-form-context";
-import { budgetItemDateFormat } from "../../lib/common";
 import { ReduxState } from "../../redux/types";
 
 export default function UpdateBudgetItem() {

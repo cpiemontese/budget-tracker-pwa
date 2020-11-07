@@ -1,4 +1,5 @@
-import commonStyles from "../styles/common.module.css";
+import React from "react";
+import Modal from "./modal";
 
 export default function MessageModal({
   visible,
@@ -12,19 +13,8 @@ export default function MessageModal({
   setVisible: (boolean) => void;
 }) {
   return (
-    visible && (
-      <div className={`${commonStyles.modal} ${commonStyles.smooth}`}>
-        <div className="mb-4 font-semibold text-xl border-b-2">{title}</div>
-        <div className="mb-4">{body}</div>
-        <div className="flex justify-end">
-          <button
-            className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
-            onClick={() => setVisible(false)}
-          >
-            Close
-          </button>
-        </div>
-      </div>
-    )
+    <Modal visible={visible} title={title} setVisible={setVisible}>
+      <div className="mb-4">{body}</div>
+    </Modal>
   );
 }

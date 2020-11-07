@@ -17,6 +17,8 @@ import MessageModal from "../components/message-modal";
 
 const log = logger({ browser: true });
 
+let fetched = false;
+
 const addButton = (clickHandler: (event: any) => void = () => null) => (
   <button
     className={`w-full mb-4 ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
@@ -39,9 +41,10 @@ export default function Home() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (logged) {
+    if (logged || fetched) {
       return;
     }
+    fetched = true;
     dispatch(userRequest);
     fetch("/api/verify", {
       headers: {

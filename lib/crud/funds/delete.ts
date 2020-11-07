@@ -16,12 +16,13 @@ export async function deleteHandler(
 ) {
   const email = get(req.query, ["email"], null) as string;
   const id = get(req.query, ["id"], null) as string;
-  const substituteId = get(req.query, ["substituteId"], null) as string;
 
-  if ([email, id, substituteId].some((value) => value === null)) {
+  if ([email, id].some((value) => value === null)) {
     res.status(400).send({});
     return res;
   }
+
+  const substituteId = get(req.query, ["substituteId"], null) as string;
 
   let linkedItems: Array<BudgetItem> = [];
   try {
@@ -40,61 +41,67 @@ export async function deleteHandler(
     return prev + amountToValue(curr.amount, curr.type);
   }, 0.0);
 
-  if (substituteId === "delete-all") {
-    try {
-      await req.usersCollection.updateOne(
-        {
-          email,
-          "budgetItems.fund": id,
-        },
-        {
-          $pull: {
-            budgetItems: {
-              id: { $in: linkedItems.map(({ id }) => id) },
+  if (substituteId !== null) {
+    switch (substituteId) {
+      case "delete-all":
+        try {
+          await req.usersCollection.updateOne(
+            {
+              email,
+              "budgetItems.fund": id,
             },
-          },
+            {
+              $pull: {
+                budgetItems: {
+                  id: { $in: linkedItems.map(({ id }) => id) },
+                },
+              },
+            }
+          );
+        } catch (error) {
+          req.logger.error(
+            { error: error.message },
+            "DELETE /funds - error on budget items delete"
+          );
+          res.status(500).send({});
+          return res;
         }
-      );
-    } catch (error) {
-      req.logger.error(
-        { error: error.message },
-        "DELETE /funds - error on budget items delete"
-      );
-      res.status(500).send({});
-      return res;
-    }
-  } else {
-    try {
-      await req.usersCollection.updateMany(
-        {
-          email,
-          "budgetItems.fund": id,
-        },
-        {
-          $set: {
-            fund: substituteId,
-          },
-        }
-      );
+        break;
 
-      await req.usersCollection.updateOne(
-        {
-          email,
-          "funds.id": substituteId,
-        },
-        {
-          $inc: {
-            "funds.$.amount": amountToUpdate,
-          },
+      default:
+        try {
+          await req.usersCollection.updateMany(
+            {
+              email,
+              "budgetItems.fund": id,
+            },
+            {
+              $set: {
+                fund: substituteId,
+              },
+            }
+          );
+
+          await req.usersCollection.updateOne(
+            {
+              email,
+              "funds.id": substituteId,
+            },
+            {
+              $inc: {
+                "funds.$.amount": amountToUpdate,
+              },
+            }
+          );
+        } catch (error) {
+          req.logger.error(
+            { error: error.message },
+            "DELETE /funds - error on substitute update"
+          );
+          res.status(500).send({});
+          return res;
         }
-      );
-    } catch (error) {
-      req.logger.error(
-        { error: error.message },
-        "DELETE /funds - error on substitute update"
-      );
-      res.status(500).send({});
-      return res;
+        break;
     }
   }
 

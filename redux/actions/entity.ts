@@ -144,6 +144,7 @@ export function deleteBudgetItem(state: ReduxState, action: DeleteBudgetItem) {
       },
     },
     budgetItems: {
+      ...budgetItems,
       [id]: {
         ...itemToDelete,
         deleted: true,

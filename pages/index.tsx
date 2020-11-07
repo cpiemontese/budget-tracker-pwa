@@ -12,7 +12,7 @@ import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
 import { userError, userReceive, userRequest } from "../redux/actions";
 import FundDeleteModal from "../components/fund-delete-modal";
-import BudgeItemDeleteModal from "../components/budget-item-delete-modal";
+import BudgetItemDeleteModal from "../components/budget-item-delete-modal";
 import MessageModal from "../components/message-modal";
 import Spinner from "../components/spinner";
 
@@ -106,7 +106,7 @@ export default function Home() {
         visible={fundModal}
         setVisible={setFundModal}
       />
-      <BudgeItemDeleteModal
+      <BudgetItemDeleteModal
         id={budgetItemToDelete}
         visible={budgetItemModal}
         setVisible={setBudgetItemModal}

@@ -8,6 +8,7 @@ import {
 } from "../../../types";
 
 import { randomBytes } from "crypto";
+import { amountToValue } from "./common";
 
 const BUDGET_ITEMS_ID_LENGTH = 8;
 
@@ -27,8 +28,6 @@ export async function createHandler(
     return res;
   }
 
-  const fixedAmount = type === "expense" ? -Math.abs(amount) : Math.abs(amount);
-
   const category = get(req.body, ["category"], null) as string;
   const description = get(req.body, ["description"], null) as string;
 
@@ -47,7 +46,7 @@ export async function createHandler(
             id: budgetItemId,
             name,
             type,
-            amount: fixedAmount,
+            amount,
             fund,
             date,
             category,
@@ -57,7 +56,7 @@ export async function createHandler(
           },
         },
         $inc: {
-          "funds.$.amount": fixedAmount,
+          "funds.$.amount": amountToValue(amount, type),
         },
       }
     );

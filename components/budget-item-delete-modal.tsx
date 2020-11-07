@@ -9,7 +9,7 @@ import Modal from "./modal";
 
 const log = logger({ browser: true });
 
-export default function BudgeItemDeleteModal({
+export default function BudgetItemDeleteModal({
   id,
   visible,
   setVisible,
@@ -20,21 +20,21 @@ export default function BudgeItemDeleteModal({
 }) {
   const dispatch = useDispatch();
 
-  const { logged, email, fund } = useSelector((state: ReduxState) => ({
+  const { logged, email, budgetitem } = useSelector((state: ReduxState) => ({
     logged: state.logged,
     email: state.email,
-    fund: state.funds[id],
+    budgetitem: state.budgetItems[id],
   }));
 
   function deleteHandler() {
     dispatch(deleteBudgetItem(id));
     setVisible(false);
 
-    if (!logged || !fund.synced) {
+    if (!logged || !budgetitem.synced) {
       return;
     }
 
-    fetch(`/api/budgetItems/${email}/${id}`, {
+    fetch(`/api/budget-items/${email}/${id}`, {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

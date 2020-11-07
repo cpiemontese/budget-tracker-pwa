@@ -89,7 +89,6 @@ const reducer = (state = initialState, action: Action) => {
         budgetItems: {
           ...budgetItems,
           ...userBudgetItems.reduce((budgetItemsMap, budgetItem) => {
-            budgetItem.amount = Math.abs(budgetItem.amount);
             budgetItemsMap[budgetItem.id] = budgetItem;
             budgetItemsMap[budgetItem.id].synced = true;
             return budgetItemsMap;

@@ -94,7 +94,7 @@ test("returns 201 if budget item is created", async () => {
     expect(user.budgetItems[0]).toMatchObject({
       name,
       type,
-      amount: -amount,
+      amount,
       fund: fundId,
     });
     expect(user.budgetItems[0].id).not.toBe(null);

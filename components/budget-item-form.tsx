@@ -12,6 +12,7 @@ export default function BudgetItemForm({
   startingAmount,
   startingFundId,
   startingType,
+  startingDate,
   startingCategory,
   startingDescription,
   submitHandler,
@@ -21,6 +22,7 @@ export default function BudgetItemForm({
   startingAmount: number;
   startingFundId?: string;
   startingType: "expense" | "income";
+  startingDate: string;
   startingCategory: string;
   startingDescription: string;
   submitHandler: (
@@ -36,6 +38,7 @@ export default function BudgetItemForm({
   const [amount, setAmount] = useState(startingAmount);
   const [fundId, setFundId] = useState(startingFundId ?? firstFund);
   const [budgetItemType, setType] = useState(startingType);
+  const [date, setDate] = useState(startingDate);
   const [category, setCategory] = useState(startingCategory);
   const [description, setDescription] = useState(startingDescription);
 
@@ -60,6 +63,7 @@ export default function BudgetItemForm({
             amount,
             fund: fundId,
             type: budgetItemType,
+            date,
             category,
             description,
           }))
@@ -125,6 +129,18 @@ export default function BudgetItemForm({
               );
             })}
           </select>
+        </div>
+        <div className="md:flex md:items-center mb-6">
+          <label className={formLabel} htmlFor="date-input">
+            Date
+          </label>
+          <input
+            id="date-input"
+            className={formInput}
+            type="date"
+            value={date}
+            onChange={(event) => setDate(event.target.value)}
+          />
         </div>
         <div className="md:flex md:items-center mb-6">
           <label className={formLabel} htmlFor="category-input">

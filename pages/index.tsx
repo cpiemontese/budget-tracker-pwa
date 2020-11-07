@@ -220,6 +220,7 @@ export const getStaticProps: GetStaticProps = async () => {
             fund: "1234",
             amount: 50,
             type: "expense",
+            date: Date.now(),
             name: "some item",
             category: "some category",
             description: "some description",

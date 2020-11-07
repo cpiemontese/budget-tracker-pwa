@@ -1,5 +1,6 @@
 import BudgetItemForm from "../../components/budget-item-form";
 import EntityCreateFormContext from "../../components/entity-create-form-context";
+import { budgetItemDateFormat } from "../../lib/common";
 
 export default function CreateBudgetItem() {
   return (
@@ -11,6 +12,7 @@ export default function CreateBudgetItem() {
           startingName=""
           startingFundId={null}
           startingType="expense"
+          startingDate={budgetItemDateFormat(Date.now())}
           startingCategory=""
           startingDescription=""
           submitHandler={submitHandler}

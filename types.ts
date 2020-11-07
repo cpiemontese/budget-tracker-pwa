@@ -48,7 +48,9 @@ type BudgetItem = {
   fund: string;
   amount: number;
   type: "expense" | "income";
+  date: number;
   category: string;
+  description: string;
   createdAt: number;
   updatedAt: number;
 };

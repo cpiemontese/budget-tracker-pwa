@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import BudgetItemForm from "../../components/budget-item-form";
 import EntityUpdateFormContext from "../../components/entity-update-form-context";
+import { budgetItemDateFormat } from "../../lib/common";
 import { ReduxState } from "../../redux/types";
 
 export default function UpdateBudgetItem() {
@@ -24,6 +25,9 @@ export default function UpdateBudgetItem() {
           startingAmount={get(budgetItem, "amount", 0.0)}
           startingFundId={get(budgetItem, "fund", "")}
           startingType={get(budgetItem, "type", "expense")}
+          startingDate={budgetItemDateFormat(
+            get(budgetItem, "date", Date.now())
+          )}
           startingCategory={get(budgetItem, "category", "")}
           startingDescription={get(budgetItem, "description", "")}
           submitHandler={submitHandler}

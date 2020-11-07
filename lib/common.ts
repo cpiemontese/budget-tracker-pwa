@@ -1,5 +1,9 @@
+import { format } from "date-fns";
 import { randomBytes, randomInt } from "crypto";
 import { BudgetItem, Fund, User } from "../types";
+
+export const budgetItemDateFormat = (timestamp: number) =>
+  format(timestamp, "yyyy-MM-dd");
 
 export const getNullUser = (): User => ({
   email: null,
@@ -29,7 +33,9 @@ export const randomExpense: (fund: string) => BudgetItem = (fund) => ({
   fund,
   amount: randomInt(0, 100),
   type: "expense",
+  date: Date.now(),
   category: randomString(),
+  description: randomString(),
   createdAt: Date.now(),
   updatedAt: Date.now(),
 });
@@ -40,7 +46,9 @@ export const randomIncome: (fund: string) => BudgetItem = (fund) => ({
   fund,
   amount: randomInt(0, 100),
   type: "income",
+  date: Date.now(),
   category: randomString(),
+  description: randomString(),
   createdAt: Date.now(),
   updatedAt: Date.now(),
 });

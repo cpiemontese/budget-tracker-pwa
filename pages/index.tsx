@@ -77,16 +77,10 @@ export default function Home() {
   const [budgetItemModal, setBudgetItemModal] = useState(false);
   const [budgetItemToDelete, setBudgetItemToDelete] = useState("");
 
-  /*
-    - per data
-    x per categoria
-    x per tipo
-    - per fondo (aka tutte le spese fatte da un certo fondo o le entrate su un certo fondo)
-  */
-
   const [typeFilter, setTypeFilter] = useState("none");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState(null);
+  const [dateFilter, setDateFilter] = useState("");
+  const [fundFilter, setFundFilter] = useState("none");
 
   const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
     switch (entityName) {
@@ -111,8 +105,9 @@ export default function Home() {
       (typeFilter === "none" || budgetItem.type === typeFilter) &&
       (categoryFilter.length === 0 ||
         new RegExp(categoryFilter).test(budgetItem.category)) &&
-      (dateFilter === null ||
-        budgetItemDateParse(dateFilter) === budgetItem.date)
+      (dateFilter.length === 0 ||
+        budgetItemDateParse(dateFilter) === budgetItem.date) &&
+      (fundFilter === "none" || budgetItem.fund === fundFilter)
     );
   };
 
@@ -166,8 +161,8 @@ export default function Home() {
           </ul>
         )}
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
+        <div className="text-sm font-bold">Filters</div>
         <div className="w-full sm:flex items-center text-sm mb-2">
-          <div className="">Filters</div>
           <div className="w-full sm:flex justify-end">
             <div className="flex items-center self-end">
               <label htmlFor="type-filter" className="text-black font-bold">
@@ -179,7 +174,7 @@ export default function Home() {
                 className={`${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
                 onChange={(event) =>
                   setTypeFilter(
-                    event.target.value as "expense" | "income" | "none"
+                    event.target.value as "expense" | "income" | null
                   )
                 }
               >
@@ -189,7 +184,7 @@ export default function Home() {
               </select>
             </div>
             <div className="flex items-center self-end">
-              <label htmlFor="category-filter" className="text-black font-bold">
+              <label htmlFor="category-filter" className="font-bold">
                 Category
               </label>
               <div className="w-full max-w-xs" style={{ maxWidth: "10rem" }}>
@@ -204,17 +199,37 @@ export default function Home() {
               </div>
             </div>
             <div className="flex items-center self-end">
-              <label htmlFor="date-filter" className="text-black font-bold">
+              <label htmlFor="date-filter" className="font-bold">
                 Date
               </label>
-              <div className="">
-                <input
-                  id="date-filter"
-                  type="date"
-                  value={dateFilter}
+              <input
+                id="date-filter"
+                type="date"
+                value={dateFilter}
+                className={`pl-2 ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                onChange={(event) => setDateFilter(event.target.value)}
+              />
+            </div>
+            <div className="flex items-center self-end">
+              <label className="font-bold" htmlFor="fund-input">
+                Fund
+              </label>
+              <div className="w-full max-w-xs" style={{ maxWidth: "10rem" }}>
+                <select
+                  id="fund-input"
+                  value={fundFilter}
                   className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
-                  onChange={(event) => setDateFilter(event.target.value)}
-                />
+                  onChange={(event) => setFundFilter(event.target.value)}
+                >
+                  <option value="none">None</option>
+                  {Object.keys(funds).map((key) => {
+                    return (
+                      <option key={key} value={key}>
+                        {funds[key].name}
+                      </option>
+                    );
+                  })}
+                </select>
               </div>
             </div>
           </div>

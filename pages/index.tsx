@@ -16,7 +16,7 @@ import BudgetItemDeleteModal from "../components/budget-item-delete-modal";
 import MessageModal from "../components/message-modal";
 import Spinner from "../components/spinner";
 import { BudgetItem } from "../types";
-import { budgetItemDateParse } from "../lib/common";
+import { budgetItemDateFormat, budgetItemDateParse } from "../lib/common";
 
 const log = logger({ browser: true });
 
@@ -79,13 +79,14 @@ export default function Home() {
 
   /*
     - per data
-    - per categoria
-    - per tipo
+    x per categoria
+    x per tipo
     - per fondo (aka tutte le spese fatte da un certo fondo o le entrate su un certo fondo)
   */
 
   const [typeFilter, setTypeFilter] = useState("none");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState(null);
 
   const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
     switch (entityName) {
@@ -109,7 +110,9 @@ export default function Home() {
     return (
       (typeFilter === "none" || budgetItem.type === typeFilter) &&
       (categoryFilter.length === 0 ||
-        new RegExp(categoryFilter).test(budgetItem.category))
+        new RegExp(categoryFilter).test(budgetItem.category)) &&
+      (dateFilter === null ||
+        budgetItemDateParse(dateFilter) === budgetItem.date)
     );
   };
 
@@ -186,7 +189,7 @@ export default function Home() {
               </select>
             </div>
             <div className="flex items-center self-end">
-              <label htmlFor="category-filter" className="">
+              <label htmlFor="category-filter" className="text-black font-bold">
                 Category
               </label>
               <div className="w-full max-w-xs" style={{ maxWidth: "10rem" }}>
@@ -197,6 +200,20 @@ export default function Home() {
                   placeholder="some category"
                   className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
                   onChange={(event) => setCategoryFilter(event.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex items-center self-end">
+              <label htmlFor="date-filter" className="text-black font-bold">
+                Date
+              </label>
+              <div className="">
+                <input
+                  id="date-filter"
+                  type="date"
+                  value={dateFilter}
+                  className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                  onChange={(event) => setDateFilter(event.target.value)}
                 />
               </div>
             </div>
@@ -280,7 +297,7 @@ export const getStaticProps: GetStaticProps = async () => {
             fund: "1234",
             amount: 50,
             type: "expense",
-            date: Date.now(),
+            date: budgetItemDateParse(budgetItemDateFormat(Date.now())),
             name: "some item",
             category: "some category",
             description: "some description",

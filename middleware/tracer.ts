@@ -1,7 +1,9 @@
+import unset from "lodash.unset";
+import cloneDeep from "lodash.clonedeep";
 import nextConnect, { NextHandler } from "next-connect";
-import { NextApiRequestWithLogger } from "../types";
 import { NextApiResponse } from "next";
 import { randomString } from "../lib/common";
+import { NextApiRequestWithLogger } from "../types";
 
 async function tracer(
   req: NextApiRequestWithLogger,
@@ -11,25 +13,31 @@ async function tracer(
   const requestId = randomString();
   const start = Date.now();
 
+  const loggableBody = cloneDeep(req.body);
+  unset(loggableBody, "password");
+
   req.logger.info(
     {
       id: requestId,
       headers: req.headers,
-      cookies: req.cookies,
       query: req.query,
-      body: req.body,
+      body: loggableBody,
     },
     `Incoming request${req.url ? ` - ${req.url}` : ""}`
   );
 
   res.on("finish", () => {
     const end = Date.now();
+    const loggableHeaders = res.getHeaders();
+    unset(loggableHeaders, "cookie");
+    unset(loggableHeaders, "cookies");
+    unset(loggableHeaders, "set-cookie");
     req.logger.info(
       {
         id: requestId,
         statusCode: res.statusCode,
         statusMessage: res.statusMessage,
-        headers: { sent: res.headersSent, value: res.getHeaders() },
+        headers: { sent: res.headersSent, value: loggableHeaders },
         duration: `${(end - start).toFixed()}ms`,
       },
       `Outgoing response${req.url ? ` - ${req.url}` : ""}`

@@ -5,10 +5,12 @@ export default function Modal({
   title,
   children,
   setVisible,
+  closeBtn = true,
 }: {
   visible: boolean;
   title: string;
   children: any;
+  closeBtn?: boolean;
   setVisible: (boolean) => void;
 }) {
   return (
@@ -21,14 +23,16 @@ export default function Modal({
         <div className={`${commonStyles.modal} ${commonStyles.smooth}`}>
           <div className="mb-4 font-semibold text-xl border-b-2">{title}</div>
           {children}
-          <div className="flex justify-end">
-            <button
-              className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
-              onClick={() => setVisible(false)}
-            >
-              Close
-            </button>
-          </div>
+          {closeBtn && (
+            <div className="flex justify-end">
+              <button
+                className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
+                onClick={() => setVisible(false)}
+              >
+                Close
+              </button>
+            </div>
+          )}
         </div>
       </>
     )

@@ -5,14 +5,17 @@ import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
 import { ReduxState } from "../redux/types";
 import { deleteBudgetItem, removeEntity } from "../redux/actions";
+import Modal from "./modal";
 
 const log = logger({ browser: true });
 
 export default function BudgeItemDeleteModal({
   id,
+  visible,
   setVisible,
 }: {
   id: string;
+  visible: boolean;
   setVisible: (value: SetStateAction<boolean>) => void;
 }) {
   const dispatch = useDispatch();
@@ -43,8 +46,12 @@ export default function BudgeItemDeleteModal({
   }
 
   return (
-    <div className={commonStyles["modal"]}>
-      <div className="mb-4 font-semibold text-xl">Deleting budget item</div>
+    <Modal
+      visible={visible}
+      setVisible={setVisible}
+      title={"Deleting budget item"}
+      closeBtn={false}
+    >
       <div className="mb-2">Are you sure?</div>
       <div className="flex items-center">
         <button
@@ -60,6 +67,6 @@ export default function BudgeItemDeleteModal({
           Cancel
         </button>
       </div>
-    </div>
+    </Modal>
   );
 }

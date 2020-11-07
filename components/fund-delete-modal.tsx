@@ -5,15 +5,18 @@ import { deleteFund, removeEntity } from "../redux/actions";
 import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
 import { ReduxState } from "../redux/types";
+import Modal from "./modal";
 
 const log = logger({ browser: true });
 const DELETE_ALL = "delete-all";
 
 export default function FundDeleteModal({
   id,
+  visible,
   setVisible,
 }: {
   id: string;
+  visible: boolean;
   setVisible: (value: SetStateAction<boolean>) => void;
 }) {
   const { funds, budgetItems } = useSelector((state: ReduxState) => ({
@@ -61,8 +64,12 @@ export default function FundDeleteModal({
   }
 
   return (
-    <div className={commonStyles["modal"]}>
-      <div className="mb-4 font-semibold text-xl">Deleting fund</div>
+    <Modal
+      title={"Deleting Fund"}
+      visible={visible}
+      setVisible={setVisible}
+      closeBtn={false}
+    >
       {fundHasLinkedBIs && (
         <div className="mb-4">
           <div className="mb-2">This fund has some linked budget items!</div>
@@ -107,6 +114,6 @@ export default function FundDeleteModal({
           Cancel
         </button>
       </div>
-    </div>
+    </Modal>
   );
 }

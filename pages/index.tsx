@@ -100,15 +100,16 @@ export default function Home() {
       <Head>
         <title>{siteTitle}</title>
       </Head>
-      {fundModal && (
-        <FundDeleteModal id={fundToDelete} setVisible={setFundModal} />
-      )}
-      {budgetItemModal && (
-        <BudgeItemDeleteModal
-          id={budgetItemToDelete}
-          setVisible={setBudgetItemModal}
-        />
-      )}
+      <FundDeleteModal
+        id={fundToDelete}
+        visible={fundModal}
+        setVisible={setFundModal}
+      />
+      <BudgeItemDeleteModal
+        id={budgetItemToDelete}
+        visible={budgetItemModal}
+        setVisible={setBudgetItemModal}
+      />
       <MessageModal
         visible={messageModal}
         title={messageTitle}

@@ -80,11 +80,12 @@ export default function Home() {
   /*
     - per data
     - per categoria
+    - per tipo
     - per fondo (aka tutte le spese fatte da un certo fondo o le entrate su un certo fondo)
-    - per tipo aka solo entrate o solo uscite
   */
 
   const [typeFilter, setTypeFilter] = useState("none");
+  const [categoryFilter, setCategoryFilter] = useState("");
 
   const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
     switch (entityName) {
@@ -105,7 +106,11 @@ export default function Home() {
   };
 
   const matchesFilter = (budgetItem: BudgetItem) => {
-    return typeFilter === "none" || budgetItem.type === typeFilter;
+    return (
+      (typeFilter === "none" || budgetItem.type === typeFilter) &&
+      (categoryFilter.length === 0 ||
+        new RegExp(categoryFilter).test(budgetItem.category))
+    );
   };
 
   const fundsKeys = Object.keys(funds);
@@ -158,23 +163,43 @@ export default function Home() {
           </ul>
         )}
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
-        <div className="w-full flex items-center justify-between text-sm">
-          <div className="mr-2">Filters</div>
-          <div className="flex items-center">
-            <div className="mr-2">Type</div>
-            <select
-              value={typeFilter}
-              className={`${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
-              onChange={(event) =>
-                setTypeFilter(
-                  event.target.value as "expense" | "income" | "none"
-                )
-              }
-            >
-              <option value="none">None</option>
-              <option value="expense">Expense</option>
-              <option value="income">Income</option>
-            </select>
+        <div className="w-full sm:flex items-center text-sm mb-2">
+          <div className="">Filters</div>
+          <div className="w-full sm:flex justify-end">
+            <div className="flex items-center self-end">
+              <label htmlFor="type-filter" className="text-black font-bold">
+                Type
+              </label>
+              <select
+                id="type-filter"
+                value={typeFilter}
+                className={`${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                onChange={(event) =>
+                  setTypeFilter(
+                    event.target.value as "expense" | "income" | "none"
+                  )
+                }
+              >
+                <option value="none">None</option>
+                <option value="expense">Expense</option>
+                <option value="income">Income</option>
+              </select>
+            </div>
+            <div className="flex items-center self-end">
+              <label htmlFor="category-filter" className="">
+                Category
+              </label>
+              <div className="w-full max-w-xs" style={{ maxWidth: "10rem" }}>
+                <input
+                  id="category-filter"
+                  type="text"
+                  value={categoryFilter}
+                  placeholder="some category"
+                  className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                  onChange={(event) => setCategoryFilter(event.target.value)}
+                />
+              </div>
+            </div>
           </div>
         </div>
         <Link href="/budget-items">

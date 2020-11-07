@@ -60,7 +60,7 @@
   @apply border-green-500;
 }
 .form-input-skinny {
-  @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full text-gray-700 leading-tight;
+  @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded text-gray-700 leading-tight;
 }
 .form-input-skinny:focus {
   @apply text-black outline-none bg-white;

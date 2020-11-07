@@ -59,6 +59,12 @@
 .form-input-green:focus {
   @apply border-green-500;
 }
+.form-input-skinny {
+  @apply bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full text-gray-700 leading-tight;
+}
+.form-input-skinny:focus {
+  @apply text-black outline-none bg-white;
+}
 
 .list-item {
   @apply w-full block flex justify-between items-center h-20 py-2 px-4 border-l-2;

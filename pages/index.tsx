@@ -15,6 +15,8 @@ import FundDeleteModal from "../components/fund-delete-modal";
 import BudgetItemDeleteModal from "../components/budget-item-delete-modal";
 import MessageModal from "../components/message-modal";
 import Spinner from "../components/spinner";
+import { BudgetItem } from "../types";
+import { budgetItemDateParse } from "../lib/common";
 
 const log = logger({ browser: true });
 
@@ -75,6 +77,15 @@ export default function Home() {
   const [budgetItemModal, setBudgetItemModal] = useState(false);
   const [budgetItemToDelete, setBudgetItemToDelete] = useState("");
 
+  /*
+    - per data
+    - per categoria
+    - per fondo (aka tutte le spese fatte da un certo fondo o le entrate su un certo fondo)
+    - per tipo aka solo entrate o solo uscite
+  */
+
+  const [typeFilter, setTypeFilter] = useState("none");
+
   const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
     switch (entityName) {
       case "funds":
@@ -91,6 +102,10 @@ export default function Home() {
         log.warn({ id, entityName }, "Delete handler - unknown entity");
         return;
     }
+  };
+
+  const matchesFilter = (budgetItem: BudgetItem) => {
+    return typeFilter === "none" || budgetItem.type === typeFilter;
   };
 
   const fundsKeys = Object.keys(funds);
@@ -143,6 +158,25 @@ export default function Home() {
           </ul>
         )}
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
+        <div className="w-full flex items-center justify-between text-sm">
+          <div className="mr-2">Filters</div>
+          <div className="flex items-center">
+            <div className="mr-2">Type</div>
+            <select
+              value={typeFilter}
+              className={`${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+              onChange={(event) =>
+                setTypeFilter(
+                  event.target.value as "expense" | "income" | "none"
+                )
+              }
+            >
+              <option value="none">None</option>
+              <option value="expense">Expense</option>
+              <option value="income">Income</option>
+            </select>
+          </div>
+        </div>
         <Link href="/budget-items">
           {addButton((event) => {
             if (fundsKeys.filter((key) => !funds[key].deleted).length === 0) {
@@ -162,7 +196,8 @@ export default function Home() {
         ) : (
           <ul className="max-h-screen overflow-y-scroll">
             {budgetItemsKeys.map((id, index) =>
-              budgetItems[id].deleted ? null : (
+              budgetItems[id].deleted ||
+              !matchesFilter(budgetItems[id]) ? null : (
                 <EntityListItem
                   key={id}
                   id={id}

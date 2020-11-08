@@ -268,20 +268,20 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="w-full flex mb-4">
+        <div className="w-full sm:w-1/2 flex mx-auto mb-8">
           <input
             id="year-selector"
             type="text"
             min="4"
             max="4"
             value={yearSelection}
-            className={`w-1/2 pl-1 mr-1 text-center ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+            className={`w-1/2 pl-1 mr-1 text-center border-b-2 hover:border-gray-500 focus:border-blue-500 ${commonStyles.smooth}`}
             onChange={(event) => setYearSelection(event.target.value)}
           />
           <select
             name="month-selector"
             value={monthSelection}
-            className={`w-1/2 pl-1 ml-1 text-center ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+            className={`w-1/2 pl-1 ml-1 text-center appearance-none bg-white border-b-2 hover:border-gray-500 focus:border-blue-500 ${commonStyles.smooth}`}
             onChange={(event) => setMonthSelection(event.target.value)}
           >
             <option value="01">January</option>

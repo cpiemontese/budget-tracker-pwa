@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import logger from "../lib/logger";
 import commonStyles from "../styles/common.module.css";
-import EntityListItem from "../components/entity-list-item";
+import FundListItem from "../components/fund-list-item";
 import Layout, { siteTitle } from "../components/layout";
 import { ReduxState } from "../redux/types";
 import { amountToValue } from "../lib/crud/budget-items/common";
@@ -17,6 +17,7 @@ import MessageModal from "../components/message-modal";
 import Spinner from "../components/spinner";
 import { BudgetItem } from "../types";
 import { budgetItemDateFormat, budgetItemDateParse } from "../lib/common";
+import BudgetListItem from "../components/budget-list-item";
 
 const log = logger({ browser: true });
 
@@ -160,12 +161,10 @@ export default function Home() {
           <ul className="mb-8 max-h-48 overflow-y-scroll">
             {fundsKeys.map((id, index) =>
               funds[id].deleted ? null : (
-                <EntityListItem
+                <FundListItem
                   key={id}
                   id={id}
                   last={index === fundsKeys.length - 1}
-                  endpoint="funds"
-                  entityName="funds"
                   name={funds[id].name}
                   amount={funds[id].amount.toFixed(2)}
                   deleteHandler={deleteHandler}
@@ -287,17 +286,17 @@ export default function Home() {
             {budgetItemsKeys.map((id, index) =>
               budgetItems[id].deleted ||
               !matchesFilter(budgetItems[id]) ? null : (
-                <EntityListItem
+                <BudgetListItem
                   key={id}
                   id={id}
                   last={index === budgetItemsKeys.length - 1}
-                  endpoint="budget-items"
-                  entityName="budgetItems"
                   name={budgetItems[id].name}
                   amount={amountToValue(
                     budgetItems[id].amount,
                     budgetItems[id].type
                   ).toFixed(2)}
+                  date={budgetItems[id].date}
+                  category={budgetItems[id].category}
                   deleteHandler={deleteHandler}
                 />
               )

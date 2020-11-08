@@ -10,7 +10,13 @@
   "icons": [
     {
       "src": "favicon.png",
-      "type": "image/png"
+      "type": "image/png",
+      "size": "512x512"
+    },
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "size": "144x144"
     }
   ],
   "background_color": "#4299e1"

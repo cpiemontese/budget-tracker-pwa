@@ -161,11 +161,13 @@ export default function Home() {
           </ul>
         )}
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
-        <div className="w-full flex items-center mb-2">
-          <div className="w-1/5 font-medium text-gray-700">Filters</div>
-          <div className="w-4/5 sm:flex items-center text-sm">
-            <div className="w-full sm:mr-2">
-              <div className="flex sm:mb-2">
+        <div className="w-full md:flex items-center mb-2">
+          <div className="w-full md:w-1/5 mb-2 md:mb-0 font-medium text-gray-700">
+            Filters
+          </div>
+          <div className="w-full md:w-4/5 md:flex items-center text-sm">
+            <div className="w-full md:mr-2">
+              <div className="flex mb-2">
                 <label
                   htmlFor="type-filter"
                   className="w-1/4 text-black font-bold"
@@ -187,7 +189,7 @@ export default function Home() {
                   <option value="income">Income</option>
                 </select>
               </div>
-              <div className="flex">
+              <div className="flex mb-2 md:mb-0">
                 <label htmlFor="category-filter" className="w-1/4 font-bold">
                   Category
                 </label>
@@ -203,8 +205,8 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="w-full sm:ml-2">
-              <div className="flex sm:mb-2">
+            <div className="w-full md:ml-2">
+              <div className="flex mb-2">
                 <label htmlFor="date-filter" className="w-1/4 font-bold">
                   Date
                 </label>

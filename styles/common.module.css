@@ -9,10 +9,6 @@
   @apply text-white font-bold p-2 rounded;
 }
 
-.btn-round {
-  @apply text-white font-bold rounded-full;
-}
-
 .btn-inverted {
   @apply text-black font-bold p-2 rounded;
 }

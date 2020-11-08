@@ -114,6 +114,10 @@ export default function Home() {
   const fundsKeys = Object.keys(funds);
   const budgetItemsKeys = Object.keys(budgetItems);
 
+  const total = Object.keys(funds).reduce((total, key) => {
+    return total + funds[key].amount;
+  }, 0);
+
   return (
     <Layout home>
       <Head>
@@ -136,6 +140,16 @@ export default function Home() {
         setVisible={setMessageModal}
       />
       <section>
+        <div className="w-1/2 mx-auto flex mb-6">
+          <h2 className="w-1/2 text-2xl text-center text-gray-700">Total</h2>
+          <div
+            className={`w-1/2 text-2xl text-center border-b-4 border-${
+              total >= 0 ? "green" : "red"
+            }-500`}
+          >
+            {total}
+          </div>
+        </div>
         <div className="flex mb-4">
           <h2 className="w-5/6 text-2xl font-medium">Funds</h2>
           <Link href="/funds">{AddButton()}</Link>

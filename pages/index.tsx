@@ -270,10 +270,8 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full sm:w-1/2 flex mx-auto mb-8">
-          <label htmlFor="year-selector" className="hidden">
-            Year selector
-          </label>
           <input
+            aria-label="Year Selector"
             id="year-selector"
             type="text"
             min="4"
@@ -282,10 +280,8 @@ export default function Home() {
             className={`w-1/2 pl-1 mr-1 text-center border-b-2 hover:border-gray-500 focus:border-blue-500 ${commonStyles.smooth}`}
             onChange={(event) => setYearSelection(event.target.value)}
           />
-          <label htmlFor="month-selector" className="hidden">
-            Month selector
-          </label>
           <select
+            aria-label="Month Selector"
             id="month-selector"
             name="month-selector"
             value={monthSelection}

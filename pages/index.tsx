@@ -26,7 +26,7 @@ let fetched = false;
 
 const AddButton = (clickHandler: (event: any) => void = () => null) => (
   <button
-    className={`w-1/6 ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+    className={`w-10 h-10 sm:w-1/6 flex items-center justify-center leading-none text-white font-bold rounded-full sm:rounded ${commonStyles.smooth} ${commonStyles["btn-blue"]}`}
     onClick={clickHandler}
   >
     +
@@ -155,8 +155,8 @@ export default function Home() {
           <h2 className="w-1/2 text-2xl text-center text-gray-700">Total</h2>
           <div className="w-1/2 text-2xl text-center">{total}</div>
         </div>
-        <div className="flex mb-4">
-          <h2 className="w-5/6 text-2xl font-medium">Funds</h2>
+        <div className="flex justify-between mb-4">
+          <h2 className="text-2xl font-medium">Funds</h2>
           <Link href="/funds">{AddButton()}</Link>
         </div>
         {fetching ? (
@@ -179,8 +179,8 @@ export default function Home() {
             )}
           </ul>
         )}
-        <div className="flex mb-4">
-          <h2 className="w-5/6 text-2xl font-medium">Budget Items</h2>
+        <div className="flex justify-between mb-4">
+          <h2 className="text-2xl font-medium">Budget Items</h2>
           <Link href="/budget-items">
             {AddButton((event) => {
               if (fundsKeys.filter((key) => !funds[key].deleted).length === 0) {

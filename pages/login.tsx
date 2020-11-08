@@ -79,9 +79,10 @@ export default function Login() {
           <input
             id="email-input"
             className={formInput}
-            type="text"
+            type="email"
             value={email}
             onChange={(event) => setEmail(event.target.value)}
+            required={true}
           />
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -94,6 +95,7 @@ export default function Login() {
             type="password"
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            required={true}
           />
         </div>
         <div>

@@ -82,7 +82,7 @@ export default function Layout({
   }
 
   return (
-    <div className="max-w-xl min-h-screen mx-auto p-4 overflow-hidden">
+    <div className="max-w-3xl min-h-screen mx-auto p-4 overflow-hidden">
       <Head>
         <link rel="icon" href="/favicon.ico" />
         <meta
@@ -137,15 +137,15 @@ export default function Layout({
                 {logged ? (
                   <LogoutButton
                     logoutHandler={logoutHandler}
-                    className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                    className={`w-1/2 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
                   />
                 ) : (
                   <>
                     <SignupButton
-                      className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                      className={`w-full mr-1 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
                     />
                     <LoginButton
-                      className={`${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+                      className={`w-full ml-1 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
                     />
                   </>
                 )}

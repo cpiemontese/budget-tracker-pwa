@@ -135,7 +135,7 @@ export default function Home() {
         body={messageBody}
         setVisible={setMessageModal}
       />
-      <section className="">
+      <section>
         <h2 className="text-2xl font-medium mb-2">Funds</h2>
         <Link href="/funds">{addButton()}</Link>
         {fetching ? (
@@ -161,64 +161,69 @@ export default function Home() {
           </ul>
         )}
         <h2 className="text-2xl font-medium mb-2">Budget items</h2>
-        <div className="text-sm font-bold">Filters</div>
-        <div className="w-full sm:flex items-center text-sm mb-2">
-          <div className="w-full sm:flex justify-end">
-            <div className="flex items-center self-end">
-              <label htmlFor="type-filter" className="text-black font-bold">
-                Type
-              </label>
-              <select
-                id="type-filter"
-                value={typeFilter}
-                className={`${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
-                onChange={(event) =>
-                  setTypeFilter(
-                    event.target.value as "expense" | "income" | null
-                  )
-                }
-              >
-                <option value="none">None</option>
-                <option value="expense">Expense</option>
-                <option value="income">Income</option>
-              </select>
-            </div>
-            <div className="flex items-center self-end">
-              <label htmlFor="category-filter" className="font-bold">
-                Category
-              </label>
-              <div className="w-full max-w-xs" style={{ maxWidth: "10rem" }}>
-                <input
-                  id="category-filter"
-                  type="text"
-                  value={categoryFilter}
-                  placeholder="some category"
-                  className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
-                  onChange={(event) => setCategoryFilter(event.target.value)}
-                />
+        <div className="w-full flex items-center mb-2">
+          <div className="w-1/5 font-medium text-gray-700">Filters</div>
+          <div className="w-4/5 sm:flex items-center text-sm">
+            <div className="w-full sm:mr-2">
+              <div className="flex sm:mb-2">
+                <label
+                  htmlFor="type-filter"
+                  className="w-1/4 text-black font-bold"
+                >
+                  Type
+                </label>
+                <select
+                  id="type-filter"
+                  value={typeFilter}
+                  className={`w-3/4 pl-1 ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                  onChange={(event) =>
+                    setTypeFilter(
+                      event.target.value as "expense" | "income" | null
+                    )
+                  }
+                >
+                  <option value="none">None</option>
+                  <option value="expense">Expense</option>
+                  <option value="income">Income</option>
+                </select>
+              </div>
+              <div className="flex">
+                <label htmlFor="category-filter" className="w-1/4 font-bold">
+                  Category
+                </label>
+                <div className="w-3/4">
+                  <input
+                    id="category-filter"
+                    type="text"
+                    value={categoryFilter}
+                    placeholder="some category"
+                    className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                    onChange={(event) => setCategoryFilter(event.target.value)}
+                  />
+                </div>
               </div>
             </div>
-            <div className="flex items-center self-end">
-              <label htmlFor="date-filter" className="font-bold">
-                Date
-              </label>
-              <input
-                id="date-filter"
-                type="date"
-                value={dateFilter}
-                className={`pl-2 ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
-                onChange={(event) => setDateFilter(event.target.value)}
-              />
-            </div>
-            <div className="flex items-center self-end">
-              <label className="font-bold" htmlFor="fund-input">
-                Fund
-              </label>
-              <div className="w-full max-w-xs" style={{ maxWidth: "10rem" }}>
+            <div className="w-full sm:ml-2">
+              <div className="flex sm:mb-2">
+                <label htmlFor="date-filter" className="w-1/4 font-bold">
+                  Date
+                </label>
+                <input
+                  id="date-filter"
+                  type="date"
+                  value={dateFilter}
+                  className={`w-3/4 pl-1 ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                  onChange={(event) => setDateFilter(event.target.value)}
+                />
+              </div>
+              <div className="flex">
+                <label className="w-1/4 font-bold" htmlFor="fund-input">
+                  Fund
+                </label>
                 <select
                   id="fund-input"
                   value={fundFilter}
-                  className={`pl-2 w-full ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+                  className={`pl-1 w-3/4 ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
                   onChange={(event) => setFundFilter(event.target.value)}
                 >
                   <option value="none">None</option>

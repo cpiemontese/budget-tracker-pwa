@@ -55,12 +55,14 @@ export default function BudgetItemDeleteModal({
       <div className="mb-2">Are you sure?</div>
       <div className="flex items-center">
         <button
+          name="delete"
           className={`flex-1 mr-1 ${commonStyles.btn} ${commonStyles["btn-red"]} ${commonStyles.smooth}`}
           onClick={deleteHandler}
         >
           Delete
         </button>
         <button
+          name="cancel-delete"
           className={`flex-1 ml-1 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
           onClick={() => setVisible(false)}
         >

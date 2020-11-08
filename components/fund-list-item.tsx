@@ -30,6 +30,7 @@ export default function FundListItem({
         </a>
       </Link>
       <button
+        name="delete-fund"
         className={`self-center text-gray-900 hover:text-black p-2 rounded ${commonStyles["smooth"]} ${commonStyles["btn-inverted"]} ${commonStyles["btn-red"]}`}
         onClick={() => deleteHandler(id, "funds")}
       >

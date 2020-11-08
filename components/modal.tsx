@@ -26,6 +26,7 @@ export default function Modal({
           {closeBtn && (
             <div className="flex justify-end">
               <button
+                name="close"
                 className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]} ${commonStyles.smooth}`}
                 onClick={() => setVisible(false)}
               >

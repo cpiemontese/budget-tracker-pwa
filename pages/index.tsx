@@ -26,6 +26,7 @@ let fetched = false;
 
 const AddButton = (clickHandler: (event: any) => void = () => null) => (
   <button
+    name="add"
     className={`w-10 h-10 sm:w-1/6 flex items-center justify-center leading-none text-white font-bold rounded-full sm:rounded ${commonStyles.smooth} ${commonStyles["btn-blue"]}`}
     onClick={clickHandler}
   >

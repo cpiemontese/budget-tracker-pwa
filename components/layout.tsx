@@ -93,6 +93,10 @@ export default function Layout({
           content="Track your expenses and income with Budget Tracker"
         />
         <meta
+          name="description"
+          content="A simple budget tracker for your finances!"
+        ></meta>
+        <meta
           property="og:image"
           content={`https://og-image.now.sh/${encodeURI(
             siteTitle

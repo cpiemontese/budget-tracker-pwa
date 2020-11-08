@@ -54,6 +54,7 @@ export default function FundForm({
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
+            required={true}
           />
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -67,6 +68,7 @@ export default function FundForm({
             step="0.01"
             value={amount}
             onChange={(event) => setAmount(parseFloat(event.target.value))}
+            required={true}
           />
         </div>
         <div>

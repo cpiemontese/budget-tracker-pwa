@@ -81,6 +81,7 @@ export default function BudgetItemForm({
             type="text"
             value={name}
             onChange={(event) => setName(event.target.value)}
+            required={true}
           />
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -94,6 +95,7 @@ export default function BudgetItemForm({
             step="0.01"
             value={amount}
             onChange={(event) => setAmount(parseFloat(event.target.value))}
+            required={true}
           />
         </div>
         <div className="md:flex md:items-center mb-6">
@@ -107,6 +109,7 @@ export default function BudgetItemForm({
             onChange={(event) =>
               setType(event.target.value as "expense" | "income")
             }
+            required={true}
           >
             <option value="expense">Expense</option>
             <option value="income">Income</option>
@@ -121,6 +124,7 @@ export default function BudgetItemForm({
             value={fundId}
             className={formInput}
             onChange={(event) => setFundId(event.target.value)}
+            required={true}
           >
             {Object.keys(funds).map((key) => {
               return (
@@ -143,6 +147,7 @@ export default function BudgetItemForm({
             onChange={(event) =>
               setDate(budgetItemDateParse(event.target.value))
             }
+            required={true}
           />
         </div>
         <div className="md:flex md:items-center mb-6">

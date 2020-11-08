@@ -108,10 +108,26 @@ export default function Layout({
         />
         <meta name="og:title" content={siteTitle} />
 
-        <link rel="manifest" href="/manifest.json" />
-        <link href="/favicon.ico" rel="icon" type="image/ico" sizes="16x16" />
-        <link href="/favicon.ico" rel="icon" type="image/ico" sizes="32x32" />
+        <link rel="manifest" href="manifest.json" />
+
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="BT" />
+        <meta name="apple-mobile-web-app-title" content="BT" />
         <meta name="theme-color" content="#4299e1" />
+        <meta name="msapplication-navbutton-color" content="#4299e1" />
+        <meta
+          name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent"
+        />
+        <meta name="msapplication-starturl" content="/" />
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, shrink-to-fit=no"
+        />
+
+        <link rel="icon" type="image/png" href="favicon.png" />
+        <link rel="apple-touch-icon" type="image/png" href="favicon.png" />
       </Head>
       <header className="flex relative items-center mb-4 border-b-2">
         {home ? (

@@ -22,9 +22,9 @@ const log = logger({ browser: true });
 
 let fetched = false;
 
-const addButton = (clickHandler: (event: any) => void = () => null) => (
+const AddButton = (clickHandler: (event: any) => void = () => null) => (
   <button
-    className={`w-full mb-4 ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
+    className={`w-1/6 ${commonStyles.smooth} ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
     onClick={clickHandler}
   >
     +
@@ -136,14 +136,16 @@ export default function Home() {
         setVisible={setMessageModal}
       />
       <section>
-        <h2 className="text-2xl font-medium mb-2">Funds</h2>
-        <Link href="/funds">{addButton()}</Link>
+        <div className="flex mb-4">
+          <h2 className="w-5/6 text-2xl font-medium">Funds</h2>
+          <Link href="/funds">{AddButton()}</Link>
+        </div>
         {fetching ? (
           <div className="w-full h-12 flex justify-center items-center">
             <Spinner />
           </div>
         ) : (
-          <ul className="mb-4 max-h-48 overflow-y-scroll">
+          <ul className="mb-8 max-h-48 overflow-y-scroll">
             {fundsKeys.map((id, index) =>
               funds[id].deleted ? null : (
                 <EntityListItem
@@ -160,8 +162,22 @@ export default function Home() {
             )}
           </ul>
         )}
-        <h2 className="text-2xl font-medium mb-2">Budget items</h2>
-        <div className="w-full md:flex items-center mb-2">
+        <div className="flex mb-4">
+          <h2 className="w-5/6 text-2xl font-medium">Budget Items</h2>
+          <Link href="/budget-items">
+            {AddButton((event) => {
+              if (fundsKeys.filter((key) => !funds[key].deleted).length === 0) {
+                event.preventDefault();
+                setMessageModal(true);
+                setMessageTitle("No fund present");
+                setMessageBody(
+                  "You can't add a new item without any funds! Please add a fund first."
+                );
+              }
+            })}
+          </Link>
+        </div>
+        <div className="w-full md:flex items-center mb-6">
           <div className="w-full md:w-1/5 mb-2 md:mb-0 font-medium text-gray-700">
             Filters
           </div>
@@ -170,7 +186,7 @@ export default function Home() {
               <div className="flex mb-2">
                 <label
                   htmlFor="type-filter"
-                  className="w-1/4 text-black font-bold"
+                  className="w-1/4 font-bold text-gray-700"
                 >
                   Type
                 </label>
@@ -190,7 +206,10 @@ export default function Home() {
                 </select>
               </div>
               <div className="flex mb-2 md:mb-0">
-                <label htmlFor="category-filter" className="w-1/4 font-bold">
+                <label
+                  htmlFor="category-filter"
+                  className="w-1/4 font-bold text-gray-700"
+                >
                   Category
                 </label>
                 <div className="w-3/4">
@@ -207,7 +226,10 @@ export default function Home() {
             </div>
             <div className="w-full md:ml-2">
               <div className="flex mb-2">
-                <label htmlFor="date-filter" className="w-1/4 font-bold">
+                <label
+                  htmlFor="date-filter"
+                  className="w-1/4 text-gray-700 font-bold"
+                >
                   Date
                 </label>
                 <input
@@ -219,7 +241,10 @@ export default function Home() {
                 />
               </div>
               <div className="flex">
-                <label className="w-1/4 font-bold" htmlFor="fund-input">
+                <label
+                  className="w-1/4 font-bold text-gray-700"
+                  htmlFor="fund-input"
+                >
                   Fund
                 </label>
                 <select
@@ -241,18 +266,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <Link href="/budget-items">
-          {addButton((event) => {
-            if (fundsKeys.filter((key) => !funds[key].deleted).length === 0) {
-              event.preventDefault();
-              setMessageModal(true);
-              setMessageTitle("No fund present");
-              setMessageBody(
-                "You can't add a new item without any funds! Please add a fund first."
-              );
-            }
-          })}
-        </Link>
         {fetching ? (
           <div className="w-full h-12 flex justify-center items-center">
             <Spinner />

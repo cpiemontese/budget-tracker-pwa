@@ -3,7 +3,7 @@
   "short_name": "BT",
   "description": "A simple budget tracker for you finances",
   "lang": "en-US",
-  "start_url": "/",
+  "start_url": "https://budget-tracker-omega.vercel.app/",
   "display": "standalone",
   "orientation": "any",
   "theme_color": "#4299e1",

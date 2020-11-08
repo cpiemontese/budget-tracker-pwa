@@ -4,6 +4,15 @@ import { budgetItemDateFormat } from "../lib/common";
 import commonStyles from "../styles/common.module.css";
 import { trashCan } from "../styles/svg";
 
+const InfoBlock = ({ name, value }) => (
+  <div className="sm:flex items-center mb-2">
+    <div className="w-full sm:w-1/6 sm:pr-4 text-xs sm:text-right font-medium text-gray-700">
+      {name}
+    </div>
+    <div className="w-full sm:w-5/6">{value}</div>
+  </div>
+);
+
 export default function BudgetListItem({
   id,
   name,
@@ -28,24 +37,21 @@ export default function BudgetListItem({
       }`}
     >
       <Link href={`/budget-items/[id]`} as={`/budget-items/${id}`} key={id}>
-        <a className={`w-full flex ${commonStyles["anchor"]}`}>
-          <div className="w-1/5 mr-4 md:mr-0 font-medium text-gray-700">
-            <p>Name</p>
-            <p>Amount</p>
-            <p>Date</p>
-            <p>Category</p>
-          </div>
-          <div className="w-4/5">
-            <p>{name}</p>
-            <p>{amount}</p>
-            <p>{budgetItemDateFormat(date)}</p>
-            <p
-              className="bg-blue-500 px-3 text-center text-white rounded-full"
-              style={{ width: "max-content" }}
-            >
-              {category}
-            </p>
-          </div>
+        <a className={`w-full ${commonStyles["anchor"]}`}>
+          <InfoBlock name="Name" value={name} />
+          <InfoBlock name="Amount" value={amount} />
+          <InfoBlock name="Date" value={budgetItemDateFormat(date)} />
+          <InfoBlock
+            name="Category"
+            value={
+              <p
+                className="bg-blue-500 px-3 text-center text-white rounded-full"
+                style={{ width: "max-content" }}
+              >
+                {category}
+              </p>
+            }
+          />
         </a>
       </Link>
       <button

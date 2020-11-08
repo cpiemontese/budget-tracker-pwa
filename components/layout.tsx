@@ -90,6 +90,12 @@ export default function Layout({
           charSet="utf-8"
           content="Track your expenses and income with Budget Tracker"
         />
+        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"
+        />
+        <meta name="keywords" content="budget tracker,finance,tracker,budget" />
         <meta
           name="description"
           content="A simple budget tracker for your finances!"
@@ -101,6 +107,11 @@ export default function Layout({
           )}.png?theme=light&md=0&fontSize=75px&images=https%3A%2F%2Fassets.zeit.co%2Fimage%2Fupload%2Ffront%2Fassets%2Fdesign%2Fnextjs-black-logo.svg`}
         />
         <meta name="og:title" content={siteTitle} />
+
+        <link rel="manifest" href="/manifest.json" />
+        <link href="/favicon.ico" rel="icon" type="image/ico" sizes="16x16" />
+        <link href="/favicon.ico" rel="icon" type="image/ico" sizes="32x32" />
+        <meta name="theme-color" content="#4299e1" />
       </Head>
       <header className="flex relative items-center mb-4 border-b-2">
         {home ? (

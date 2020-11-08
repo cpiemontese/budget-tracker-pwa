@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import InfoBlock from "./info-block";
 import commonStyles from "../styles/common.module.css";
 import { trashCan } from "../styles/svg";
 
@@ -23,15 +24,9 @@ export default function FundListItem({
       }`}
     >
       <Link href={`/funds/[id]`} as={`/funds/${id}`} key={id}>
-        <a className={`w-full flex ${commonStyles["anchor"]}`}>
-          <div className="w-1/5 mr-4 md:mr-0 font-medium text-gray-700">
-            <p>Name</p>
-            <p>Amount</p>
-          </div>
-          <div className="w-4/5">
-            <p>{name}</p>
-            <p>{amount}</p>
-          </div>
+        <a className={`w-full ${commonStyles["anchor"]}`}>
+          <InfoBlock name="Name" value={name} />
+          <InfoBlock name="Amount" value={amount} />
         </a>
       </Link>
       <button

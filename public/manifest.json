@@ -11,12 +11,14 @@
     {
       "src": "favicon.png",
       "type": "image/png",
-      "size": "512x512"
+      "size": "512x512",
+      "purpose": "maskable any"
     },
     {
       "src": "favicon.png",
       "type": "image/png",
-      "size": "144x144"
+      "size": "144x144",
+      "purpose": "maskable any"
     }
   ],
   "background_color": "#4299e1"

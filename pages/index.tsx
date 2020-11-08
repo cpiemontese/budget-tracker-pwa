@@ -270,6 +270,9 @@ export default function Home() {
           </div>
         </div>
         <div className="w-full sm:w-1/2 flex mx-auto mb-8">
+          <label htmlFor="year-selector" className="invisible">
+            Year selector
+          </label>
           <input
             id="year-selector"
             type="text"
@@ -279,7 +282,11 @@ export default function Home() {
             className={`w-1/2 pl-1 mr-1 text-center border-b-2 hover:border-gray-500 focus:border-blue-500 ${commonStyles.smooth}`}
             onChange={(event) => setYearSelection(event.target.value)}
           />
+          <label htmlFor="month-selector" className="invisible">
+            Month selector
+          </label>
           <select
+            id="month-selector"
             name="month-selector"
             value={monthSelection}
             className={`w-1/2 pl-1 ml-1 text-center appearance-none bg-white border-b-2 hover:border-gray-500 focus:border-blue-500 ${commonStyles.smooth}`}

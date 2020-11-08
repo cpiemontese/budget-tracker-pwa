@@ -18,6 +18,7 @@ import Spinner from "../components/spinner";
 import { BudgetItem } from "../types";
 import { budgetItemDateFormat, budgetItemDateParse } from "../lib/common";
 import BudgetListItem from "../components/budget-list-item";
+import { DateTime } from "luxon";
 
 const log = logger({ browser: true });
 
@@ -80,8 +81,11 @@ export default function Home() {
 
   const [typeFilter, setTypeFilter] = useState("none");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
   const [fundFilter, setFundFilter] = useState("none");
+
+  const today = DateTime.utc().toISODate();
+  const [monthSelection, setMonthSelection] = useState(today.split("-")[1]);
+  const [yearSelection, setYearSelection] = useState(today.split("-")[0]);
 
   const deleteHandler = (id: string, entityName: "funds" | "budgetItems") => {
     switch (entityName) {
@@ -102,13 +106,15 @@ export default function Home() {
   };
 
   const matchesFilter = (budgetItem: BudgetItem) => {
+    const splitDate = budgetItemDateFormat(budgetItem.date).split("-");
+
     return (
       (typeFilter === "none" || budgetItem.type === typeFilter) &&
       (categoryFilter.length === 0 ||
         new RegExp(categoryFilter).test(budgetItem.category)) &&
-      (dateFilter.length === 0 ||
-        budgetItemDateParse(dateFilter) === budgetItem.date) &&
-      (fundFilter === "none" || budgetItem.fund === fundFilter)
+      (fundFilter === "none" || budgetItem.fund === fundFilter) &&
+      yearSelection === splitDate[0] &&
+      monthSelection === splitDate[1]
     );
   };
 
@@ -236,21 +242,6 @@ export default function Home() {
               </div>
             </div>
             <div className="w-full md:ml-2">
-              <div className="flex mb-2">
-                <label
-                  htmlFor="date-filter"
-                  className="w-1/4 text-gray-700 font-bold"
-                >
-                  Date
-                </label>
-                <input
-                  id="date-filter"
-                  type="date"
-                  value={dateFilter}
-                  className={`w-3/4 pl-1 ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
-                  onChange={(event) => setDateFilter(event.target.value)}
-                />
-              </div>
               <div className="flex">
                 <label
                   className="w-1/4 font-bold text-gray-700"
@@ -276,6 +267,36 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+        <div className="w-full flex mb-4">
+          <input
+            id="year-selector"
+            type="text"
+            min="4"
+            max="4"
+            value={yearSelection}
+            className={`w-1/2 pl-1 mr-1 text-center ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+            onChange={(event) => setYearSelection(event.target.value)}
+          />
+          <select
+            name="month-selector"
+            value={monthSelection}
+            className={`w-1/2 pl-1 ml-1 text-center ${commonStyles["form-input-skinny"]} ${commonStyles["form-input-blue"]} ${commonStyles.smooth}`}
+            onChange={(event) => setMonthSelection(event.target.value)}
+          >
+            <option value="01">January</option>
+            <option value="02">Febuary</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
         </div>
         {fetching ? (
           <div className="w-full h-12 flex justify-center items-center">

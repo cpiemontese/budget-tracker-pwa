@@ -140,15 +140,13 @@ export default function Home() {
         setVisible={setMessageModal}
       />
       <section>
-        <div className="w-1/2 mx-auto flex mb-6">
+        <div
+          className={`w-full sm:w-1/2 mx-auto flex mb-6 border-b-2 border-${
+            total >= 0 ? "green" : "red"
+          }-500`}
+        >
           <h2 className="w-1/2 text-2xl text-center text-gray-700">Total</h2>
-          <div
-            className={`w-1/2 text-2xl text-center border-b-4 border-${
-              total >= 0 ? "green" : "red"
-            }-500`}
-          >
-            {total}
-          </div>
+          <div className="w-1/2 text-2xl text-center">{total}</div>
         </div>
         <div className="flex mb-4">
           <h2 className="w-5/6 text-2xl font-medium">Funds</h2>

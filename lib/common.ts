@@ -1,6 +1,10 @@
 import { DateTime } from "luxon";
-import { randomBytes, randomInt } from "crypto";
+import { randomBytes } from "crypto";
 import { BudgetItem, Fund, User } from "../types";
+
+export function getRandomInt(max: number) {
+  return Math.floor(Math.random() * Math.floor(max));
+}
 
 export const budgetItemDateFormat = (timestamp: number) =>
   DateTime.fromMillis(timestamp).toISODate();
@@ -25,7 +29,7 @@ export const randomString = () => randomBytes(8).toString("hex");
 export const randomFund: () => Fund = () => ({
   id: randomString(),
   name: randomString(),
-  amount: randomInt(0, 100),
+  amount: getRandomInt(100),
   createdAt: Date.now(),
   updatedAt: Date.now(),
 });
@@ -34,7 +38,7 @@ export const randomExpense: (fund: string) => BudgetItem = (fund) => ({
   id: randomString(),
   name: randomString(),
   fund,
-  amount: randomInt(0, 100),
+  amount: getRandomInt(100),
   type: "expense",
   date: Date.now(),
   category: randomString(),
@@ -47,7 +51,7 @@ export const randomIncome: (fund: string) => BudgetItem = (fund) => ({
   id: randomString(),
   name: randomString(),
   fund,
-  amount: randomInt(0, 100),
+  amount: getRandomInt(100),
   type: "income",
   date: Date.now(),
   category: randomString(),

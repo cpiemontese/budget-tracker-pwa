@@ -3,7 +3,7 @@
   "short_name": "BT",
   "description": "A simple budget tracker for you finances",
   "lang": "en-US",
-  "start_url": "https://budget-tracker-omega.vercel.app/",
+  "start_url": "/",
   "display": "standalone",
   "orientation": "any",
   "theme_color": "#4299e1",
@@ -11,13 +11,19 @@
     {
       "src": "favicon.png",
       "type": "image/png",
-      "size": "512x512",
+      "sizes": "512x512",
       "purpose": "maskable any"
     },
     {
       "src": "favicon.png",
       "type": "image/png",
-      "size": "144x144",
+      "sizes": "144x144",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "favicon.png",
+      "type": "image/png",
+      "sizes": "192x192",
       "purpose": "maskable any"
     }
   ],

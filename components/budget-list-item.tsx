@@ -48,7 +48,7 @@ export default function BudgetListItem({
         </a>
       </Link>
       <button
-        name="delete-budget-item"
+        aria-label="Delete Budget Item"
         className={`self-center text-gray-900 hover:text-black p-2 rounded ${commonStyles["smooth"]} ${commonStyles["btn-inverted"]} ${commonStyles["btn-red"]}`}
         onClick={() => deleteHandler(id, "budgetItems")}
       >

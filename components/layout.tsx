@@ -25,16 +25,14 @@ function LoginButton({ className }) {
 function SignupButton({ className }) {
   return (
     <Link href="/signup">
-      <button name="signup" className={className}>
-        Signup
-      </button>
+      <button className={className}>Signup</button>
     </Link>
   );
 }
 
 function LogoutButton({ className, logoutHandler }) {
   return (
-    <button name="signup" className={className} onClick={logoutHandler}>
+    <button className={className} onClick={logoutHandler}>
       Logout
     </button>
   );
@@ -196,7 +194,6 @@ export default function Layout({
         <div className="mt-6">
           <Link href="/">
             <button
-              name="back"
               className={`w-1/4 ${commonStyles.btn} ${commonStyles["btn-blue"]}`}
             >
               ← Back
